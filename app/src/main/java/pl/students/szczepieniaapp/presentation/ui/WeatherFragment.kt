@@ -1,7 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +17,6 @@ class WeatherFragment : MyFragment<WeatherFragmentBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel.selectContext(activity)
         super.onCreate(savedInstanceState)
-
-        Log.d("testuje", "onCreate: ${viewModel.randomString}")
     }
 
     override fun onCreateView(
