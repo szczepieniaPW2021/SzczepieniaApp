@@ -1,7 +1,7 @@
 package pl.students.szczepieniaapp.presentation.ui
 
-import androidx.lifecycle.ViewModel
+import pl.students.szczepieniaapp.presentation.MyViewModel
 
-class WeatherViewModel : ViewModel() {
+class WeatherViewModel : MyViewModel() {
 
 }
