@@ -2,10 +2,20 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph.xml"
-    app:startDestination="@id/weatherFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/weatherFragment"
-        android:name="pl.students.szczepieniaapp.presentation.ui.WeatherFragment"
-        android:label="WeatherFragment" />
+        android:id="@+id/loginFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_patientFragment"
+            app:destination="@id/patientFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/patientFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.patient.PatientFragment"
+        android:label="PatientFragment" />
+
 </navigation>
