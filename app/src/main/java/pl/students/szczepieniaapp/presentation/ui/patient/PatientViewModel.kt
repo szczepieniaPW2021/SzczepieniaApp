@@ -1,18 +1,22 @@
-package pl.students.szczepieniaapp.presentation.ui.login
+package pl.students.szczepieniaapp.presentation.ui.patient
 
+import android.util.Log
 import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.navigation.Navigation
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 
-class LoginViewModel
+class PatientViewModel
 @ViewModelInject
 constructor(
 
 ) : MyViewModel() {
 
-    fun goToPatientFragment(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_patientFragment)
+    private var callback: PatientListener = PatientFragment()
+
+    fun showQRCodePopup(view: View) {
+        callback.setProgressDialog(view)
     }
+
 }
