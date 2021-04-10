@@ -11,11 +11,18 @@
         <action
             android:id="@+id/action_loginFragment_to_patientFragment"
             app:destination="@id/patientFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_driverFragment"
+            app:destination="@id/driverFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/patientFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.patient.PatientFragment"
         android:label="PatientFragment" />
+    <fragment
+        android:id="@+id/driverFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.driver.DriverFragment"
+        android:label="DriverFragment" />
 
 </navigation>

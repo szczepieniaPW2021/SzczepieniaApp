@@ -29,7 +29,7 @@
             app:layout_constraintVertical_bias="0.044" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/patientNavBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -39,6 +39,18 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <Button
+            android:id="@+id/driverNavBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:onClick="@{viewmodel::goToDriverFragment}"
+            android:text="@string/go_to_patient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/patientNavBtn" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

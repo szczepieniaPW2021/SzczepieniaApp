@@ -15,4 +15,8 @@ constructor(
     fun goToPatientFragment(view: View) {
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_patientFragment)
     }
+
+    fun goToDriverFragment(view: View) {
+        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_driverFragment)
+    }
 }
