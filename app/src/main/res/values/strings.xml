@@ -6,4 +6,5 @@
     <string name="patient_fragment">PATIENT FRAGMENT</string>
     <string name="driver_fragment">DRIVER FRAGMENT</string>
     <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
+    <string name="permission_warning">You need to accept location permissions to use this app.</string>
 </resources>

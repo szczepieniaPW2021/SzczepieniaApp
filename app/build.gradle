@@ -21,9 +21,17 @@ android {
     }
 
     buildTypes {
+
+        def REQUEST_CODE_LOCATION_PERMISSION = "1"
+
+        debug {
+            buildConfigField 'int', 'REQUEST_CODE_LOCATION_PERMISSION', REQUEST_CODE_LOCATION_PERMISSION
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField 'int', 'REQUEST_CODE_LOCATION_PERMISSION', REQUEST_CODE_LOCATION_PERMISSION
         }
     }
     compileOptions {
@@ -70,6 +78,9 @@ dependencies {
     implementation "androidmads.library.qrgenearator:QRGenearator:$qr_code"
     def zxing_core = "3.3.2"
     implementation "com.google.zxing:core:$zxing_core"
+
+    //easy Permissions
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -14,6 +14,11 @@ class DriverFragment : MyFragment<DriverFragmentBinding>() {
 
     private val viewModel : DriverViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.selectContext(activity)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
