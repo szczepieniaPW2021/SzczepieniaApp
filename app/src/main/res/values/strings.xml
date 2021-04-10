@@ -3,4 +3,5 @@
     <string name="go_to_patient">GO TO PATIENT FRAGMENT</string>
     <string name="login_fragment">LOGIN FRAGMENT</string>
     <string name="patient_fragment">PATIENT FRAGMENT</string>
+    <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
 </resources>
