@@ -7,5 +7,6 @@
     <string name="driver_fragment">DRIVER FRAGMENT</string>
     <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
     <string name="permission_warning">You need to accept location permissions to use this app.</string>
+    <string name="my_position_map_text">I am here.</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>

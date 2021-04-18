@@ -21,17 +21,9 @@ android {
     }
 
     buildTypes {
-
-        def REQUEST_CODE_LOCATION_PERMISSION = "1"
-
-        debug {
-            buildConfigField 'int', 'REQUEST_CODE_LOCATION_PERMISSION', REQUEST_CODE_LOCATION_PERMISSION
-        }
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'int', 'REQUEST_CODE_LOCATION_PERMISSION', REQUEST_CODE_LOCATION_PERMISSION
         }
     }
     compileOptions {
