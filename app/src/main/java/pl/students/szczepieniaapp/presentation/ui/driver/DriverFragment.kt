@@ -12,21 +12,23 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import dagger.hilt.android.AndroidEntryPoint
-import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
-import pl.students.szczepieniaapp.presentation.MyFragment
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
+import pl.students.szczepieniaapp.presentation.MyFragment
+
 
 @AndroidEntryPoint
 class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private val viewModel : DriverViewModel by viewModels()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    lateinit var myPosition: LatLng
+    private lateinit var myPosition: LatLng
+    private lateinit var destination: LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +66,8 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         task.addOnSuccessListener {
             if (it != null) {
                 myPosition = LatLng(it.latitude, it.longitude)
+                myPosition = LatLng(52.22977, 21.01178)       //later remove
+                destination =  LatLng(50.06143, 19.93658)    //later to be changed for coordinates coming from api
                 binding.mapView.getMapAsync(this)
             }
         }
@@ -71,12 +75,9 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
-            val myPositionMarkerOptions = MarkerOptions().position(myPosition).title(
-                context?.resources?.getString(R.string.my_position_map_text)
-            )
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(myPosition))
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 12f))
-            googleMap.addMarker(myPositionMarkerOptions)
+            addMarker(MarkerOptions().position(myPosition).title(context?.resources?.getString(R.string.my_position_map_text)))
+            addMarker(MarkerOptions().position(destination).title(context?.resources?.getString(R.string.destination_map_text)))
+            animateCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 8F))
         }
     }
 
