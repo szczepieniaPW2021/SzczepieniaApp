@@ -42,10 +42,18 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     ): View? {
         _binding = DriverFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        viewModel.findingRoute.observe(viewLifecycleOwner, { isFound ->
+            if (isFound) binding.navBtn.visibility = View.VISIBLE
+        })
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         fetchLocation()
         binding.mapView.onCreate(savedInstanceState)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.selectContext(activity)
     }
 
     private fun fetchLocation() {
@@ -149,6 +157,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     }
 
     override fun onRoutingFailure(e: RouteException?) {
+        viewModel._findingRoute.postValue(false)
         Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
     }
 
@@ -175,6 +184,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
                 }
             }
         }
+        viewModel._findingRoute.postValue(true)
     }
 
     override fun onRoutingCancelled() {

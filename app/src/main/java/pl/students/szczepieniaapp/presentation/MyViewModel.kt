@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 abstract class MyViewModel : ViewModel() {
 
     private val _context = MutableLiveData<Context>()
-    val context: LiveData<Context> get() = _context
+    protected val context: LiveData<Context> get() = _context
 
     fun selectContext(context: Context?) {
         _context.value = context
