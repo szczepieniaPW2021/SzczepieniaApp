@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.driver
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -60,26 +61,10 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         viewModel.selectContext(activity)
     }
 
+    @SuppressLint("MissingPermission")
     private fun fetchLocation() {
         val task = fusedLocationProviderClient.lastLocation
 
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED && ActivityCompat
-                .checkSelfPermission(
-                    requireContext(),
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                101
-            )
-            return
-        }
         task.addOnSuccessListener {
             if (it != null) {
                 myPosition = LatLng(it.latitude, it.longitude)
