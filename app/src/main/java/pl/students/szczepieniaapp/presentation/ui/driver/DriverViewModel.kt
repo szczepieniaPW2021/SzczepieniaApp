@@ -7,6 +7,7 @@ import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
@@ -20,8 +21,18 @@ constructor(
     val _findingRoute = MutableLiveData<Boolean>()
     val findingRoute: LiveData<Boolean> get() = _findingRoute
 
-    init {
-        _findingRoute.postValue(false)
+    val _duration = MutableLiveData<String>()
+    val duration: LiveData<String> get() = _duration
+
+    val _distance = MutableLiveData<String>()
+    val distance: LiveData<String> get() = _distance
+
+    fun getDistanceAsString(value: String): String {
+        return context.value!!.resources!!.getString(R.string.distance_map_text).format(value)
+    }
+
+    fun getTimeAsString(value: String): String {
+        return context.value!!.resources!!.getString(R.string.duration_map_text).format(value)
     }
 
     fun goToGoogleMapNav(view: View) {

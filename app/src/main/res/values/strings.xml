@@ -11,5 +11,7 @@
     <string name="destination_map_text">Destination</string>
     <string name="location_not_fetched_map_text">Unable to find route</string>
     <string name="finding_route_map_text">Finding route...</string>
+    <string name="distance_map_text">Distance: %s</string>
+    <string name="duration_map_text">Duration: %s</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
