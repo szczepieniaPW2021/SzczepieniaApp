@@ -42,9 +42,13 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     ): View? {
         _binding = DriverFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
-        viewModel.findingRoute.observe(viewLifecycleOwner, { isFound ->
-            if (isFound) binding.navBtn.visibility = View.VISIBLE
-        })
+
+        viewModel.apply {
+            findingRoute.observe(viewLifecycleOwner, {if (it) binding.navContainer.visibility = View.VISIBLE})
+            distance.observe(viewLifecycleOwner, {binding.durationTextView.text = viewModel.getDistanceAsString(it)})
+            duration.observe(viewLifecycleOwner, {binding.distanceTextView.text = viewModel.getTimeAsString(it)})
+        }
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         fetchLocation()
         binding.mapView.onCreate(savedInstanceState)
@@ -181,6 +185,8 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
                     polyOptions.addAll(route?.get(shortestRouteIndex)?.points)
                     val polyline: Polyline = mMap!!.addPolyline(polyOptions)
                     (polylines as ArrayList<Polyline>).add(polyline)
+                    viewModel._distance.postValue(route?.get(shortestRouteIndex)?.distanceText)
+                    viewModel._duration.postValue(route?.get(shortestRouteIndex)?.durationText)
                 }
             }
         }
