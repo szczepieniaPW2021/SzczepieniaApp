@@ -1,40 +1,44 @@
 package pl.students.szczepieniaapp.presentation.ui.driver
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.directions.route.*
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.PolyUtil
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
+import pl.students.szczepieniaapp.network.model.route.DirectionResponses
 import pl.students.szczepieniaapp.presentation.MyFragment
-import java.util.*
+import pl.students.szczepieniaapp.util.Constants.GOOGLE_APIS_BASE_URL
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
+import retrofit2.Callback
+import retrofit2.Response
 
 
 @AndroidEntryPoint
-class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, RoutingListener {
+class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
 
     private val viewModel : DriverViewModel by viewModels()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var myPosition: LatLng
     private val destination: LatLng = LatLng(50.06143, 19.93658)    //later to be changed for coordinates coming from api
     private var mMap: GoogleMap? = null
-    private var polylines: MutableList<Polyline>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,6 +72,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         task.addOnSuccessListener {
             if (it != null) {
                 myPosition = LatLng(it.latitude, it.longitude)
+                myPosition = LatLng(52.06143, 17.93658)
                 findRoutes(myPosition, destination);
                 binding.mapView.getMapAsync(this)
             }
@@ -88,6 +93,8 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
             val bounds = builder.build()
 
             mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
+
+            findRoutes(myPosition, destination)
         }
     }
 
@@ -95,14 +102,17 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         if (start == null || end == null) {
             Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
         } else {
-            val routing = Routing.Builder()
-                .travelMode(AbstractRouting.TravelMode.DRIVING)
-                .withListener(this)
-                .alternativeRoutes(true)
-                .waypoints(start, end)
-                .key(resources.getString(R.string.google_maps_key))
-                .build()
-            routing.execute()
+            val apiServices = RetrofitClient.apiServices(requireContext())
+            apiServices.getDirection("${start.latitude}, ${start.longitude}", "${end.latitude}, ${end.longitude}", getString(R.string.google_maps_key))
+                .enqueue(object : Callback<DirectionResponses> {
+                    override fun onResponse(call: Call<DirectionResponses>, response: Response<DirectionResponses>) {
+                        drawPolyline(response)
+                    }
+
+                    override fun onFailure(call: Call<DirectionResponses>, t: Throwable) {
+                        Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
+                    }
+                })
         }
     }
 
@@ -141,44 +151,33 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         binding.mapView?.onSaveInstanceState(outState)
     }
 
-    override fun onConnectionFailed(p0: ConnectionResult) {
-        findRoutes(myPosition, destination)
-    }
-
-    override fun onRoutingFailure(e: RouteException?) {
-        viewModel._findingRoute.postValue(false)
-        Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
-    }
-
-    override fun onRoutingStart() {
-        Toast.makeText(requireContext(), resources.getString(R.string.finding_route_map_text), Toast.LENGTH_LONG).show()
-    }
-
-    override fun onRoutingSuccess(route: ArrayList<Route>?, shortestRouteIndex: Int) {
-
-        polylines?.clear()
-
-        val polyOptions = PolylineOptions()
-
-        polylines = ArrayList<Polyline>()
-
-        if (route != null) {
-            for (i in route.indices) {
-                if (i == shortestRouteIndex) {
-                    polyOptions.color(ContextCompat.getColor(requireContext(), R.color.black))
-                    polyOptions.width(9f)
-                    polyOptions.addAll(route?.get(shortestRouteIndex)?.points)
-                    val polyline: Polyline = mMap!!.addPolyline(polyOptions)
-                    (polylines as ArrayList<Polyline>).add(polyline)
-                    viewModel._distance.postValue(route?.get(shortestRouteIndex)?.distanceText)
-                    viewModel._duration.postValue(route?.get(shortestRouteIndex)?.durationText)
-                }
-            }
-        }
+    private fun drawPolyline(response: Response<DirectionResponses>) {
+        val shape = response.body()?.routes?.get(0)?.overviewPolyline?.points
+        val polyline = PolylineOptions()
+            .addAll(PolyUtil.decode(shape))
+            .width(8f)
+            .color(Color.RED)
+        mMap?.addPolyline(polyline)
+        viewModel._distance.postValue(response.body()?.routes?.get(0)?.legs?.get(0)?.distance?.text)
+        viewModel._duration.postValue(response.body()?.routes?.get(0)?.legs?.get(0)?.duration?.text)
         viewModel._findingRoute.postValue(true)
     }
 
-    override fun onRoutingCancelled() {
-        findRoutes(myPosition, destination)
+    private interface ApiServices {
+        @GET("maps/api/directions/json")
+        fun getDirection(@Query("origin") origin: String,
+                         @Query("destination") destination: String,
+                         @Query("key") apiKey: String): Call<DirectionResponses>
+    }
+
+    private object RetrofitClient {
+        fun apiServices(context: Context): ApiServices {
+            val retrofit = Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(GOOGLE_APIS_BASE_URL)
+                .build()
+
+            return retrofit.create<ApiServices>(ApiServices::class.java)
+        }
     }
 }

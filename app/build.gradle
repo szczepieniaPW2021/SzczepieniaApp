@@ -51,6 +51,7 @@ dependencies {
     def google_maps = "17.0.0"
     implementation "com.google.android.gms:play-services-location:$google_maps"
     implementation "com.google.android.gms:play-services-maps:$google_maps"
+    implementation 'com.google.maps.android:android-maps-utils:0.5'
 
     def hilt_lifecycle_view_model = "1.0.0-alpha01"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle_view_model"
@@ -79,8 +80,9 @@ dependencies {
     //easy Permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
 
-    //routing
-    implementation 'com.github.jd-alexander:library:1.1.0'
+    // retrofit 2
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
