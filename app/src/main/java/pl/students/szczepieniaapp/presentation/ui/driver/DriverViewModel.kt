@@ -14,7 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
-import pl.students.szczepieniaapp.usecase.GetGoogleMapRouteUseCase
+import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
 import javax.inject.Inject
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class DriverViewModel
 @Inject
 constructor(
-    private val useCase: GetGoogleMapRouteUseCase
+    private val useCaseFactory: UseCaseFactory
 ): MyViewModel() {
 
     private val _findingRoute = MutableLiveData<Boolean>()
@@ -51,20 +51,27 @@ constructor(
     fun getGoogleMapRoute(start: LatLng) {
 
         GlobalScope.launch {
+//        CoroutineScope.launch(
 
-            val response =  useCase.execute("${start.latitude}, ${start.longitude}",
-                "${destination.value!!.latitude}, ${destination.value!!.longitude}",
-                context.value?.resources?.getString(R.string.google_maps_key)!!)
+            val response = useCaseFactory.getGoogleMapRouteUseCase
+                .execute(
+                    "${start.latitude}, ${start.longitude}",
+                    "${destination.value!!.latitude}, ${destination.value!!.longitude}",
+                    context.value?.resources?.getString(R.string.google_maps_key)!!
+                )
 
             _distance.postValue(response?.distance)
             _duration.postValue(response?.duration)
             _points.postValue(drawPolyline(response?.points))
             _findingRoute.postValue(true)
+        }
+
 
 //            useCase.execute("${start.latitude}, ${start.longitude}",
 //                "${destination.value!!.latitude}, ${destination.value!!.longitude}",
 //                context.value?.resources?.getString(R.string.google_maps_key)!!)
-//                .onEach { dataState ->
+//                .onEach {
+//                    Log.d("testuje", "getGoogleMapRoute: $it")
 //                    dataState.data?.let { result ->
 //                        Log.d("testuje", "getGoogleMapRoute: " + result)
 //                        _distance.postValue(result.distance)
@@ -73,7 +80,7 @@ constructor(
 //                        _findingRoute.postValue(true)
 //                    }
 //                }
-        }
+//        }
     }
 
     private fun drawPolyline(points: String?): PolylineOptions {

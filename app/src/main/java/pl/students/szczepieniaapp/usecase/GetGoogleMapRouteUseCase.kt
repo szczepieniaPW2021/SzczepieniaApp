@@ -1,8 +1,11 @@
 package pl.students.szczepieniaapp.usecase
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
+import pl.students.szczepieniaapp.util.DataState
 
 class GetGoogleMapRouteUseCase(
     private val repository: GoogleMapRouteRepository,
