@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -34,10 +35,10 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
         binding.viewmodel = viewModel
 
         viewModel.apply {
-            findingRoute.observe(viewLifecycleOwner, {if (it) binding.navContainer.visibility = View.VISIBLE})
-            distance.observe(viewLifecycleOwner, {binding.durationTextView.text = viewModel.getDistanceAsString(it)})
-            duration.observe(viewLifecycleOwner, {binding.distanceTextView.text = viewModel.getTimeAsString(it)})
-            points.observe(viewLifecycleOwner, {mMap?.addPolyline(viewModel.points.value)})
+            findingRoute.observe(viewLifecycleOwner) {if (it) binding.navContainer.visibility = View.VISIBLE}
+            distance.observe(viewLifecycleOwner) {binding.durationTextView.text = viewModel.getDistanceAsString(it)}
+            duration.observe(viewLifecycleOwner) {binding.distanceTextView.text = viewModel.getTimeAsString(it)}
+            points.observe(viewLifecycleOwner) {mMap?.addPolyline(viewModel.points.value)}
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())

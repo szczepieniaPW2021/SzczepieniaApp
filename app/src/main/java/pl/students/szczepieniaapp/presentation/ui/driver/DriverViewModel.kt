@@ -3,26 +3,27 @@ package pl.students.szczepieniaapp.presentation.ui.driver
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
-import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
+import pl.students.szczepieniaapp.usecase.GetGoogleMapRouteUseCase
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
+import javax.inject.Inject
 
+@HiltViewModel
 class DriverViewModel
-@ViewModelInject
+@Inject
 constructor(
-    private val repository: GoogleMapRouteRepository
+    private val useCase: GetGoogleMapRouteUseCase
 ): MyViewModel() {
 
     private val _findingRoute = MutableLiveData<Boolean>()
@@ -48,15 +49,30 @@ constructor(
     }
 
     fun getGoogleMapRoute(start: LatLng) {
-        GlobalScope.launch {
-            val response = context.value?.resources?.getString(R.string.google_maps_key)?.let {
-                repository.getRoute("${start.latitude}, ${start.longitude}", "${destination.value!!.latitude}, ${destination.value!!.longitude}", it)
-            }
 
-            _distance.postValue(response!!.get(0).distance)
-            _duration.postValue(response!!.get(0).duration)
-            _points.postValue(drawPolyline(response!!.get(0).points))
+        GlobalScope.launch {
+
+            val response =  useCase.execute("${start.latitude}, ${start.longitude}",
+                "${destination.value!!.latitude}, ${destination.value!!.longitude}",
+                context.value?.resources?.getString(R.string.google_maps_key)!!)
+
+            _distance.postValue(response?.distance)
+            _duration.postValue(response?.duration)
+            _points.postValue(drawPolyline(response?.points))
             _findingRoute.postValue(true)
+
+//            useCase.execute("${start.latitude}, ${start.longitude}",
+//                "${destination.value!!.latitude}, ${destination.value!!.longitude}",
+//                context.value?.resources?.getString(R.string.google_maps_key)!!)
+//                .onEach { dataState ->
+//                    dataState.data?.let { result ->
+//                        Log.d("testuje", "getGoogleMapRoute: " + result)
+//                        _distance.postValue(result.distance)
+//                        _duration.postValue(result.duration)
+//                        _points.postValue(drawPolyline(result.points))
+//                        _findingRoute.postValue(true)
+//                    }
+//                }
         }
     }
 
@@ -76,7 +92,7 @@ constructor(
     }
 
     fun goToGoogleMapNav(view: View) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_MAPS_NAVIGATION.format("50.06143", "19.93658")))
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(GOOGLE_MAPS_NAVIGATION.format("${destination.value!!.latitude}", "${destination.value!!.longitude}")))
         intent.setPackage(GOOGLE_MAPS_PACKAGE)
         if (intent.resolveActivity(context.value!!.packageManager) != null){
             context.value!!.startActivity(intent)

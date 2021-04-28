@@ -3,7 +3,7 @@ package pl.students.szczepieniaapp.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.components.SingletonComponent
 import pl.students.szczepieniaapp.network.GoogleMapRouteService
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
 import pl.students.szczepieniaapp.util.Constants
@@ -12,9 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
-
 
     @Singleton
     @Provides
