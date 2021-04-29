@@ -39,6 +39,8 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
                 if (it != null) {
                     binding.durationTextView.text = viewModel.getDistanceAsString(it.duration!!)
                     binding.distanceTextView.text = viewModel.getTimeAsString(it.distance!!)
+                    binding.endAddressTextView.text = viewModel.getArrivalAddressAsString(it.endAddress!!)
+                    binding.startAddressTextView.text = viewModel.getDepartureAddressAsString(it.startAddress!!)
                     mMap?.addPolyline(viewModel.drawPolyline(it.points!!))
                     binding.navContainer.visibility = View.VISIBLE
                 }

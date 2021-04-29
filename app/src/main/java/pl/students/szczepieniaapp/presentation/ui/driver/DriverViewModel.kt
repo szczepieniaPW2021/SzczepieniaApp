@@ -43,7 +43,7 @@ constructor(
     val destination: LiveData<LatLng> get() = _destination
 
     init {
-        _destination.postValue(LatLng(45.06143, -73.93658))      //later to be changed for coordinates coming from api
+        _destination.postValue(LatLng(43.06143, -83.93658))      //later to be changed for coordinates coming from api
     }
 
     fun getGoogleMapRoute(start: LatLng) {
@@ -74,6 +74,14 @@ constructor(
 
     fun getTimeAsString(value: String): String {
         return context.value!!.resources!!.getString(R.string.duration_map_text).format(value)
+    }
+
+    fun getArrivalAddressAsString(value: String): String {
+        return context.value!!.resources!!.getString(R.string.arrival_address_map_text).format(value)
+    }
+
+    fun getDepartureAddressAsString(value: String): String {
+        return context.value!!.resources!!.getString(R.string.departure_address_map_text).format(value)
     }
 
     fun goToGoogleMapNav(view: View) {
