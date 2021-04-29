@@ -12,6 +12,8 @@
     <string name="finding_route_map_text">Finding route...</string>
     <string name="distance_map_text">Distance: %s</string>
     <string name="duration_map_text">Duration: %s</string>
+    <string name="arrival_address_map_text">Arrival address: %s</string>
+    <string name="departure_address_map_text">Departure address: %s</string>
     <string name="warning_map_permission_text">Warning! You need to accept location permissions to use maps in this app.</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>

@@ -1,18 +1,12 @@
 package pl.students.szczepieniaapp.presentation.ui.driver
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import com.directions.route.*
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
+import androidx.lifecycle.observe
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -23,18 +17,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
-import java.util.*
 
 
 @AndroidEntryPoint
-class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, RoutingListener {
+class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
 
     private val viewModel : DriverViewModel by viewModels()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var myPosition: LatLng
-    private val destination: LatLng = LatLng(50.06143, 19.93658)    //later to be changed for coordinates coming from api
     private var mMap: GoogleMap? = null
-    private var polylines: MutableList<Polyline>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +35,17 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         binding.viewmodel = viewModel
 
         viewModel.apply {
-            findingRoute.observe(viewLifecycleOwner, {if (it) binding.navContainer.visibility = View.VISIBLE})
-            distance.observe(viewLifecycleOwner, {binding.durationTextView.text = viewModel.getDistanceAsString(it)})
-            duration.observe(viewLifecycleOwner, {binding.distanceTextView.text = viewModel.getTimeAsString(it)})
+            myRoute.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    binding.durationTextView.text = viewModel.getDistanceAsString(it.duration!!)
+                    binding.distanceTextView.text = viewModel.getTimeAsString(it.distance!!)
+                    binding.endAddressTextView.text = viewModel.getArrivalAddressAsString(it.endAddress!!)
+                    binding.startAddressTextView.text = viewModel.getDepartureAddressAsString(it.startAddress!!)
+                    mMap?.addPolyline(viewModel.drawPolyline(it.points!!))
+                    binding.navContainer.visibility = View.VISIBLE
+                }
+            }
+
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -67,8 +65,8 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
         task.addOnSuccessListener {
             if (it != null) {
-                myPosition = LatLng(it.latitude, it.longitude)
-                findRoutes(myPosition, destination);
+                viewModel._myPosition.postValue(LatLng(it.latitude, it.longitude))
+                viewModel.getGoogleMapRoute(LatLng(it.latitude, it.longitude))
                 binding.mapView.getMapAsync(this)
             }
         }
@@ -77,32 +75,17 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
             mMap = googleMap
-            mMap!!.addMarker(MarkerOptions().position(myPosition).title(context?.resources?.getString(R.string.my_position_map_text)))
-            mMap!!.addMarker(MarkerOptions().position(destination).title(context?.resources?.getString(R.string.destination_map_text)))
+            mMap!!.addMarker(MarkerOptions().position(viewModel.myPosition.value!!).title(context?.resources?.getString(R.string.my_position_map_text)))
+            mMap!!.addMarker(MarkerOptions().position(viewModel.destination.value!!).title(context?.resources?.getString(R.string.destination_map_text)))
 
             val builder = LatLngBounds.Builder()
-            builder.include(myPosition)
-            builder.include(destination)
+            builder.include(viewModel.myPosition.value!!)
+            builder.include(viewModel.destination.value!!)
 
             val padding = 75
             val bounds = builder.build()
 
             mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
-        }
-    }
-
-    private fun findRoutes(start: LatLng?, end: LatLng?) {
-        if (start == null || end == null) {
-            Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
-        } else {
-            val routing = Routing.Builder()
-                .travelMode(AbstractRouting.TravelMode.DRIVING)
-                .withListener(this)
-                .alternativeRoutes(true)
-                .waypoints(start, end)
-                .key(resources.getString(R.string.google_maps_key))
-                .build()
-            routing.execute()
         }
     }
 
@@ -139,46 +122,5 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         binding.mapView?.onSaveInstanceState(outState)
-    }
-
-    override fun onConnectionFailed(p0: ConnectionResult) {
-        findRoutes(myPosition, destination)
-    }
-
-    override fun onRoutingFailure(e: RouteException?) {
-        viewModel._findingRoute.postValue(false)
-        Toast.makeText(requireContext(), resources.getString(R.string.location_not_fetched_map_text), Toast.LENGTH_LONG).show()
-    }
-
-    override fun onRoutingStart() {
-        Toast.makeText(requireContext(), resources.getString(R.string.finding_route_map_text), Toast.LENGTH_LONG).show()
-    }
-
-    override fun onRoutingSuccess(route: ArrayList<Route>?, shortestRouteIndex: Int) {
-
-        polylines?.clear()
-
-        val polyOptions = PolylineOptions()
-
-        polylines = ArrayList<Polyline>()
-
-        if (route != null) {
-            for (i in route.indices) {
-                if (i == shortestRouteIndex) {
-                    polyOptions.color(ContextCompat.getColor(requireContext(), R.color.black))
-                    polyOptions.width(9f)
-                    polyOptions.addAll(route?.get(shortestRouteIndex)?.points)
-                    val polyline: Polyline = mMap!!.addPolyline(polyOptions)
-                    (polylines as ArrayList<Polyline>).add(polyline)
-                    viewModel._distance.postValue(route?.get(shortestRouteIndex)?.distanceText)
-                    viewModel._duration.postValue(route?.get(shortestRouteIndex)?.durationText)
-                }
-            }
-        }
-        viewModel._findingRoute.postValue(true)
-    }
-
-    override fun onRoutingCancelled() {
-        findRoutes(myPosition, destination)
     }
 }

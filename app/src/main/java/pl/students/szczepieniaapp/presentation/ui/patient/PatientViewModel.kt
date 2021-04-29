@@ -4,13 +4,14 @@ import android.graphics.Bitmap
 import android.view.View
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
-import androidx.hilt.lifecycle.ViewModelInject
 import com.google.zxing.WriterException
+import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import javax.inject.Inject
 
-
+@HiltViewModel
 class PatientViewModel
-@ViewModelInject
+@Inject
 constructor(
 
 ) : MyViewModel() {

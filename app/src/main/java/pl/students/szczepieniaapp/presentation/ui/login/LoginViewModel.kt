@@ -1,13 +1,15 @@
 package pl.students.szczepieniaapp.presentation.ui.login
 
 import android.view.View
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.navigation.Navigation
+import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import javax.inject.Inject
 
+@HiltViewModel
 class LoginViewModel
-@ViewModelInject
+@Inject
 constructor(
 
 ) : MyViewModel() {
