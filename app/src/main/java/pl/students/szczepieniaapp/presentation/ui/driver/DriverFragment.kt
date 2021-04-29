@@ -35,10 +35,15 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
         binding.viewmodel = viewModel
 
         viewModel.apply {
-            findingRoute.observe(viewLifecycleOwner) {if (it) binding.navContainer.visibility = View.VISIBLE}
-            distance.observe(viewLifecycleOwner) {binding.durationTextView.text = viewModel.getDistanceAsString(it)}
-            duration.observe(viewLifecycleOwner) {binding.distanceTextView.text = viewModel.getTimeAsString(it)}
-            points.observe(viewLifecycleOwner) {mMap?.addPolyline(viewModel.points.value)}
+            myRoute.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    binding.durationTextView.text = viewModel.getDistanceAsString(it.duration!!)
+                    binding.distanceTextView.text = viewModel.getTimeAsString(it.distance!!)
+                    mMap?.addPolyline(viewModel.drawPolyline(it.points!!))
+                    binding.navContainer.visibility = View.VISIBLE
+                }
+            }
+
         }
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())

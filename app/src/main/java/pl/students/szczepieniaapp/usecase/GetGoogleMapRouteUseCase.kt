@@ -42,7 +42,6 @@ class GetGoogleMapRouteUseCase(
     ): MyRoute? {
 
         try {
-
             return mapper.mapToDomainModel(
                 repository.getRoute(
                     origin = origin,
