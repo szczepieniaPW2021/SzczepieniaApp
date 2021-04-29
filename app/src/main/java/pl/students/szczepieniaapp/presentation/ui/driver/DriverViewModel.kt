@@ -3,27 +3,22 @@ package pl.students.szczepieniaapp.presentation.ui.driver
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
-import pl.students.szczepieniaapp.util.DataState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,17 +43,18 @@ constructor(
 
     fun getGoogleMapRoute(start: LatLng) {
 
-        GlobalScope.launch {
-
-            val response = useCaseFactory.getGoogleMapRouteUseCase
+        useCaseFactory.getGoogleMapRouteUseCase
                 .execute(
                     "${start.latitude}, ${start.longitude}",
                     "${destination.value!!.latitude}, ${destination.value!!.longitude}",
                     context.value?.resources?.getString(R.string.google_maps_key)!!
-                )
+                ).onEach { dataState ->
 
-            _myRoute.postValue(response)
-        }
+                dataState.data?.let { route ->
+                    _myRoute.postValue(route)
+                }
+
+            }.launchIn(GlobalScope)
     }
 
     fun drawPolyline(points: String?): PolylineOptions {
