@@ -43,6 +43,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
                     binding.startAddressTextView.text = viewModel.getDepartureAddressAsString(it.startAddress!!)
                     mMap?.addPolyline(viewModel.drawPolyline(it.points!!))
                     binding.navContainer.visibility = View.VISIBLE
+                    binding.navBtn.visibility = View.VISIBLE
                 }
             }
 
