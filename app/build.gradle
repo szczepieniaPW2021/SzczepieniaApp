@@ -98,7 +98,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     
     // Espresso
-    def androidx_test_espresso = "3.3.0"
+    def androidx_test_espresso = "3.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso"
 
@@ -107,4 +107,9 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$androidx_test"
     androidTestImplementation "androidx.test:core:$androidx_test"
     androidTestImplementation "androidx.test.ext:junit-ktx:$androidx_test"
+
+    //testing fragment
+    def fragmentVersion = "1.2.5"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentVersion"
 }
