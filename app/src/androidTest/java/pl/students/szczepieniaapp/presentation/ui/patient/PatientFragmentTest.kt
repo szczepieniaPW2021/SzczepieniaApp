@@ -13,6 +13,7 @@ import org.junit.Test
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import pl.students.szczepieniaapp.presentation.ui.login.LoginFragment
 import pl.students.szczepieniaapp.presentation.util.ImageViewHasDrawableMatcher.hasDrawable
 
 @MediumTest
@@ -26,6 +27,23 @@ class PatientFragmentTest {
     @Before
     fun setup() {
         hiltRule.inject()
+    }
+
+    @Test
+    fun displayDataInPatientFragment() {
+
+        launchFragmentInHiltContainer<PatientFragment> {}
+
+        //checks if title is displayed
+        onView(withText(R.string.patient_fragment)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if button with qrcode is displayed
+        onView(withId(R.id.qrCodeButton)).check(
+            matches(isDisplayed())
+        )
+
     }
 
     @Test
