@@ -105,6 +105,7 @@ dependencies {
     def androidx_test_espresso = "3.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidx_test_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$androidx_test_espresso"
+    implementation "androidx.test.espresso:espresso-idling-resource:$androidx_test_espresso"
 
     // androidx.test
     def androidx_test = "1.1.0"

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
@@ -42,7 +43,7 @@ constructor(
     }
 
     fun getGoogleMapRoute(start: LatLng) {
-
+        EspressoIdlingResource.increment()
         useCaseFactory.getGoogleMapRouteUseCase
                 .execute(
                     "${start.latitude}, ${start.longitude}",
@@ -52,6 +53,7 @@ constructor(
 
                 dataState.data?.let { route ->
                     _myRoute.postValue(route)
+                    EspressoIdlingResource.decrement()
                 }
 
             }.launchIn(GlobalScope)
