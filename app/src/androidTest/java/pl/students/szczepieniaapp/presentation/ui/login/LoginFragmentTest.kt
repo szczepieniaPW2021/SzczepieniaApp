@@ -62,6 +62,8 @@ class LoginFragmentTest {
 
         onView(withId(R.id.patientNavBtn)).perform(click())
 
+        pressBackUnconditionally()
+
         verify(navController).navigate(
             R.id.action_loginFragment_to_patientFragment
         )
@@ -77,6 +79,8 @@ class LoginFragmentTest {
         }
 
         onView(withId(R.id.driverNavBtn)).perform(click())
+
+        pressBackUnconditionally()
 
         verify(navController).navigate(
             R.id.action_loginFragment_to_driverFragment
