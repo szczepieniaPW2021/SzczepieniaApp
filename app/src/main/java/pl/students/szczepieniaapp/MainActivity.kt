@@ -2,15 +2,17 @@ package pl.students.szczepieniaapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
+import pl.students.szczepieniaapp.databinding.ActivityMainBinding
 import pl.students.szczepieniaapp.presentation.util.MyConnectivityManager
 import javax.inject.Inject
 
-val TAG = "c-manager"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     @Inject
     lateinit var connectivityManager: MyConnectivityManager
@@ -27,11 +29,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         connectivityManager.isNetworkAvailable.observe(this, {
-            Log.d(TAG, "onCreate: IS INTERNET AVAILABLE? $it")
+            if (it) binding.noConnectionBanner.visibility = View.GONE else binding.noConnectionBanner.visibility = View.VISIBLE
         })
-
     }
 }
