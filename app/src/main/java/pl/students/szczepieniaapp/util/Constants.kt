@@ -8,4 +8,8 @@ object Constants {
 
     const val REQUEST_CODE_LOCATION_PERMISSION = 0
 
+    const val PINGING_GOOGLE_HOST = "8.8.8.8"
+    const val PINGING_GOOGLE_PORT = 53
+    const val PINGING_GOOGLE_TIMEOUT = 1500
+
 }
