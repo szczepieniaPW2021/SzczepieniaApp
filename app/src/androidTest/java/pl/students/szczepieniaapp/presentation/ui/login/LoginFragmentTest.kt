@@ -49,6 +49,11 @@ class LoginFragmentTest {
         onView(withText(R.string.go_to_driver)).check(
             matches(isDisplayed())
         )
+
+        //checks if textView with app version is displayed
+        onView(withId(R.id.versionTextView)).check(
+            matches(isDisplayed())
+        )
     }
 
     @Test
