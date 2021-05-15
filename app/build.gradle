@@ -26,6 +26,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        demo {
+            buildConfigField "double", "Lat", "43.06143"
+            buildConfigField "double", "Lng", "-83.93658"
+        }
+
+        debug {
+            buildConfigField "double", "Lat", "49.29899"
+            buildConfigField "double", "Lng", "19.94885"
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

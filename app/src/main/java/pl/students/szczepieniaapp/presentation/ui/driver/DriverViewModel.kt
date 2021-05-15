@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.driver
 
+import pl.students.szczepieniaapp.BuildConfig
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -39,7 +40,7 @@ constructor(
     val destination: LiveData<LatLng> get() = _destination
 
     init {
-        _destination.postValue(LatLng(43.06143, -83.93658))      //later to be changed for coordinates coming from api
+        _destination.postValue(LatLng(BuildConfig.Lat, BuildConfig.Lng))      //later to be changed for coordinates coming from api
     }
 
     fun getGoogleMapRoute(start: LatLng) {
