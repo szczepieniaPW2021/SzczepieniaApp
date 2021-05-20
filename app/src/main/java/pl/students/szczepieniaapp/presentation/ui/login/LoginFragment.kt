@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
@@ -29,6 +31,10 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
         _binding = LoginFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         requestPermissions()
+        setSpinner()
+        viewModel.apply {
+            binding.spinner.onItemSelectedListener = this
+        }
 
         return binding.root
     }
@@ -45,6 +51,18 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
+
+    private fun setSpinner() {
+        val spinner: Spinner = binding.spinner
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            viewModel.fetchRules()
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+    }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
