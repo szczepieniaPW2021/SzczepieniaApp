@@ -19,9 +19,8 @@ constructor(
 
 ) : MyViewModel(), AdapterView.OnItemSelectedListener {
 
-    private val _rules = MutableLiveData<ArrayList<String>>()
-    val rules: LiveData<ArrayList<String>> get() = _rules
-
+    private val _roles = MutableLiveData<ArrayList<String>>()
+    val roles: LiveData<ArrayList<String>> get() = _roles
 
     fun goToPatientFragment(view: View) {
         Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_patientFragment)
@@ -35,7 +34,7 @@ constructor(
         return if (BuildConfig.DEBUG) "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE} (${BuildConfig.VERSION_CODE})" else "${BuildConfig.VERSION_NAME})"
     }
 
-    fun fetchRules(): ArrayList<String> {
+    fun fetchRoles(): ArrayList<String> {
         val data: ArrayList<String> = arrayListOf()
         data.add("Zaloguj się jako:")
         data.add("Pacjent")

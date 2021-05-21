@@ -57,7 +57,7 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
         ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
-            viewModel.fetchRules()
+            viewModel.fetchRoles()
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
