@@ -77,11 +77,12 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/patientNavBtn"
+            android:id="@+id/navBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="284dp"
-            android:onClick="@{viewmodel::goToPatientFragment}"
+            android:textSize="20sp"
+            android:onClick="@{viewmodel::goToFragment}"
             android:text="@string/login_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"

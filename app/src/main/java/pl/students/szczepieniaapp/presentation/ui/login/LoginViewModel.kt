@@ -19,15 +19,17 @@ constructor(
 
 ) : MyViewModel(), AdapterView.OnItemSelectedListener {
 
+    private var navAction: Int? = null
+    private var callback: LoginFragment = LoginFragment()
+
     private val _roles = MutableLiveData<ArrayList<String>>()
     val roles: LiveData<ArrayList<String>> get() = _roles
 
-    fun goToPatientFragment(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_patientFragment)
-    }
+    private val _isButtonEnabled = MutableLiveData<Boolean>()
+    val isButtonEnabled: LiveData<Boolean> get() = _isButtonEnabled
 
-    fun goToDriverFragment(view: View) {
-        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_driverFragment)
+    fun goToFragment(view: View) {
+        navAction?.let { Navigation.findNavController(view).navigate(it) }
     }
 
     fun getVersion(): String {
@@ -47,11 +49,38 @@ constructor(
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Log.d(LoginViewModel::class.java.name, "selected: $position")
+        Log.d(LoginViewModel::class.java.name, "selected: ${parent!!.adapter.getItem(position)}")
+        fetchNavigationItem(parent!!.adapter.getItem(position) as String, view)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         Log.d(LoginViewModel::class.java.name, "onNothingSelected:")
+    }
+
+    private fun fetchNavigationItem(item: String, view: View?) {
+        when (item) {
+
+            "Zaloguj się jako:" -> _isButtonEnabled.postValue(false)
+
+            "Pacjent" -> {
+                navAction = R.id.action_loginFragment_to_patientFragment
+                _isButtonEnabled.postValue(true)
+            }
+
+            "Kierowca" -> {
+                navAction = R.id.action_loginFragment_to_driverFragment
+                _isButtonEnabled.postValue(true)
+            }
+
+            else -> {
+                Log.d(LoginViewModel::class.java.name, "Unrecognized selection")
+                callback.toastMessage(
+                    view!!,
+                    view.context.resources.getString(R.string.selection_not_implemented_text)
+                )
+                _isButtonEnabled.postValue(false)
+            }
+        }
     }
 
 }

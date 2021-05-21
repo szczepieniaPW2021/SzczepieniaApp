@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.LoginFragmentBinding
@@ -19,7 +21,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 
 @AndroidEntryPoint
-class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks {
+class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks, LoginListener  {
 
     private val viewModel : LoginViewModel by viewModels()
 
@@ -34,6 +36,9 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
         setSpinner()
         viewModel.apply {
             binding.spinner.onItemSelectedListener = this
+            isButtonEnabled.observe(viewLifecycleOwner){
+                binding.navBtn.isEnabled = it
+            }
         }
 
         return binding.root
@@ -81,5 +86,9 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun toastMessage(view: View, message: String) {
+        Toast.makeText(view.context, message, Toast.LENGTH_LONG).show()
     }
 }
