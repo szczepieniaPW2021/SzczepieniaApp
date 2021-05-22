@@ -36,4 +36,10 @@ class MainActivity : AppCompatActivity() {
             if (it) binding.noConnectionBanner.visibility = View.GONE else binding.noConnectionBanner.visibility = View.VISIBLE
         })
     }
+
+    companion object{
+        fun buildToastMessage(string: String): String{
+            return "$string"
+        }
+    }
 }

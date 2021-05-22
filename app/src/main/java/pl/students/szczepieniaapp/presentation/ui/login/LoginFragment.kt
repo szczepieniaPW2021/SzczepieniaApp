@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.LoginFragmentBinding
@@ -17,7 +21,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 
 @AndroidEntryPoint
-class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks {
+class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks, LoginListener  {
 
     private val viewModel : LoginViewModel by viewModels()
 
@@ -29,6 +33,13 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
         _binding = LoginFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         requestPermissions()
+        setSpinner()
+        viewModel.apply {
+            binding.spinner.onItemSelectedListener = this
+            isButtonEnabled.observe(viewLifecycleOwner){
+                binding.navBtn.isEnabled = it
+            }
+        }
 
         return binding.root
     }
@@ -45,6 +56,18 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
+
+    private fun setSpinner() {
+        val spinner: Spinner = binding.spinner
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            viewModel.fetchRoles()
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+    }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if(EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -63,5 +86,9 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun toastMessage(view: View, message: String) {
+        Toast.makeText(view.context, message, Toast.LENGTH_LONG).show()
     }
 }
