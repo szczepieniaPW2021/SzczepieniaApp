@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.patient
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AlertDialog
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.PatientFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.PatientListener
+import pl.students.szczepieniaapp.presentation.ui.viewmodel.PatientViewModel
 
 @AndroidEntryPoint
 class PatientFragment : MyFragment<PatientFragmentBinding>(), PatientListener {

@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp
+package pl.students.szczepieniaapp.presentation.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

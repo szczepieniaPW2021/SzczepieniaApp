@@ -17,11 +17,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import pl.students.szczepieniaapp.MainActivity.Companion.buildToastMessage
+import pl.students.szczepieniaapp.presentation.ui.activities.MainActivity.Companion.buildToastMessage
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.data.FakeRolesData
 import pl.students.szczepieniaapp.data.ToastFakeData
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
+import pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment
 import pl.students.szczepieniaapp.presentation.util.ToastMatcher
 
 

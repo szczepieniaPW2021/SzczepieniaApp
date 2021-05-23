@@ -13,6 +13,7 @@ import org.junit.Test
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import pl.students.szczepieniaapp.presentation.ui.fragment.PatientFragment
 import pl.students.szczepieniaapp.presentation.util.ImageViewHasDrawableMatcher.hasDrawable
 
 @MediumTest

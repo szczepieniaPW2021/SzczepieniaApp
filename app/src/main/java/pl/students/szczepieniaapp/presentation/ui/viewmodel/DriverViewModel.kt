@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.driver
+package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import pl.students.szczepieniaapp.BuildConfig
 import android.content.Intent

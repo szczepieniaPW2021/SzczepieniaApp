@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.login
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.Manifest
 import android.os.Bundle
@@ -14,6 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.LoginFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.LoginListener
+import pl.students.szczepieniaapp.presentation.ui.viewmodel.LoginViewModel
 import pl.students.szczepieniaapp.util.Constants.REQUEST_CODE_LOCATION_PERMISSION
 import pl.students.szczepieniaapp.util.PermissionUtility
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -21,7 +23,8 @@ import pub.devrel.easypermissions.EasyPermissions
 
 
 @AndroidEntryPoint
-class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks, LoginListener  {
+class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.PermissionCallbacks,
+    LoginListener {
 
     private val viewModel : LoginViewModel by viewModels()
 

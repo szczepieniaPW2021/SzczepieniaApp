@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="pl.students.szczepieniaapp.presentation.ui.login.LoginFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_patientFragment"
@@ -18,11 +18,11 @@
 
     <fragment
         android:id="@+id/patientFragment"
-        android:name="pl.students.szczepieniaapp.presentation.ui.patient.PatientFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.PatientFragment"
         android:label="PatientFragment" />
     <fragment
         android:id="@+id/driverFragment"
-        android:name="pl.students.szczepieniaapp.presentation.ui.driver.DriverFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.DriverFragment"
         android:label="DriverFragment" />
 
 </navigation>
