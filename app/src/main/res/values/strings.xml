@@ -20,5 +20,11 @@
     <string name="welcome_text">Welcome!</string>
     <string name="login_text">Log in</string>
     <string name="selection_not_implemented_text">Selection not implemented!</string>
+
+    <!--Patient navigation button-->
+    <string name="patient_bottom_nav_documents_text">Documents</string>
+    <string name="patient_bottom_nav_calendar_text">Calendar</string>
+    <string name="patient_bottom_nav_logout_text">Log out</string>
+
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
