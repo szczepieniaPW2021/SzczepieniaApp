@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_baseline_home" />
 
     <item
-        android:id="@+id/patientDocumentFragment"
+        android:id="@+id/patientCalendarFragment"
         android:title="@string/patient_bottom_nav_calendar_text"
         android:icon="@drawable/ic_baseline_calendar" />
 

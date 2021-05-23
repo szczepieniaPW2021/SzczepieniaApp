@@ -22,6 +22,7 @@
             android:gravity="center_horizontal"
             android:text="@string/patient_fragment"
             android:textStyle="bold"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

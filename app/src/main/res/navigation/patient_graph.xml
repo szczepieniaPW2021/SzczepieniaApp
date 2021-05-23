@@ -11,7 +11,7 @@
         android:label="PatientFragment" />
 
     <fragment
-        android:id="@+id/patientDocumentFragment"
+        android:id="@+id/patientCalendarFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment"
         android:label="PatientDocumentFragment" />
 
