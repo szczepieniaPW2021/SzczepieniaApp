@@ -20,7 +20,7 @@ class PatientFragment : MyFragment<PatientFragmentBinding>(), PatientListener {
 
     private val viewModel : PatientViewModel by viewModels()
 
-    lateinit var dialogBuilder: AlertDialog.Builder
+    private lateinit var dialogBuilder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
 
     override fun onCreateView(

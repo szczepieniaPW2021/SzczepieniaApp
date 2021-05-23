@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/patientFragment"
-        android:title="@string/patient_bottom_nav_documents_text" />
+        android:title="@string/patient_bottom_nav_documents_text"
+        android:icon="@drawable/ic_baseline_home" />
 
     <item
         android:id="@+id/patientDocumentFragment"
-        android:title="@string/patient_bottom_nav_calendar_text"/>
+        android:title="@string/patient_bottom_nav_calendar_text"
+        android:icon="@drawable/ic_baseline_calendar" />
 
     <item
         android:id="@+id/mainActivity"
-        android:title="@string/patient_bottom_nav_logout_text"/>
+        android:title="@string/patient_bottom_nav_logout_text"
+        android:icon="@drawable/ic_baseline_logout" />
 
 </menu>
