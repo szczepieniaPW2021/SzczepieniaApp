@@ -64,7 +64,7 @@ constructor(
             "Zaloguj się jako:" -> _isButtonEnabled.postValue(false)
 
             "Pacjent" -> {
-                navAction = R.id.action_loginFragment_to_patientFragment
+                navAction = R.id.action_loginFragment_to_patientActivity
                 _isButtonEnabled.postValue(true)
             }
 
