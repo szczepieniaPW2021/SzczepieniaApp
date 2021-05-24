@@ -25,18 +25,18 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.044" />
+            app:layout_constraintVertical_bias="0.04" />
 
         <LinearLayout
             android:id="@+id/spinnersLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="30dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="100dp"
             android:background="@drawable/background"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,15 +47,15 @@
                 android:id="@+id/selectCityTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/patient_calendar_fragment_select_city_text"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:text="@string/patient_calendar_fragment_select_city_text" />
 
             <RelativeLayout
-                android:layout_width="190dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:orientation="horizontal"
-                android:background="@drawable/spinner_border" >
+                android:background="@drawable/spinner_border"
+                android:orientation="horizontal">
 
                 <Spinner
                     android:id="@+id/selectCitySpinner"
@@ -69,15 +69,63 @@
                     android:popupBackground="@drawable/spinner_popup_border"
                     android:spinnerMode="dropdown" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/selectFacilityTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="@string/patient_calendar_fragment_select_facility_text"
+                android:visibility="invisible" />
+
+            <RelativeLayout
+                android:id="@+id/selectFacilityRelativeLayout"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/spinner_border"
+                android:orientation="horizontal"
+                android:visibility="invisible">
+
+                <Spinner
+                    android:id="@+id/selectFacilitySpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:popupBackground="@drawable/spinner_popup_border"
+                    android:spinnerMode="dropdown" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
             </RelativeLayout>
 
         </LinearLayout>
 
         <CalendarView
             android:id="@+id/calendarView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="20dp"
+            android:firstDayOfWeek="2"
             android:background="@drawable/background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -92,10 +140,11 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendarView"
-            app:layout_constraintVertical_bias="0.3" />
+            app:layout_constraintVertical_bias="0.082" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

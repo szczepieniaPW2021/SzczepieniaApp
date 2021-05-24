@@ -34,5 +34,9 @@
     <string name="patient_calendar_fragment_sign_up_button_text">Sign up</string>
     <!--    Patient Calendar Fragment strings end here-->
 
+    <!--    Visits Time Dialog strings-->
+    <string name="visit_time_dialog_select_text">Select visit:</string>
+    <!--    Visits Time Dialog strings end here-->
+
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
