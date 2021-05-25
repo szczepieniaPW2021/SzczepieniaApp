@@ -2,24 +2,29 @@ package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.R
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.core.view.isVisible
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.databinding.PatientCalendarFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.PatientCalendarViewModel
 import java.util.*
 
 @AndroidEntryPoint
-class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>() {
+class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), PatientCalendarListener {
 
     private val  viewModel : PatientCalendarViewModel by viewModels()
+
+    private lateinit var dialogBuilder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
+    private lateinit var childFM: FragmentManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +32,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = PatientCalendarFragmentBinding.inflate(inflater, container, false)
+        childFM = childFragmentManager
         binding.viewmodel = viewModel
         viewModel.apply {
             cities.observe(viewLifecycleOwner){
@@ -57,6 +63,12 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>() {
 
             viewModel.getDate(binding.calendarView)
         }
+
+        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            var dialog = VisitsDialogFragment()
+            dialog.show(childFM, "VisitsDialogFragment")
+        }
+
         return binding.root
     }
 

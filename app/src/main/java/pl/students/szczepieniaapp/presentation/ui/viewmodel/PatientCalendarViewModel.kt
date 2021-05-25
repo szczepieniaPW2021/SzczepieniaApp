@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -19,6 +21,8 @@ class PatientCalendarViewModel
 constructor(
 
 ) : MyViewModel(), AdapterView.OnItemSelectedListener {
+
+    private var callback: PatientCalendarListener = PatientCalendarFragment()
 
     private val _cities = MutableLiveData<ArrayList<String>>()
     val cities: LiveData<ArrayList<String>> get() = _cities
@@ -32,8 +36,12 @@ constructor(
     private val _isCalendarVisible = MutableLiveData<Boolean>()
     val isCalendarVisible: LiveData<Boolean> get() = _isCalendarVisible
 
+    private val _visits = MutableLiveData<Array<String>>()
+    val visits: LiveData<Array<String>> get() = _visits
+
     private var selectedCity: String? = null
     private var selectedFacility: String? = null
+
 
     init {
         _cities.postValue(fetchCities())
@@ -113,13 +121,28 @@ constructor(
 
     fun setMaxDate() : Long {
         val calendar: Calendar = Calendar.getInstance()
-        calendar.add(Calendar.MONTH, 2)
+        calendar.add(Calendar.MONTH, 0)
         return calendar.timeInMillis
     }
 
     fun getDate(calendarView: CalendarView) {
-        calendarView.setOnDateChangeListener {_, year, month, dayOfMonth ->
+        calendarView.setOnDateChangeListener {view, year, month, dayOfMonth ->
             Log.d("testuje", "getDate: $year, $month, $dayOfMonth")
+            _visits.postValue(selectVisits(dayOfMonth))
         }
+    }
+
+    private fun selectVisits(dayOfMonth: Int) : Array<String> {
+        val calendar: Calendar = Calendar.getInstance()
+        val data: Array<String> = arrayOf()
+        if (dayOfMonth%2 == 0) {
+            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 2, 15)
+            data[0] = Date(calendar.timeInMillis).toString()
+            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 2, 30)
+            data[1] = Date(calendar.timeInMillis).toString()
+            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 1, 0)
+            data[2] = Date(calendar.timeInMillis).toString()
+        }
+        return data
     }
 }

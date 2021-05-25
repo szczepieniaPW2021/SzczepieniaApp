@@ -36,6 +36,7 @@
 
     <!--    Visits Time Dialog strings-->
     <string name="visit_time_dialog_select_text">Select visit:</string>
+    <string name="visit_time_dialog_no_visits_text">We sincerely apologize. No visits available for the selected date.</string>
     <!--    Visits Time Dialog strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
