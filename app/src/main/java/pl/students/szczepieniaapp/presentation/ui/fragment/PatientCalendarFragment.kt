@@ -1,16 +1,18 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
+import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.PatientCalendarFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
@@ -22,7 +24,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
 
     private val  viewModel : PatientCalendarViewModel by viewModels()
 
-    private lateinit var dialogBuilder: AlertDialog.Builder
+    lateinit var dialogBuilder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
     private lateinit var childFM: FragmentManager
 
@@ -40,6 +42,18 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
             }
             facilities.observe(viewLifecycleOwner){
                 setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+            }
+            selectedVisit.observe(viewLifecycleOwner){
+                if (it != null) {
+                    binding.selectedTimeTextView.text = viewModel.getTimeAsString(requireContext())
+                    //binding.selectedDateTextView.text = viewModel.getDateAsString(requireContext())
+                    binding.selectedLocationTextView.text = viewModel.getCityAndFacility(requireContext())
+                    binding.signUpBtn.visibility = View.VISIBLE
+                    binding.visitDataLinearLayout.visibility = View.VISIBLE
+                } else {
+                    binding.signUpBtn.visibility = View.GONE
+                    binding.visitDataLinearLayout.visibility = View.GONE
+                }
             }
 
             binding.selectCitySpinner.onItemSelectedListener = this
@@ -60,13 +74,19 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
                 binding.calendarView.maxDate = viewModel.setMaxDate()
                 if (it) binding.calendarView.visibility = View.VISIBLE else binding.calendarView.visibility = View.INVISIBLE
             }
-
-            viewModel.getDate(binding.calendarView)
         }
 
-        binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            var dialog = VisitsDialogFragment()
-            dialog.show(childFM, "VisitsDialogFragment")
+        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            viewModel._selectedVisit.postValue(null)
+            var dialogFragment = VisitsDialogFragment(viewModel.selectVisits(dayOfMonth))
+            dialogFragment.show(childFM, "VisitsDialogFragment")
+            viewModel._selectedDay.postValue(dayOfMonth)
+            viewModel._selectedMonth.postValue(month)
+            viewModel._selectedYear.postValue(year)
+        }
+
+        shareDataViewModel.visitTime.observe(viewLifecycleOwner){
+            viewModel._selectedVisit.postValue(it)
         }
 
         return binding.root
@@ -76,11 +96,28 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         val spinner: Spinner = spinner
         ArrayAdapter(
             requireContext(),
-            R.layout.simple_spinner_item,
+            android.R.layout.simple_spinner_item,
             list
         ).also { adapter ->
-            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
+    }
+
+    override fun setDialog(view: View) {
+        dialogBuilder = AlertDialog.Builder(view.context)
+        val newView = LayoutInflater.from(view.context).inflate(R.layout.register_visit_dialog, null)
+        dialogBuilder.setView(newView)
+        dialog = dialogBuilder.create()
+        dialog.show()
+
+    }
+
+    override fun dismissDialog() {
+        dialog.dismiss()
+    }
+
+    override fun toastMessage(view: View, string: String) {
+        Toast.makeText(view.context, string, Toast.LENGTH_LONG).show()
     }
 }

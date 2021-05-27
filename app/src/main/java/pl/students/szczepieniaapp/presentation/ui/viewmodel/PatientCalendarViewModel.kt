@@ -1,11 +1,13 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CalendarView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
@@ -36,8 +38,17 @@ constructor(
     private val _isCalendarVisible = MutableLiveData<Boolean>()
     val isCalendarVisible: LiveData<Boolean> get() = _isCalendarVisible
 
-    private val _visits = MutableLiveData<Array<String>>()
-    val visits: LiveData<Array<String>> get() = _visits
+    val _selectedVisit = MutableLiveData<String>()
+    val selectedVisit: LiveData<String> get() = _selectedVisit
+
+    val _selectedDay = MutableLiveData<Int>()
+    val selectedDay: LiveData<Int> get() = _selectedDay
+
+    val _selectedMonth = MutableLiveData<Int>()
+    val selectedMonth: LiveData<Int> get() = _selectedMonth
+
+    val _selectedYear = MutableLiveData<Int>()
+    val selectedYear: LiveData<Int> get() = _selectedYear
 
     private var selectedCity: String? = null
     private var selectedFacility: String? = null
@@ -71,8 +82,11 @@ constructor(
         Log.d(PatientCalendarViewModel::class.java.name, "selected: ${parent!!.adapter.getItem(position)}")
         if (parent!!.id == R.id.selectCitySpinner){
             selectCity(parent!!.adapter.getItem(position) as String, view)
+            _selectedVisit.postValue(null)
+            _isCalendarVisible.postValue(false)
         } else if (parent!!.id == R.id.selectFacilitySpinner) {
             selectFacility(parent!!.adapter.getItem(position) as String, view)
+            _selectedVisit.postValue(null)
         }
     }
 
@@ -87,14 +101,12 @@ constructor(
                 selectedCity = null
                 selectedFacility = null
                 _isFacilitySpinnerVisible.postValue(false)
-                _isCalendarVisible.postValue(false)
             }
 
             else -> {
                 _facilities.postValue(fetchFacilities())
                 selectedCity = item
                 _isFacilitySpinnerVisible.postValue(true)
-                _isCalendarVisible.postValue(false)
             }
         }
     }
@@ -108,7 +120,7 @@ constructor(
             }
 
             else -> {
-                selectedCity = item
+                selectedFacility = item
                 _isCalendarVisible.postValue(true)
             }
         }
@@ -125,24 +137,44 @@ constructor(
         return calendar.timeInMillis
     }
 
-    fun getDate(calendarView: CalendarView) {
-        calendarView.setOnDateChangeListener {view, year, month, dayOfMonth ->
-            Log.d("testuje", "getDate: $year, $month, $dayOfMonth")
-            _visits.postValue(selectVisits(dayOfMonth))
+    fun selectVisits(dayOfMonth: Int) : Array<String> {
+        if (dayOfMonth%2 == 0) {
+            return arrayOf(
+                createVisitTime(Calendar.HOUR - 2, "15"),
+                createVisitTime(Calendar.HOUR - 2, "30"),
+                createVisitTime(Calendar.HOUR - 2, "45"),
+                createVisitTime(Calendar.HOUR - 1, "00"),
+                createVisitTime(Calendar.HOUR - 1, "15"),
+                createVisitTime(Calendar.HOUR - 1, "30"),
+                createVisitTime(Calendar.HOUR - 1, "45"),
+            )
         }
+        return arrayOf()
     }
 
-    private fun selectVisits(dayOfMonth: Int) : Array<String> {
-        val calendar: Calendar = Calendar.getInstance()
-        val data: Array<String> = arrayOf()
-        if (dayOfMonth%2 == 0) {
-            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 2, 15)
-            data[0] = Date(calendar.timeInMillis).toString()
-            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 2, 30)
-            data[1] = Date(calendar.timeInMillis).toString()
-            calendar.set(Calendar.YEAR, Calendar.MONTH, dayOfMonth, Calendar.HOUR - 1, 0)
-            data[2] = Date(calendar.timeInMillis).toString()
-        }
-        return data
+    private fun createVisitTime(hour: Int, minutes: String):String {
+        return if (hour < 10) {
+            "0$hour:$minutes"
+        } else "$hour:$minutes"
+    }
+
+    fun getTimeAsString(context: Context): String {
+        return "${context.resources.getString(R.string.patient_calendar_fragment_selected_time_text)} ${selectedVisit.value!!}"
+    }
+
+    fun getDateAsString(context: Context): String {
+        var string: String? = if (selectedMonth.value!! < 10) {
+            "0${selectedMonth.value}"
+        } else "${selectedMonth.value}"
+        return "${context.resources.getString(R.string.patient_calendar_fragment_selected_date_text)} ${selectedDay.value}.$string.${selectedYear.value}"
+    }
+
+    fun getCityAndFacility(context: Context): String {
+        return "${context.resources.getString(R.string.patient_calendar_fragment_selected_city_text)} $selectedFacility, $selectedCity"
+    }
+
+    fun registerVisit(view: View) {
+        callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
+        Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
     }
 }

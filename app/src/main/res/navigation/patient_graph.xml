@@ -13,7 +13,11 @@
     <fragment
         android:id="@+id/patientCalendarFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment"
-        android:label="PatientDocumentFragment" />
+        android:label="PatientDocumentFragment" >
+        <action
+            android:id="@+id/action_patientCalendarFragment_to_patientFragment"
+            app:destination="@id/patientFragment" />
+    </fragment>
 
     <activity
         android:id="@+id/mainActivity"

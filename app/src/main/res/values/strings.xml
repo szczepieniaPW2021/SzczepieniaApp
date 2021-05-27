@@ -32,12 +32,21 @@
     <string name="patient_calendar_fragment_select_city_text">Select city:</string>
     <string name="patient_calendar_fragment_select_facility_text">Select a facility:</string>
     <string name="patient_calendar_fragment_sign_up_button_text">Sign up</string>
+    <string name="patient_calendar_fragment_selected_time_text">Selected time:</string>
+    <string name="patient_calendar_fragment_selected_date_text">Selected date:</string>
+    <string name="patient_calendar_fragment_selected_city_text">Selected city and facility:</string>
+    <string name="patient_calendar_fragment_visits_details_text">Details of the visit:</string>
+    <string name="patient_calendar_fragment_registered_for_visit_text">You have been registered for the visit</string>
     <!--    Patient Calendar Fragment strings end here-->
 
     <!--    Visits Time Dialog strings-->
-    <string name="visit_time_dialog_select_text">Select visit:</string>
+    <string name="visit_time_dialog_select_text">Select time of visit:</string>
     <string name="visit_time_dialog_no_visits_text">We sincerely apologize. No visits available for the selected date.</string>
     <!--    Visits Time Dialog strings end here-->
+
+    <!--    Register Visit Dialog strings-->
+    <string name="register_visit_dialog_text">The visit is being registered...</string>
+    <!--    Register Visit Dialog strings strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
