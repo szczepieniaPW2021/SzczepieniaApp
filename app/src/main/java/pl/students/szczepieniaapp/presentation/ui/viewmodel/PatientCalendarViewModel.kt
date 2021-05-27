@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.CalendarView
+import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -12,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment
+import pl.students.szczepieniaapp.presentation.ui.fragment.VisitsDialogFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
 import java.util.*
 import javax.inject.Inject
@@ -41,14 +44,14 @@ constructor(
     val _selectedVisit = MutableLiveData<String>()
     val selectedVisit: LiveData<String> get() = _selectedVisit
 
-    val _selectedDay = MutableLiveData<Int>()
-    val selectedDay: LiveData<Int> get() = _selectedDay
+    private val _selectedDay = MutableLiveData<Int>()
+    private val selectedDay: LiveData<Int> get() = _selectedDay
 
-    val _selectedMonth = MutableLiveData<Int>()
-    val selectedMonth: LiveData<Int> get() = _selectedMonth
+    private val _selectedMonth = MutableLiveData<Int>()
+    private val selectedMonth: LiveData<Int> get() = _selectedMonth
 
-    val _selectedYear = MutableLiveData<Int>()
-    val selectedYear: LiveData<Int> get() = _selectedYear
+    private val _selectedYear = MutableLiveData<Int>()
+    private val selectedYear: LiveData<Int> get() = _selectedYear
 
     private var selectedCity: String? = null
     private var selectedFacility: String? = null
@@ -162,11 +165,8 @@ constructor(
         return "${context.resources.getString(R.string.patient_calendar_fragment_selected_time_text)} ${selectedVisit.value!!}"
     }
 
-    fun getDateAsString(context: Context): String {
-        var string: String? = if (selectedMonth.value!! < 10) {
-            "0${selectedMonth.value}"
-        } else "${selectedMonth.value}"
-        return "${context.resources.getString(R.string.patient_calendar_fragment_selected_date_text)} ${selectedDay.value}.$string.${selectedYear.value}"
+    fun getDateAsString(context: Context): String? {
+            return "${context.resources.getString(R.string.patient_calendar_fragment_selected_date_text)} ${selectedDay.value}.${selectedMonth.value}.${selectedYear.value}"
     }
 
     fun getCityAndFacility(context: Context): String {
@@ -176,5 +176,22 @@ constructor(
     fun registerVisit(view: View) {
         callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
         Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+    }
+
+    fun setCalendarView(calendar: CalendarView, childFM: FragmentManager) {
+        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+            _selectedVisit.postValue(null)
+            var dialogFragment = VisitsDialogFragment(selectVisits(dayOfMonth))
+            dialogFragment.show(childFM, "VisitsDialogFragment")
+            _selectedDay.postValue(dayOfMonth)
+            _selectedMonth.postValue(month + 1)
+            _selectedYear.postValue(year)
+        }
+    }
+
+    fun scrollToBottom(scrollView: NestedScrollView) {
+        scrollView.post {
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
     }
 }

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.PatientCalendarFragmentBinding
@@ -46,10 +45,11 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
             selectedVisit.observe(viewLifecycleOwner){
                 if (it != null) {
                     binding.selectedTimeTextView.text = viewModel.getTimeAsString(requireContext())
-                    //binding.selectedDateTextView.text = viewModel.getDateAsString(requireContext())
+                    binding.selectedDateTextView.text = viewModel.getDateAsString(requireContext())
                     binding.selectedLocationTextView.text = viewModel.getCityAndFacility(requireContext())
                     binding.signUpBtn.visibility = View.VISIBLE
                     binding.visitDataLinearLayout.visibility = View.VISIBLE
+                    viewModel.scrollToBottom(binding.scrollView)
                 } else {
                     binding.signUpBtn.visibility = View.GONE
                     binding.visitDataLinearLayout.visibility = View.GONE
@@ -76,14 +76,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
             }
         }
 
-        binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            viewModel._selectedVisit.postValue(null)
-            var dialogFragment = VisitsDialogFragment(viewModel.selectVisits(dayOfMonth))
-            dialogFragment.show(childFM, "VisitsDialogFragment")
-            viewModel._selectedDay.postValue(dayOfMonth)
-            viewModel._selectedMonth.postValue(month)
-            viewModel._selectedYear.postValue(year)
-        }
+        viewModel.setCalendarView(binding.calendarView, childFM)
 
         shareDataViewModel.visitTime.observe(viewLifecycleOwner){
             viewModel._selectedVisit.postValue(it)
