@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.*
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment
@@ -174,8 +175,13 @@ constructor(
     }
 
     fun registerVisit(view: View) {
-        callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
-        Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+        GlobalScope.launch(Dispatchers.Main) {
+            callback.setDialog(view)
+            delay(2000)
+            callback.dismissDialog()
+            callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
+            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+        }
     }
 
     fun setCalendarView(calendar: CalendarView, childFM: FragmentManager) {
