@@ -1,7 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.MediumTest
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -13,8 +12,6 @@ import org.junit.Test
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import pl.students.szczepieniaapp.presentation.ui.fragment.PatientFragment
-import pl.students.szczepieniaapp.presentation.util.ImageViewHasDrawableMatcher.hasDrawable
 
 @MediumTest
 @HiltAndroidTest
@@ -35,31 +32,45 @@ class PatientFragmentTest {
         launchFragmentInHiltContainer<PatientFragment> {}
 
         //checks if title is displayed
-        onView(withText(R.string.patient_fragment)).check(
+        onView(withText(R.string.patient_fragment_title_text)).check(
             matches(isDisplayed())
         )
 
-        //checks if button with qrcode is displayed
-        onView(withId(R.id.qrCodeButton)).check(
+        //checks if detailsTextView is displayed
+        onView(withId(R.id.detailsTextView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if referralsTextView is displayed
+        onView(withId(R.id.referralsTextView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if visitsTextView is displayed
+        onView(withId(R.id.visitsTextView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if selectedTimeTextView is displayed
+        onView(withId(R.id.qrCodeTextView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if referralsImageView is displayed
+        onView(withId(R.id.referralsImageView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if visitsImageView is displayed
+        onView(withId(R.id.visitsImageView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if selectedTimeTextView is displayed
+        onView(withId(R.id.qrCodeImageView)).check(
             matches(isDisplayed())
         )
 
     }
 
-    @Test
-    fun test_showDialog_QRCodeDisplay(){
-
-        launchFragmentInHiltContainer<PatientFragment> {}
-
-        onView(withId(R.id.qrCodeButton)).perform(click())
-
-        //checks if dialog is displayed
-        onView(withText(R.string.this_code_confirms_vaccination)).check(matches(
-            isDisplayed()))
-
-        //checks if dialog have qrCode
-        onView(withId(R.id.qrPlaceHolder)).check(matches(
-            hasDrawable()))
-
-    }
 }
