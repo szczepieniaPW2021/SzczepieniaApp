@@ -71,16 +71,4 @@ class PatientCalendarFragmentTest {
         )
     }
 
-    @Test
-    fun dupa(){
-
-        onView(withId(R.id.selectCitySpinner)).perform(ViewActions.click())
-
-        onView(
-            allOf(
-                withId(R.id.selectCitySpinner),
-                withText("Warszawa")
-            )
-        ).perform(ViewActions.click())
-    }
 }
