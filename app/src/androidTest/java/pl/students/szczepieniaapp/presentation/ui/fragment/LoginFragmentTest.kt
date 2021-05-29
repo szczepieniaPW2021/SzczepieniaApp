@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.login
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -17,7 +17,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
-import pl.students.szczepieniaapp.MainActivity.Companion.buildToastMessage
+import pl.students.szczepieniaapp.presentation.ui.activities.MainActivity.Companion.buildToastMessage
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.data.FakeRolesData
 import pl.students.szczepieniaapp.data.ToastFakeData
@@ -107,7 +107,7 @@ class LoginFragmentTest {
 
         //checks if navigated to patient fragment
         verify(navController).navigate(
-            R.id.action_loginFragment_to_patientFragment
+            R.id.action_loginFragment_to_patientActivity
         )
     }
 

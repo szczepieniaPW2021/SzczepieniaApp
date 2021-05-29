@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/patient_graph.xml"
+    app:startDestination="@id/patientFragment">
+
+    <fragment
+        android:id="@+id/patientFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.PatientFragment"
+        android:label="PatientFragment" />
+
+    <fragment
+        android:id="@+id/patientCalendarFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment"
+        android:label="PatientDocumentFragment" >
+        <action
+            android:id="@+id/action_patientCalendarFragment_to_patientFragment"
+            app:destination="@id/patientFragment" />
+    </fragment>
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/vaccinationQRCodeFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.VaccinationQRCodeFragment"
+        android:label="VaccinationQRCodeFragment" />
+
+</navigation>

@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.patient
+package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.view.View
 import androidx.lifecycle.viewModelScope
@@ -6,19 +6,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import pl.students.szczepieniaapp.presentation.ui.fragment.VaccinationQRCodeFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.VaccinationQRCodeListener
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import javax.inject.Inject
 
 @HiltViewModel
-class PatientViewModel
+class VaccinationQRCodeViewModel
 @Inject
 constructor(
     private val useCaseFactory: UseCaseFactory
 ) : MyViewModel() {
 
-    private var callback: PatientListener = PatientFragment()
+    private var callback: VaccinationQRCodeListener = VaccinationQRCodeFragment()
 
-    val code: String = "123456789/ABCDEFRHIJK"          //to be removed
+    val code: String = "123456789/ABCDEFRHIJK"          //TODO to be removed
 
     fun showQRCodePopup(view: View) {
 
@@ -33,5 +35,5 @@ constructor(
             }.launchIn(viewModelScope)
 
     }
-
 }
+

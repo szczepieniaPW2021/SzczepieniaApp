@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.driver
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.ui.viewmodel.DriverViewModel
 
 
 @AndroidEntryPoint

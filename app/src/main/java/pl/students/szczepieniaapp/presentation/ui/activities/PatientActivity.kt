@@ -1,18 +1,22 @@
-package pl.students.szczepieniaapp
+package pl.students.szczepieniaapp.presentation.ui.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import pl.students.szczepieniaapp.databinding.ActivityMainBinding
+import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.databinding.ActivityPatientBinding
 import pl.students.szczepieniaapp.presentation.util.MyConnectivityManager
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class PatientActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityPatientBinding
 
     @Inject
     lateinit var connectivityManager: MyConnectivityManager
@@ -29,8 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityPatientBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.patientBottomNav.setupWithNavController(Navigation.findNavController(this, R.id.activityPatientFragmentContainerView))
 
         connectivityManager.isNetworkAvailable.observe(this, {
             if (it) binding.noConnectionBanner.visibility = View.GONE else binding.noConnectionBanner.visibility = View.VISIBLE

@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.presentation
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import pl.students.szczepieniaapp.presentation.ui.viewmodel.ShareDataViewModel
 
 abstract class MyFragment<Binding> : Fragment() {
 

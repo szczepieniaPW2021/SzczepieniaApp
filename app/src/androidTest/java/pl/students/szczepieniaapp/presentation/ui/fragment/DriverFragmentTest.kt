@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.driver
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry
@@ -14,6 +14,7 @@ import pl.students.szczepieniaapp.launchFragmentInHiltContainer
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.After
+import pl.students.szczepieniaapp.presentation.ui.fragment.DriverFragment
 import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 
 

@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.login
+package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.util.Log
 import android.view.View
@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.BuildConfig
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +64,7 @@ constructor(
             "Zaloguj się jako:" -> _isButtonEnabled.postValue(false)
 
             "Pacjent" -> {
-                navAction = R.id.action_loginFragment_to_patientFragment
+                navAction = R.id.action_loginFragment_to_patientActivity
                 _isButtonEnabled.postValue(true)
             }
 
