@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.driver
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.IdlingRegistry

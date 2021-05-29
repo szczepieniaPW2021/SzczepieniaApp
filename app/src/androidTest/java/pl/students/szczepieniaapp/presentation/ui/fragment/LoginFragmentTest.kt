@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.login
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -22,7 +22,6 @@ import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.data.FakeRolesData
 import pl.students.szczepieniaapp.data.ToastFakeData
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
-import pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment
 import pl.students.szczepieniaapp.presentation.util.ToastMatcher
 
 
@@ -108,7 +107,7 @@ class LoginFragmentTest {
 
         //checks if navigated to patient fragment
         verify(navController).navigate(
-            R.id.action_loginFragment_to_patientFragment
+            R.id.action_loginFragment_to_patientActivity
         )
     }
 

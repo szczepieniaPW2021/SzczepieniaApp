@@ -1,4 +1,4 @@
-package pl.students.szczepieniaapp.presentation.ui.patient
+package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
