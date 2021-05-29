@@ -21,9 +21,18 @@
     <string name="login_text">Log in</string>
     <string name="selection_not_implemented_text">Selection not implemented!</string>
 
+    <!--    Patient Fragment strings-->
+    <string name="patient_fragment_title_text">Welcome patient!</string>
+    <string name="patient_fragment_list_header_text">Here you can find:</string>
+    <string name="patient_fragment_referrals_text">Referrals</string>
+    <string name="patient_fragment_visits_text">Visits (registration)</string>
+    <string name="patient_fragment_qr_code_text">QR code</string>
+    <!--    Patient Fragment strings end here-->
+
     <!--Patient navigation button strings-->
     <string name="patient_bottom_nav_documents_text">Documents</string>
     <string name="patient_bottom_nav_calendar_text">Calendar</string>
+    <string name="patient_bottom_nav_qr_code_text">QR code</string>
     <string name="patient_bottom_nav_logout_text">Log out</string>
     <!--Patient navigation button strings end here-->
 
@@ -47,6 +56,10 @@
     <!--    Register Visit Dialog strings-->
     <string name="register_visit_dialog_text">The visit is being registered...</string>
     <!--    Register Visit Dialog strings strings end here-->
+
+    <!--    Vaccination QR Code Fragment strings-->
+    <string name="vaccination_qr_code_fragment_title_text">QR code confirming vaccination</string>
+    <!--    Vaccination QR Code Fragment strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>

@@ -12,6 +12,11 @@
         android:icon="@drawable/ic_baseline_calendar" />
 
     <item
+        android:id="@+id/vaccinationQRCodeFragment"
+        android:title="@string/patient_bottom_nav_qr_code_text"
+        android:icon="@drawable/ic_baseline_qr_code" />
+
+    <item
         android:id="@+id/mainActivity"
         android:title="@string/patient_bottom_nav_logout_text"
         android:icon="@drawable/ic_baseline_logout" />

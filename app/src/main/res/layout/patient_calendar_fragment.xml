@@ -35,6 +35,7 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:gravity="center_horizontal"
                     android:text="@string/patient_calendar_fragment_sign_up_vaccination_text"
                     android:textSize="24sp"
