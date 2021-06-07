@@ -1,19 +1,25 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
+import android.widget.DatePicker
+import androidx.test.espresso.Espresso.onData
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.MediumTest
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.hamcrest.Matchers.equalTo
 import org.hamcrest.core.AllOf.allOf
+import org.hamcrest.core.Is
 import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.data.FakePatientCalendarFragmentData
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
 
 
@@ -69,6 +75,56 @@ class PatientCalendarFragmentTest {
         onView(withId(R.id.signUpBtn)).check(
             matches(not(isDisplayed()))
         )
+    }
+
+    @Test
+    fun registerVisit() {
+
+        launchFragmentInHiltContainer<PatientCalendarFragment> {}
+
+        //clicks selectCitySpinner and selects city "Warszawa"
+        val selectCitySpinner = onView(
+            allOf(
+                withId(R.id.selectCitySpinner),
+                withParent(withId(R.id.selectCitySpinnerLayout))
+            )
+        )
+        selectCitySpinner.perform(click())
+        onData(Is.`is`(FakePatientCalendarFragmentData.cities[1])).perform(click())
+
+        //checks if selectFacilityTextView is displayed
+        onView(withId(R.id.selectFacilityTextView)).check(
+            matches(isDisplayed())
+        )
+
+        //checks if selectFacilitySpinner is displayed
+        onView(withId(R.id.selectFacilitySpinner)).check(
+            matches(isDisplayed())
+        )
+
+        //clicks selectFacilitySpinner and selects facility "Punkt 1"
+        val selectFacilitySpinner = onView(
+            allOf(
+                withId(R.id.selectFacilitySpinner),
+                withParent(withId(R.id.selectFacilityRelativeLayout))
+            )
+        )
+        selectFacilitySpinner.perform(click())
+        onData(Is.`is`(FakePatientCalendarFragmentData.facilities[1])).perform(click())
+
+        //checks if calendarView is displayed
+        val calendarView = onView(
+            allOf(
+                withId(R.id.calendarView),
+                withParent(withId(R.id.calendarViewLinearLayout))
+            )
+        )
+        calendarView.check(
+            matches(isDisplayed())
+        )
+
+        calendarView.perform(click())
+
     }
 
 }
