@@ -38,12 +38,12 @@ class VaccinationQRCodeFragmentTest {
 
         //checks if title is displayed
         onView(withText(R.string.vaccination_qr_code_fragment_title_text)).check(
-            ViewAssertions.matches(ViewMatchers.isDisplayed())
+            matches(ViewMatchers.isDisplayed())
         )
 
         //checks if button with qrcode is displayed
         onView(withId(R.id.qrCodeButton)).check(
-            ViewAssertions.matches(ViewMatchers.isDisplayed())
+            matches(ViewMatchers.isDisplayed())
         )
 
     }
@@ -57,7 +57,7 @@ class VaccinationQRCodeFragmentTest {
 
         //checks if dialog is displayed
         onView(withText(R.string.this_code_confirms_vaccination)).check(
-            ViewAssertions.matches(
+            matches(
                 ViewMatchers.isDisplayed()
             )
         )

@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.presentation.ui
 
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
+import pl.students.szczepieniaapp.presentation.ui.activities.SplashScreenActivityTest
 import pl.students.szczepieniaapp.presentation.ui.fragment.*
 
 @RunWith(Suite::class)
@@ -10,6 +11,7 @@ import pl.students.szczepieniaapp.presentation.ui.fragment.*
     PatientFragmentTest::class,
     DriverFragmentTest::class,
     PatientCalendarFragmentTest::class,
-    VaccinationQRCodeFragmentTest::class
+    VaccinationQRCodeFragmentTest::class,
+    SplashScreenActivityTest::class
 )
 class FragmentTestSuit

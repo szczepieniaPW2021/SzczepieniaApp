@@ -18,7 +18,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SzczepieniaApp">
-        <activity android:name=".presentation.ui.activities.PatientActivity"></activity>
+        <activity android:name=".presentation.ui.activities.SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".presentation.ui.activities.PatientActivity" />
         <activity
             android:name=".presentation.ui.activities.MainActivity"
             android:launchMode="singleTask">
@@ -35,6 +42,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_L8g3AcwXBKnEjhvLJwBXwI3L51LjQUU" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
