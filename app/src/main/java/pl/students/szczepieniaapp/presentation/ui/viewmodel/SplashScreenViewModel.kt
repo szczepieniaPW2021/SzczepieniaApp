@@ -1,7 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.content.Intent
-import android.util.Log
 import androidx.core.content.ContextCompat.startActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
