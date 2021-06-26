@@ -73,6 +73,11 @@ constructor(
                 _isButtonEnabled.postValue(true)
             }
 
+            "Lekarz" -> {
+                navAction = R.id.action_loginFragment_to_doctorActivity
+                _isButtonEnabled.postValue(true)
+            }
+
             else -> {
                 Log.d(LoginViewModel::class.java.name, "Unrecognized selection")
                 callback.toastMessage(
