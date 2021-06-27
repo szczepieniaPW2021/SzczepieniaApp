@@ -61,5 +61,17 @@
     <string name="vaccination_qr_code_fragment_title_text">QR code confirming vaccination</string>
     <!--    Vaccination QR Code Fragment strings end here-->
 
+    <!--    Roles items -->
+    <string-array name="roles">
+        <item>Log in as:</item>
+        <item>Patient</item>
+        <item>Driver</item>
+        <item>Doctor</item>
+        <item>Logistics operator</item>
+        <item>Facility manager</item>
+        <item>NFZ operator</item>
+    </string-array>
+    <!--    Roles items end here-->
+
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
