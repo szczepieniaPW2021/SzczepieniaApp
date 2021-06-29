@@ -29,12 +29,18 @@
     <string name="patient_fragment_qr_code_text">QR code</string>
     <!--    Patient Fragment strings end here-->
 
-    <!--Patient navigation button strings-->
+    <!--    Patient navigation button strings-->
     <string name="patient_bottom_nav_documents_text">Documents</string>
     <string name="patient_bottom_nav_calendar_text">Calendar</string>
     <string name="patient_bottom_nav_qr_code_text">QR code</string>
     <string name="patient_bottom_nav_logout_text">Log out</string>
-    <!--Patient navigation button strings end here-->
+    <!--    Patient navigation button strings end here-->
+
+    <!--    Doctor navigation button strings-->
+    <string name="doctor_bottom_nav_documents_text">Documents</string>
+    <string name="doctor_bottom_nav_search_text">Search</string>
+    <string name="doctor_bottom_nav_logout_text">Log out</string>
+    <!--    Doctor navigation button strings end here-->
 
     <!--    Patient Calendar Fragment strings-->
     <string name="patient_calendar_fragment_sign_up_vaccination_text">Sign up for a vaccination</string>

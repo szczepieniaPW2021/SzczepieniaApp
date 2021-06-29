@@ -34,6 +34,7 @@ constructor(
         return if (BuildConfig.DEBUG) "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE} (${BuildConfig.VERSION_CODE})" else "${BuildConfig.VERSION_NAME})"
     }
 
+    //TODO correct error occurring when moving back to login activity from driver fragment
     private fun fetchRoles(view: View?): Array<String> {
         return view!!.resources.getStringArray(R.array.roles)
     }
