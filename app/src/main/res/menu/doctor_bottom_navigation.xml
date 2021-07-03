@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/patientFragment"
+        android:id="@+id/doctorFragment"
         android:title="@string/doctor_bottom_nav_documents_text"
         android:icon="@drawable/ic_baseline_home" />
 
