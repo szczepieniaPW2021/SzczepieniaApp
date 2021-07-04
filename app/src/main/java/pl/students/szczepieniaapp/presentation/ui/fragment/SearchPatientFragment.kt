@@ -27,17 +27,19 @@ class SearchPatientFragment : MyFragment<SearchPatientFragmentBinding>(), Search
         savedInstanceState: Bundle?
     ): View? {
         _binding = SearchPatientFragmentBinding.inflate(inflater, container, false)
-
+        binding.viewmodel = viewModel
         viewModel.apply {
             binding.searchView.setOnQueryTextListener(this)
             person.observe(viewLifecycleOwner) {
                 if (it.isNotEmpty()) {
                     binding.patientNameTextView.text = getPatientName()
                     binding.patientPeselTextView.text = getPatientPesel()
+                    binding.registerVaccinationBtn.visibility = View.VISIBLE
                     binding.patientDataLinearLayout.visibility = View.VISIBLE
                     binding.noPatientLinearLayout.visibility = View.GONE
                 } else {
                     binding.patientDataLinearLayout.visibility = View.GONE
+                    binding.registerVaccinationBtn.visibility = View.GONE
                     binding.noPatientLinearLayout.visibility = View.VISIBLE
                 }
             }

@@ -1,6 +1,7 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.util.Log
+import android.view.View
 import android.widget.SearchView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -98,5 +99,9 @@ constructor(
     fun getPatientPesel() : String {
         return context.value!!.resources.getString(R.string.search_patient_fragment_patient_pesel_text).format(
             person.value?.get(1)!!)
+    }
+
+    fun registerVaccination(view: View) {
+        Log.d(SearchPatientViewModel::class.java.name, "Vaccination is being registered." )
     }
 }
