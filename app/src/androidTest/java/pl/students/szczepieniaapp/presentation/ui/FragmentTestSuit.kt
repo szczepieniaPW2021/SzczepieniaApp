@@ -12,6 +12,7 @@ import pl.students.szczepieniaapp.presentation.ui.fragment.*
     DriverFragmentTest::class,
     PatientCalendarFragmentTest::class,
     VaccinationQRCodeFragmentTest::class,
-    SplashScreenActivityTest::class
+    SplashScreenActivityTest::class,
+    DoctorFragmentTest::class
 )
 class FragmentTestSuit
