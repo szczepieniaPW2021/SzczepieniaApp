@@ -38,7 +38,7 @@
 
     <!--    Doctor navigation button strings-->
     <string name="doctor_bottom_nav_documents_text">Documents</string>
-    <string name="doctor_bottom_nav_search_text">Search</string>
+    <string name="doctor_bottom_nav_search_text">Register</string>
     <string name="doctor_bottom_nav_logout_text">Log out</string>
     <!--    Doctor navigation button strings end here-->
 
@@ -87,7 +87,15 @@
     <string name="search_patient_fragment_patient_pesel_text">PESEL: %s</string>
     <string name="search_patient_fragment_patient_text">Name: %s</string>
     <string name="search_patient_fragment_no_patient_warning_text">Sorry. There is no patient with provided data! Try again.</string>
-    <string name="search_patient_fragment_register_vaccination_text">REGISTER VACCINATION</string>
+    <string name="search_patient_fragment_register_vaccination_btn_text">REGISTER VACCINATION</string>
+    <string name="search_patient_fragment_register_vaccination_text">Register vaccination</string>
+    <string name="search_patient_fragment_select_vaccine_type_text">Select vaccine type:</string>
+    <string name="search_patient_fragment_select_vaccine_dose_text">Select vaccine dose:</string>
+    <string name="search_patient_fragment_lot_number_text">Add lot number:</string>
+    <string name="search_patient_fragment_lot_number_hint_text">Add vaccine lot here...</string>
+    <string name="search_patient_fragment_vaccination_register_data_not_complete_text">Please, provide all data needed to register vaccination!</string>
+    <string name="search_patient_fragment_vaccination_is_being_registered_text">Vaccination is being registered</string>
+    <string name="search_patient_fragment_vaccination_registered_text">Vaccination successfully registered!</string>
     <!--    Search Patient Fragment strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>

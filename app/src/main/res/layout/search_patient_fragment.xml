@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
         <variable
             name="viewmodel"
@@ -87,6 +88,158 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/registerVaccinationLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/background"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/patientDataLinearLayout">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/registerVaccinationTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp"
+                    android:text="@string/search_patient_fragment_register_vaccination_text"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/vaccineTypeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/search_patient_fragment_select_vaccine_type_text" />
+
+                    <TextView
+                        android:id="@+id/vaccineDoseTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/search_patient_fragment_select_vaccine_dose_text" />
+
+                    <TextView
+                        android:id="@+id/vaccineIdNumberTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="@string/search_patient_fragment_lot_number_text" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingStart="20dp">
+
+                    <RelativeLayout
+                        android:id="@+id/selectVaccineRelativeLayout"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/spinner_border"
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp">
+
+                        <Spinner
+                            android:id="@+id/selectVaccineTypeSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:popupBackground="@drawable/spinner_popup_border"
+                            android:spinnerMode="dropdown" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/selectVaccineDoseRelativeLayout"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/selectVaccineRelativeLayout"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/spinner_border"
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp">
+
+                        <Spinner
+                            android:id="@+id/selectVaccineDoseSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:popupBackground="@drawable/spinner_popup_border"
+                            android:spinnerMode="dropdown" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/vaccineIdNumberEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/selectVaccineDoseRelativeLayout"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="4dp"
+                        android:hint="@string/search_patient_fragment_lot_number_hint_text"
+                        android:inputType="textPersonName"
+                        android:text="@={viewmodel.lotNumber}"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/noPatientLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -118,14 +271,14 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/search_patient_fragment_register_vaccination_text"
-            android:textSize="10dp"
             android:onClick="@{viewmodel::registerVaccination}"
+            android:text="@string/search_patient_fragment_register_vaccination_btn_text"
+            android:textSize="10dp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/patientDataLinearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/registerVaccinationLinearLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,6 +19,10 @@
     <fragment
         android:id="@+id/searchPatientFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment"
-        android:label="SearchPatientFragment" />
+        android:label="SearchPatientFragment" >
+        <action
+            android:id="@+id/action_searchPatientFragment_to_doctorFragment"
+            app:destination="@id/doctorFragment" />
+    </fragment>
 
 </navigation>

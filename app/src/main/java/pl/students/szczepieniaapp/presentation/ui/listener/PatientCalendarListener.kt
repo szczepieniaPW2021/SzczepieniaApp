@@ -4,7 +4,7 @@ import android.view.View
 
 interface PatientCalendarListener {
 
-    fun setDialog(view: View)
+    fun setDialog(view: View, string: String)
 
     fun dismissDialog()
 

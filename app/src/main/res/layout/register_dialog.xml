@@ -34,8 +34,7 @@
                         android:layout_centerInParent="true"
                         android:layout_centerHorizontal="true"
                         android:layout_gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:text="@string/register_visit_dialog_text" />
+                        android:paddingLeft="10dp" />
 
                 </LinearLayout>
 
