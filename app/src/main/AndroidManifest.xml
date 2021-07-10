@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SzczepieniaApp">
-        <activity android:name=".presentation.ui.activities.DoctorActivity"></activity>
+        <activity android:name=".presentation.ui.activities.DriverActivity"></activity>
+        <activity android:name=".presentation.ui.activities.DoctorActivity" />
         <activity android:name=".presentation.ui.activities.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

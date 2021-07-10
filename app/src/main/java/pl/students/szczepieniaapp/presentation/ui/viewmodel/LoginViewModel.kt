@@ -59,7 +59,7 @@ constructor(
             }
 
             fetchRoles(view)[2] -> {      //"Driver"
-                navAction = R.id.action_loginFragment_to_driverFragment
+                navAction = R.id.action_loginFragment_to_driverActivity
                 _isButtonEnabled.postValue(true)
             }
 
