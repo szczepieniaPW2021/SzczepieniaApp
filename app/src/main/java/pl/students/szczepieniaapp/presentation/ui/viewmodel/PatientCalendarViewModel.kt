@@ -176,7 +176,7 @@ constructor(
 
     fun registerVisit(view: View) {
         GlobalScope.launch(Dispatchers.Main) {
-            callback.setDialog(view)
+            callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
             delay(2000)
             callback.dismissDialog()
             callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))

@@ -62,10 +62,10 @@ class LoginFragment : MyFragment<LoginFragmentBinding>(), EasyPermissions.Permis
 
     private fun setSpinner() {
         val spinner: Spinner = binding.spinner
-        ArrayAdapter(
+        ArrayAdapter.createFromResource(
             requireContext(),
-            android.R.layout.simple_spinner_item,
-            viewModel.fetchRoles()
+            R.array.roles,
+            android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter

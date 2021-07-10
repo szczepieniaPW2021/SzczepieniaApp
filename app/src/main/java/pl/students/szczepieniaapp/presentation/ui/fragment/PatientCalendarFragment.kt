@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
@@ -97,9 +98,11 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         }
     }
 
-    override fun setDialog(view: View) {
+    override fun setDialog(view: View, string: String) {
         dialogBuilder = AlertDialog.Builder(view.context)
-        val newView = LayoutInflater.from(view.context).inflate(R.layout.register_visit_dialog, null)
+        val newView = LayoutInflater.from(view.context).inflate(R.layout.register_dialog, null)
+        val textView = newView.findViewById<TextView>(R.id.description)
+        textView.text = string
         dialogBuilder.setView(newView)
         dialog = dialogBuilder.create()
         dialog.show()

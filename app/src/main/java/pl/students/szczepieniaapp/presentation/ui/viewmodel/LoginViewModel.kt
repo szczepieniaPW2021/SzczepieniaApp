@@ -23,9 +23,6 @@ constructor(
     private var navAction: Int? = null
     private var callback: LoginFragment = LoginFragment()
 
-    private val _roles = MutableLiveData<ArrayList<String>>()
-    val roles: LiveData<ArrayList<String>> get() = _roles
-
     private val _isButtonEnabled = MutableLiveData<Boolean>()
     val isButtonEnabled: LiveData<Boolean> get() = _isButtonEnabled
 
@@ -37,16 +34,9 @@ constructor(
         return if (BuildConfig.DEBUG) "${BuildConfig.VERSION_NAME}.${BuildConfig.BUILD_TYPE} (${BuildConfig.VERSION_CODE})" else "${BuildConfig.VERSION_NAME})"
     }
 
-    fun fetchRoles(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Zaloguj się jako:")
-        data.add("Pacjent")
-        data.add("Lekarz")
-        data.add("Operator logistyczny")
-        data.add("Kierownik placówki")
-        data.add("Operator NFZ")
-        data.add("Kierowca")
-        return data
+    //TODO correct error occurring when moving back to login activity from driver fragment
+    private fun fetchRoles(view: View?): Array<String> {
+        return view!!.resources.getStringArray(R.array.roles)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -61,15 +51,20 @@ constructor(
     private fun fetchNavigationItem(item: String, view: View?) {
         when (item) {
 
-            "Zaloguj się jako:" -> _isButtonEnabled.postValue(false)
+            fetchRoles(view)[0] -> _isButtonEnabled.postValue(false)  //"Log in as:"
 
-            "Pacjent" -> {
+            fetchRoles(view)[1] -> {  //"Patient"
                 navAction = R.id.action_loginFragment_to_patientActivity
                 _isButtonEnabled.postValue(true)
             }
 
-            "Kierowca" -> {
+            fetchRoles(view)[2] -> {      //"Driver"
                 navAction = R.id.action_loginFragment_to_driverFragment
+                _isButtonEnabled.postValue(true)
+            }
+
+            fetchRoles(view)[3] -> {      //"Doctor"
+                navAction = R.id.action_loginFragment_to_doctorActivity
                 _isButtonEnabled.postValue(true)
             }
 
