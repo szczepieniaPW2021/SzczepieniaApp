@@ -112,7 +112,7 @@ class LoginFragmentTest {
     }
 
     @Test
-    fun clickDriverNavBtn_navigationToDriverFragment(){
+    fun clickDriverNavBtn_navigationToDriverActivity(){
 
         val navController = mock(NavController::class.java)
 
@@ -140,7 +140,7 @@ class LoginFragmentTest {
 
         //checks if navigated to patient fragment
         verify(navController).navigate(
-            R.id.action_loginFragment_to_driverFragment
+            R.id.action_loginFragment_to_driverActivity
         )
     }
 
