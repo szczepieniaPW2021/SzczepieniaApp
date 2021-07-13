@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewmodel"
+            type="pl.students.szczepieniaapp.presentation.ui.viewmodel.VaccineOrderViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -22,5 +29,133 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/visitDataLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@drawable/spinner_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/detailsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vaccine_order_fragment_add_item_title_text"
+                    android:textSize="16dp"
+                    android:paddingVertical="5dp"
+                    android:textStyle="italic" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/spinner_border"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/selectVaccineSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="5dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:popupBackground="@drawable/spinner_popup_border"
+                            android:spinnerMode="dropdown" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24" />
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_toEndOf="@+id/available_passenger_number_container" >
+
+                        <Button
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textSize="16dp"
+                            android:onClick="@{viewmodel::onPassengersNumberDecClick}"
+                            android:text="@string/vaccine_order_fragment_text_minus" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/spinner_border"
+                            android:layout_gravity="center">
+
+                            <TextView
+                                android:id="@+id/passengerNumberTextView"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:gravity="center"
+                                android:text="@{String.valueOf(viewmodel.passengersNumberData)}"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                tools:text="10" />
+
+                        </LinearLayout>
+
+                        <Button
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:textSize="16dp"
+                            android:onClick="@{viewmodel::onPassengersNumberIncClick}"
+                            android:text="@string/vaccine_order_fragment_text_plus" />
+
+                        <ImageButton
+                            android:id="@+id/addItemImageView"
+                            android:layout_marginStart="10dp"
+                            android:layout_width="40sp"
+                            android:layout_height="40sp"
+                            android:layout_gravity="center_vertical"
+                            android:onClick="@{viewmodel::addToOrder}"
+                            android:src="@drawable/ic_baseline_playlist_add" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

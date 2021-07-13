@@ -108,6 +108,10 @@
 
     <!--    Vaccine Order Fragment strings-->
     <string name="vaccine_order_fragment_title_text">Order vaccines</string>
+    <string name="vaccine_order_fragment_add_item_title_text">Items can be added to order here...</string>
+    <string name="vaccine_order_fragment_text_minus"> - </string>
+    <string name="vaccine_order_fragment_text_plus"> + </string>
+    <string name="vaccine_order_fragment_select_vaccine_warning_text">Need to select vaccine!</string>
     <!--    Vaccine Order Fragment strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
