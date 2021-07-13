@@ -10,9 +10,11 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.databinding.VaccineOrderFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.adapter.OrderAdapter
 import pl.students.szczepieniaapp.presentation.ui.listener.VaccineOrderListener
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.VaccineOrderViewModel
 import java.util.*
@@ -38,6 +40,16 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
                 setSpinner(it as List<Objects>, binding.selectVaccineSpinner)
             }
 
+            orderItems.observe(viewLifecycleOwner, { orders ->
+                binding.orderRecycler.also {
+                    it.layoutManager = LinearLayoutManager(requireContext())
+                    it.setHasFixedSize(true)
+                    it.adapter = OrderAdapter(orders)
+                }
+                binding.orderRecycler.visibility = View.VISIBLE
+                binding.orderRecycler.adapter?.notifyDataSetChanged()
+            })
+
             binding.selectVaccineSpinner.onItemSelectedListener = this
         }
 
@@ -51,7 +63,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
             R.layout.simple_spinner_item,
             list
         ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
     }

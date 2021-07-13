@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.VaccineOrderFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.VaccineOrderListener
@@ -26,10 +27,14 @@ constructor(
     private val _vaccineTypes = MutableLiveData<ArrayList<String>>()
     val vaccineTypes: LiveData<ArrayList<String>> get() = _vaccineTypes
 
+    private val _orderItems = MutableLiveData<ArrayList<Order>>()
+    val orderItems: LiveData<ArrayList<Order>> get() = _orderItems
+
     private val _passengersNumberData = MutableLiveData<Int>()
     val passengersNumberData: LiveData<Int> get() = _passengersNumberData
 
     private var vaccineType = ""
+    private final var list = mutableListOf<Order>()
 
     init {
         _passengersNumberData.postValue(1)
@@ -81,7 +86,8 @@ constructor(
             return
         }
 
-
+        list.add(Order(vaccineType))
+        _orderItems.postValue(list as ArrayList<Order>?)
     }
 
 }
