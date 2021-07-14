@@ -107,10 +107,11 @@
                         android:layout_marginEnd="10dp"
                         android:layout_toEndOf="@+id/available_passenger_number_container" >
 
-                        <Button
+                        <ImageButton
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:textSize="16dp"
+                            android:src="@drawable/ic_baseline_remove"
                             android:onClick="@{viewmodel::onPassengersNumberDecClick}"
                             android:text="@string/vaccine_order_fragment_text_minus" />
 
@@ -122,6 +123,7 @@
 
                             <TextView
                                 android:id="@+id/passengerNumberTextView"
+                                android:layout_marginHorizontal="5dp"
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:gravity="center"
@@ -132,10 +134,11 @@
 
                         </LinearLayout>
 
-                        <Button
+                        <ImageButton
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:textSize="16dp"
+                            android:src="@drawable/ic_baseline_add"
                             android:onClick="@{viewmodel::onPassengersNumberIncClick}"
                             android:text="@string/vaccine_order_fragment_text_plus" />
 
@@ -156,14 +159,47 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/orderRecycler"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <LinearLayout
+            android:id="@+id/orderListLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            android:background="@drawable/spinner_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/visitDataLinearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/visitDataLinearLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="270dp"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/orderListTitleTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/vaccine_order_fragment_order_list_title_text"
+                    android:textSize="16dp"
+                    android:paddingVertical="5dp"
+                    android:textStyle="italic" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/orderRecycler"
+                    android:layout_width="300dp"
+                    android:layout_height="230dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/visitDataLinearLayout" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

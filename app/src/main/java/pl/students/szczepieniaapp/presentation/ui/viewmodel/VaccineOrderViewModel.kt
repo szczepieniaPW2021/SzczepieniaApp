@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.presentation.MyViewModel
+import pl.students.szczepieniaapp.presentation.adapter.OrderAdapterListener
 import pl.students.szczepieniaapp.presentation.ui.fragment.VaccineOrderFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.VaccineOrderListener
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
@@ -20,7 +21,7 @@ class VaccineOrderViewModel
 @Inject
 constructor(
     private val useCaseFactory: UseCaseFactory
-): MyViewModel(), AdapterView.OnItemSelectedListener {
+): MyViewModel(), AdapterView.OnItemSelectedListener, OrderAdapterListener {
 
     private var callback: VaccineOrderListener = VaccineOrderFragment()
 
@@ -86,8 +87,12 @@ constructor(
             return
         }
 
-        list.add(Order(vaccineType))
+        list.add(Order(list.size + 1, vaccineType, passengersNumberData.value!!))
         _orderItems.postValue(list as ArrayList<Order>?)
+    }
+
+    override fun removeItem(view: View, order: Order) {
+        Log.d(VaccineOrderViewModel::class.java.name, "removeItem: $order")
     }
 
 }

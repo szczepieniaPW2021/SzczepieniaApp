@@ -10,27 +10,72 @@
             type="pl.students.szczepieniaapp.domain.model.Order" />
     </data>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/teal_200"
-        android:orientation="horizontal">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:elevation="1dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="3dp"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/vaccineType"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{order.vaccineType}"
-            tools:text="Astra Zeneca" />
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-<!--        <TextView-->
-<!--            android:id="@+id/amount"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@{order.amount.toString()}"-->
-<!--            tools:text="50" />-->
+            <TextView
+                android:id="@+id/id"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{Integer.toString(order.id)}"
+                tools:text="1" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/vaccineType"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{order.vaccineType}"
+                tools:text="Astra Zeneca" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/qtyTextView"
+                android:layout_marginStart="10dp"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:text="@string/vaccine_order_fragment_quantity_text"
+                tools:text="qty:" />
+
+            <TextView
+                android:id="@+id/amount"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="20dp"
+                android:text="@{Integer.toString(order.amount)}"
+                tools:text="50" />
+
+            <ImageView
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:id="@+id/removeItem"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_remove_circle" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </layout>

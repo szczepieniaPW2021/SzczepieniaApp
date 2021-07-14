@@ -9,7 +9,8 @@ import pl.students.szczepieniaapp.databinding.OrderItemBinding
 import pl.students.szczepieniaapp.domain.model.Order
 
 class OrderAdapter(
-    private val orders: List<Order>
+    private val orders: List<Order>,
+    private val listener: OrderAdapterListener
 ) : RecyclerView.Adapter<OrderAdapter.OrderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -25,6 +26,9 @@ class OrderAdapter(
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         holder.recyclerItem.apply {
             order = orders[position]
+        }
+        holder.recyclerItem.removeItem.setOnClickListener {
+            listener.removeItem(holder.recyclerItem.root, orders[position])
         }
     }
 
