@@ -88,11 +88,24 @@ constructor(
         }
 
         list.add(Order(list.size + 1, vaccineType, passengersNumberData.value!!))
+        _passengersNumberData.postValue(1)
         _orderItems.postValue(list as ArrayList<Order>?)
     }
 
     override fun removeItem(view: View, order: Order) {
         Log.d(VaccineOrderViewModel::class.java.name, "removeItem: $order")
+        list.remove(order)
+        var newList = mutableListOf<Order>()
+
+        for(i in 1..list.size) {
+            newList.add(Order(i, list[i-1].vaccineType, list[i-1].amount))
+        }
+
+        list = newList
+        _orderItems.postValue(list as ArrayList<Order>?)
     }
 
+    fun makeOrder(view: View){
+
+    }
 }
