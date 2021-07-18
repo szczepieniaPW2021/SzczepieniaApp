@@ -185,7 +185,7 @@ constructor(
     }
 
     fun setCalendarView(calendar: CalendarView, childFM: FragmentManager) {
-        calendar.setOnDateChangeListener { view, year, month, dayOfMonth ->
+        calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             _selectedVisit.postValue(null)
             var dialogFragment = VisitsDialogFragment(selectVisits(dayOfMonth))
             dialogFragment.show(childFM, "VisitsDialogFragment")

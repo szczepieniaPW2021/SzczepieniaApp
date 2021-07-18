@@ -7,5 +7,13 @@
     <fragment
         android:id="@+id/vaccineOrderFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.fragment.VaccineOrderFragment"
-        android:label="VaccineOrderFragment" />
+        android:label="VaccineOrderFragment" >
+        <action
+            android:id="@+id/action_vaccineOrderFragment_to_selectDateFragment"
+            app:destination="@id/selectDateFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/selectDateFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.SelectDateFragment"
+        android:label="SelectDateFragment" />
 </navigation>

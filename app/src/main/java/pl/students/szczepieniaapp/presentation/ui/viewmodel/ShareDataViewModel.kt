@@ -13,4 +13,7 @@ constructor(
     val _visitTime = MutableLiveData<String>()
     val visitTime: LiveData<String> get() = _visitTime
 
+    val _visitDate = MutableLiveData<String>()
+    val visitDate: LiveData<String> get() = _visitDate
+
 }

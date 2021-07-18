@@ -120,9 +120,15 @@
     <string name="vaccine_order_fragment_delivery_date_pattern_text">--/--/----</string>
     <string name="vaccine_order_fragment_address_text">Address:</string>
     <string name="vaccine_order_fragment_address_hint_text">Address...</string>
-    <string name="vaccine_order_fragment_zip_code_hint_text">Zip code...</string>
+    <string name="vaccine_order_fragment_postal_code_hint_text">Postal code...</string>
     <string name="vaccine_order_fragment_city_hint_text">City...</string>
+    <string name="vaccine_order_fragment_order_is_being_registered_text">Order is being registered</string>
+    <string name="vaccine_order_fragment_order_registered_toast_text">Order registered!</string>
     <!--    Vaccine Order Fragment strings end here-->
+
+    <!--    Select Date Dialog strings-->
+    <string name="select_date_dialog_title_text">Select date:</string>
+    <!--    Select Date Dialog strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>

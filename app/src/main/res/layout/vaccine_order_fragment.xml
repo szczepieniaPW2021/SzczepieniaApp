@@ -49,7 +49,7 @@
                 android:gravity="center_horizontal">
 
                 <TextView
-                    android:id="@+id/detailsTextView"
+                    android:id="@+id/addItemTitleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/vaccine_order_fragment_add_item_title_text"
@@ -166,8 +166,8 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
+            android:visibility="gone"
             android:orientation="vertical"
-            android:visibility="visible"
             android:background="@drawable/spinner_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -209,7 +209,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             android:background="@drawable/spinner_border"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -265,7 +265,7 @@
                             android:src="@drawable/ic_baseline_calendar"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="15dp"
-                            android:onClick="@{viewmodel::onPassengersNumberDecClick}" />
+                            android:onClick="@{viewmodel::showCalendar}" />
 
                 </LinearLayout>
 
@@ -293,6 +293,7 @@
                             android:textSize="14sp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:text="@={viewmodel._address}"
                             android:padding="5dp"
                             android:hint="@string/vaccine_order_fragment_address_hint_text" />
 
@@ -307,15 +308,17 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="14sp"
                                 android:layout_gravity="center"
+                                android:text="@={viewmodel._postalCode}"
                                 android:padding="5dp"
                                 android:maxLength="6"
-                                android:hint="@string/vaccine_order_fragment_zip_code_hint_text" />
+                                android:hint="@string/vaccine_order_fragment_postal_code_hint_text" />
 
                             <EditText
                                 android:id="@+id/cityEditText"
                                 android:layout_width="120dp"
                                 android:textSize="14sp"
                                 android:layout_height="wrap_content"
+                                android:text="@={viewmodel._city}"
                                 android:layout_gravity="center"
                                 android:padding="5dp"
                                 android:hint="@string/vaccine_order_fragment_city_hint_text" />
@@ -335,6 +338,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:visibility="gone"
             android:textSize="16dp"
             android:onClick="@{viewmodel::makeOrder}"
             android:text="@string/vaccine_order_fragment_order_text"

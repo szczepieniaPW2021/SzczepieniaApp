@@ -3,17 +3,23 @@ package pl.students.szczepieniaapp.presentation.ui.viewmodel
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.adapter.OrderAdapterListener
+import pl.students.szczepieniaapp.presentation.ui.fragment.SelectDateFragment
 import pl.students.szczepieniaapp.presentation.ui.fragment.VaccineOrderFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.VaccineOrderListener
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
-import java.util.ArrayList
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +31,15 @@ constructor(
 
     private var callback: VaccineOrderListener = VaccineOrderFragment()
 
+    val _address = MutableLiveData<String>()
+    val address: LiveData<String> get() = _address
+
+    val _postalCode = MutableLiveData<String>()
+    val postalCode: LiveData<String> get() = _postalCode
+
+    val _city = MutableLiveData<String>()
+    val city: LiveData<String> get() = _city
+
     private val _vaccineTypes = MutableLiveData<ArrayList<String>>()
     val vaccineTypes: LiveData<ArrayList<String>> get() = _vaccineTypes
 
@@ -34,12 +49,25 @@ constructor(
     private val _passengersNumberData = MutableLiveData<Int>()
     val passengersNumberData: LiveData<Int> get() = _passengersNumberData
 
+    val _deliveryDate = MutableLiveData<String>()
+    val deliveryDate: LiveData<String> get() = _deliveryDate
+
+    private val _displayOrderList = MutableLiveData<Boolean>()
+    val displayOrderList: LiveData<Boolean> get() = _displayOrderList
+
     private var vaccineType = ""
-    private final var list = mutableListOf<Order>()
+    private var list = mutableListOf<Order>()
+    private lateinit var childFM: FragmentManager
 
     init {
         _passengersNumberData.postValue(1)
         _vaccineTypes.postValue(fetchVaccineType())
+        _address.postValue("")
+        _postalCode.postValue("")
+    }
+
+    fun getFragmentManager(fragmentManager: FragmentManager) {
+        childFM = fragmentManager
     }
 
     private fun fetchVaccineType(): ArrayList<String> {
@@ -90,6 +118,7 @@ constructor(
         list.add(Order(list.size + 1, vaccineType, passengersNumberData.value!!))
         _passengersNumberData.postValue(1)
         _orderItems.postValue(list as ArrayList<Order>?)
+        displayOrderList()
     }
 
     override fun removeItem(view: View, order: Order) {
@@ -103,9 +132,35 @@ constructor(
 
         list = newList
         _orderItems.postValue(list as ArrayList<Order>?)
+        displayOrderList()
+    }
+
+    fun enableMakeOrderBtn(): Boolean {
+        return !(address.value.isNullOrEmpty() || address.value.isNullOrBlank()
+                || postalCode.value.isNullOrEmpty() || postalCode.value.isNullOrBlank()
+                || city.value.isNullOrEmpty() || city.value.isNullOrBlank()
+                || deliveryDate.value.isNullOrEmpty() || deliveryDate.value.isNullOrBlank()
+                )
+    }
+
+    private fun displayOrderList() {
+        if (list.size > 0) _displayOrderList.postValue(true) else _displayOrderList.postValue(false)
+    }
+
+    fun showCalendar(view: View) {
+        var dialogFragment = SelectDateFragment()
+        dialogFragment.show(childFM, "VisitSelectDateFragment")
     }
 
     fun makeOrder(view: View){
+        GlobalScope.launch(Dispatchers.Main)  {
+            Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
+            callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
+            delay(2000)
+            callback.dismissDialog()
+            callback.toastMessage(view.context, view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text))
+        }
+        //            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
 
     }
 }
