@@ -159,8 +159,8 @@ constructor(
             delay(2000)
             callback.dismissDialog()
             callback.toastMessage(view.context, view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text))
+            //TODO add navigation to another fragment
         }
-        //            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
 
     }
 }
