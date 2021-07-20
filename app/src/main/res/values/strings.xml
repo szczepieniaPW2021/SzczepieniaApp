@@ -136,5 +136,13 @@
     <string name="facility_manager_bottom_nav_logout_text">Log out</string>
     <!--    Facility Manager navigation button strings end here-->
 
+    <!--    Doctor Fragment strings-->
+    <string name="facility_manager_fragment_title_text">Welcome facility manager!</string>
+    <string name="facility_manager_fragment_list_header_text">Here you can find:</string>
+    <string name="facility_manager_fragment_vaccines_text">Vaccines</string>
+    <string name="facility_manager_fragment_ordering_vaccines_text">Ordering vaccines</string>
+    <string name="facility_manager_fragment_amount_vaccines_text">The amount of vaccines in the facility</string>
+    <!--    Doctor Fragment strings end here-->
+
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>
