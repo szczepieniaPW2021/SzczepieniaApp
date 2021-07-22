@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_vaccineOrderFragment_to_selectDateFragment"
             app:destination="@id/selectDateFragment" />
+        <action
+            android:id="@+id/action_vaccineOrderFragment_to_facilityManagerFragment"
+            app:destination="@id/facilityManagerFragment" />
     </fragment>
     <dialog
         android:id="@+id/selectDateFragment"

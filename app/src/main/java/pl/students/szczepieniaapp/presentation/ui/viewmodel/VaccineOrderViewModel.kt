@@ -6,6 +6,7 @@ import android.widget.AdapterView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -159,7 +160,7 @@ constructor(
             delay(2000)
             callback.dismissDialog()
             callback.toastMessage(view.context, view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text))
-            //TODO add navigation to another fragment
+            Navigation.findNavController(view).navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
         }
 
     }
