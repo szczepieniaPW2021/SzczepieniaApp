@@ -14,12 +14,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
-import pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
-import java.util.Map
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
