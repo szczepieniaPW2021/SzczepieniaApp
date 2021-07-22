@@ -20,8 +20,8 @@ import org.junit.runners.MethodSorters
 import org.mockito.Mockito
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.launchFragmentInHiltContainer
-import pl.students.szczepieniaapp.presentation.ui.activities.MainActivity
 import pl.students.szczepieniaapp.presentation.util.ToastMatcher
+import pl.students.szczepieniaapp.presentation.MyActivity.Companion.buildToastMessage
 
 
 @MediumTest
@@ -69,7 +69,7 @@ class SearchPatientFragmentTest {
         onView(withId(R.id.searchView)).perform(typeText("12")).perform(pressKey(KeyEvent.KEYCODE_ENTER))
 
         //checks if toast is displayed and the message is correct
-        onView(withText(MainActivity.buildToastMessage("PESEL must contains 11 digits"))).inRoot(ToastMatcher())
+        onView(withText(buildToastMessage("PESEL must contains 11 digits"))).inRoot(ToastMatcher())
             .check(matches(isDisplayed()))
     }
 
