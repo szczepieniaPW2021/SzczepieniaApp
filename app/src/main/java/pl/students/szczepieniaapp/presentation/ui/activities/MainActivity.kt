@@ -1,35 +1,18 @@
 package pl.students.szczepieniaapp.presentation.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.databinding.ActivityMainBinding
-import pl.students.szczepieniaapp.presentation.util.MyConnectivityManager
-import javax.inject.Inject
+import pl.students.szczepieniaapp.presentation.MyActivity
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-
-    @Inject
-    lateinit var connectivityManager: MyConnectivityManager
-
-    override fun onStart() {
-        super.onStart()
-        connectivityManager.registerConnectionObserver(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        connectivityManager.unregisterConnectionObserver(this)
-    }
+class MainActivity : MyActivity<ActivityMainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         connectivityManager.isNetworkAvailable.observe(this, {
@@ -37,9 +20,4 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    companion object{
-        fun buildToastMessage(string: String): String{
-            return "$string"
-        }
-    }
 }

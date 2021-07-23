@@ -1,6 +1,5 @@
 package pl.students.szczepieniaapp.presentation.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.Navigation
@@ -8,31 +7,14 @@ import androidx.navigation.ui.setupWithNavController
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.ActivityDoctorBinding
-import pl.students.szczepieniaapp.databinding.ActivityPatientBinding
-import pl.students.szczepieniaapp.presentation.util.MyConnectivityManager
-import javax.inject.Inject
+import pl.students.szczepieniaapp.presentation.MyActivity
 
 @AndroidEntryPoint
-class DoctorActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityDoctorBinding
-
-    @Inject
-    lateinit var connectivityManager: MyConnectivityManager
-
-    override fun onStart() {
-        super.onStart()
-        connectivityManager.registerConnectionObserver(this)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        connectivityManager.unregisterConnectionObserver(this)
-    }
+class DoctorActivity : MyActivity<ActivityDoctorBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDoctorBinding.inflate(layoutInflater)
+        _binding = ActivityDoctorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.doctorBottomNav.setupWithNavController(Navigation.findNavController(this, R.id.activityDoctorFragmentContainerView))
@@ -42,9 +24,4 @@ class DoctorActivity : AppCompatActivity() {
         })
     }
 
-    companion object{
-        fun buildToastMessage(string: String): String{
-            return "$string"
-        }
-    }
 }
