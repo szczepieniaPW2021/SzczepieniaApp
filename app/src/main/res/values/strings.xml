@@ -84,7 +84,7 @@
     <!--    Roles items end here-->
 
     <!--    Search Patient Fragment strings-->
-    <string name="search_patient_fragment_search_title_text">Search for a patient...</string>
+    <string name="search_patient_fragment_search_title_text">Register vaccination</string>
     <string name="search_patient_fragment_search_hint_text">Enter PESEL number or name and surname here...</string>
     <string name="search_patient_fragment_wrong_pesel_length_text">PESEL must contains 11 digits</string>
     <string name="search_patient_fragment_patient_data_text">Patient data:</string>
