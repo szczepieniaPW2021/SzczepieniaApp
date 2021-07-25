@@ -45,6 +45,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
             }
             selectedVisit.observe(viewLifecycleOwner){
                 if (it != null) {
+                    binding.patientPersonalDataLinearLayout.visibility = View.VISIBLE
                     binding.selectedTimeTextView.text = viewModel.getTimeAsString(requireContext())
                     binding.selectedDateTextView.text = viewModel.getDateAsString(requireContext())
                     binding.selectedLocationTextView.text = viewModel.getCityAndFacility(requireContext())
@@ -52,6 +53,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
                     binding.visitDataLinearLayout.visibility = View.VISIBLE
                     viewModel.scrollToBottom(binding.scrollView)
                 } else {
+                    binding.patientPersonalDataLinearLayout.visibility = View.GONE
                     binding.signUpBtn.visibility = View.GONE
                     binding.visitDataLinearLayout.visibility = View.GONE
                 }
@@ -80,6 +82,19 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
                     binding.calendarView.visibility = View.INVISIBLE
                 }
             }
+
+            patientName.observe(viewLifecycleOwner) {
+                binding.signUpBtn.isEnabled = arePatientDataProvided()
+            }
+
+            patientLastName.observe(viewLifecycleOwner) {
+                binding.signUpBtn.isEnabled = arePatientDataProvided()
+            }
+
+            patientIdNumber.observe(viewLifecycleOwner) {
+                binding.signUpBtn.isEnabled = arePatientDataProvided()
+            }
+
         }
 
         viewModel.setCalendarView(binding.calendarView, childFM)
