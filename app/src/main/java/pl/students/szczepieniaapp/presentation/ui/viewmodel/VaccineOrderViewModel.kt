@@ -81,13 +81,13 @@ constructor(
         return data
     }
 
-    fun onPassengersNumberIncClick(view: View) {
+    fun onItemsNumberIncClick(view: View) {
         if (passengersNumberData.value!! < 99){
             _passengersNumberData.postValue(passengersNumberData.value!! + 1)
         }
     }
 
-    fun onPassengersNumberDecClick(view: View) {
+    fun onItemsNumberDecClick(view: View) {
         if (passengersNumberData.value!! > 1){
             _passengersNumberData.postValue(passengersNumberData.value!! - 1)
         }

@@ -33,9 +33,9 @@
             android:id="@+id/addItemLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="20dp"
             android:orientation="vertical"
             android:visibility="visible"
             android:background="@drawable/spinner_border"
@@ -114,7 +114,7 @@
                             android:layout_height="40dp"
                             android:textSize="16dp"
                             android:src="@drawable/ic_baseline_remove"
-                            android:onClick="@{viewmodel::onPassengersNumberDecClick}"
+                            android:onClick="@{viewmodel::onItemsNumberDecClick}"
                             android:text="@string/vaccine_order_fragment_text_minus" />
 
                         <LinearLayout
@@ -141,7 +141,7 @@
                             android:layout_height="40dp"
                             android:textSize="16dp"
                             android:src="@drawable/ic_baseline_add"
-                            android:onClick="@{viewmodel::onPassengersNumberIncClick}"
+                            android:onClick="@{viewmodel::onItemsNumberIncClick}"
                             android:text="@string/vaccine_order_fragment_text_plus" />
 
                         <ImageButton
