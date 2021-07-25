@@ -73,7 +73,12 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
             isCalendarVisible.observe(viewLifecycleOwner){
                 binding.calendarView.minDate = viewModel.getCurrentTime()
                 binding.calendarView.maxDate = viewModel.setMaxDate()
-                if (it) binding.calendarView.visibility = View.VISIBLE else binding.calendarView.visibility = View.INVISIBLE
+                if (it) {
+                    binding.calendarView.visibility = View.VISIBLE
+                    viewModel.scrollToBottom(binding.scrollView)
+                } else {
+                    binding.calendarView.visibility = View.INVISIBLE
+                }
             }
         }
 

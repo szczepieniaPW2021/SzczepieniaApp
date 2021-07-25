@@ -45,6 +45,9 @@
     <!--    Patient Calendar Fragment strings-->
     <string name="patient_calendar_fragment_sign_up_vaccination_text">Sign up for a vaccination</string>
     <string name="patient_calendar_fragment_select_city_text">Select city:</string>
+    <string name="patient_calendar_fragment_patient_name_text">Name:</string>
+    <string name="patient_calendar_fragment_patient_lastname_text">Last name:</string>
+    <string name="patient_calendar_fragment_patient_id_text">Id number:</string>
     <string name="patient_calendar_fragment_select_facility_text">Select a facility:</string>
     <string name="patient_calendar_fragment_sign_up_button_text">Sign up</string>
     <string name="patient_calendar_fragment_selected_time_text">Selected time:</string>
