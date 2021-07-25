@@ -141,13 +141,111 @@
                     android:id="@+id/calendarView"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginVertical="30dp"
                     android:firstDayOfWeek="2"
                     android:background="@drawable/background"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/spinnersLinearLayout" />
+
+                <LinearLayout
+                    android:id="@+id/patientPersonalDataLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@drawable/background"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+
+                        <TextView
+                            android:id="@+id/patientDetailsTitleTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/search_patient_fragment_patient_data_text"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/provideNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/patient_calendar_fragment_patient_name_text" />
+
+                        <EditText
+                            android:id="@+id/provideNameEditView"
+                            android:layout_marginStart="28dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="@={viewmodel._patientName}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/provideLastNameTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/patient_calendar_fragment_patient_lastname_text" />
+
+                        <EditText
+                            android:id="@+id/patientLastNameEditView"
+                            android:layout_width="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:text="@={viewmodel._patientLastName}"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/patientIdNumberTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="@string/patient_calendar_fragment_patient_id_text" />
+
+                        <EditText
+                            android:id="@+id/patientIdNumberEditView"
+                            android:inputType="number"
+                            android:maxLength="11"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="5dp"
+                            android:text="@={viewmodel._patientIdNumber}"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/visitDataLinearLayout"
@@ -215,6 +313,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
                     android:text="@string/patient_calendar_fragment_sign_up_button_text"
                     android:textSize="20sp"
                     android:visibility="gone"

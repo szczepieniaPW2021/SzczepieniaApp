@@ -57,9 +57,20 @@ constructor(
     private var selectedCity: String? = null
     private var selectedFacility: String? = null
 
+    val _patientName = MutableLiveData<String>()
+    val patientName: LiveData<String> get() = _patientName
+
+    val _patientLastName = MutableLiveData<String>()
+    val patientLastName: LiveData<String> get() = _patientLastName
+
+    val _patientIdNumber = MutableLiveData<String>()
+    val patientIdNumber: LiveData<String> get() = _patientIdNumber
 
     init {
         _cities.postValue(fetchCities())
+        _patientName.postValue(null)
+        _patientLastName.postValue(null)
+        _patientIdNumber.postValue(null)
     }
 
     private fun fetchCities(): ArrayList<String> {
@@ -80,6 +91,10 @@ constructor(
         data.add("Punkt 3")
         data.add("Punkt 4")
         return data
+    }
+
+    fun arePatientDataProvided(): Boolean {
+       return !(patientName.value.isNullOrEmpty() || patientLastName.value.isNullOrEmpty() || patientIdNumber.value.isNullOrEmpty() || patientIdNumber.value!!.length != 11)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -175,12 +190,16 @@ constructor(
     }
 
     fun registerVisit(view: View) {
-        GlobalScope.launch(Dispatchers.Main) {
-            callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
-            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+        if (checkIsIdNumberIsCorrect()) {
+            GlobalScope.launch(Dispatchers.Main) {
+                callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
+                delay(2000)
+                callback.dismissDialog()
+                callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
+                Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+            }
+        } else {
+            callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_incorrect_id_number_text))
         }
     }
 
@@ -199,5 +218,20 @@ constructor(
         scrollView.post {
             scrollView.fullScroll(View.FOCUS_DOWN)
         }
+    }
+
+    private fun checkIsIdNumberIsCorrect() :Boolean {
+        var sum = Integer.parseInt(patientIdNumber.value?.get(0).toString()) * 1 +
+                Integer.parseInt(patientIdNumber.value?.get(1).toString()) * 3 +
+                Integer.parseInt(patientIdNumber.value?.get(2).toString()) * 7 +
+                Integer.parseInt(patientIdNumber.value?.get(3).toString()) * 9 +
+                Integer.parseInt(patientIdNumber.value?.get(4).toString()) * 1 +
+                Integer.parseInt(patientIdNumber.value?.get(5).toString()) * 3 +
+                Integer.parseInt(patientIdNumber.value?.get(6).toString()) * 7 +
+                Integer.parseInt(patientIdNumber.value?.get(7).toString()) * 9 +
+                Integer.parseInt(patientIdNumber.value?.get(8).toString()) * 1 +
+                Integer.parseInt(patientIdNumber.value?.get(9).toString()) * 3
+
+        return 10 - Integer.parseInt(sum.toString().last().toString()) == Integer.parseInt(patientIdNumber.value?.get(10).toString())
     }
 }
