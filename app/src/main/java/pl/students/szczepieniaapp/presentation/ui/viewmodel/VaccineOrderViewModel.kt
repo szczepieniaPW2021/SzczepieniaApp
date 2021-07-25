@@ -3,6 +3,7 @@ package pl.students.szczepieniaapp.presentation.ui.viewmodel
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -163,5 +164,11 @@ constructor(
             Navigation.findNavController(view).navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
         }
 
+    }
+
+    fun scrollToBottom(scrollView: NestedScrollView) {
+        scrollView.post {
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
     }
 }

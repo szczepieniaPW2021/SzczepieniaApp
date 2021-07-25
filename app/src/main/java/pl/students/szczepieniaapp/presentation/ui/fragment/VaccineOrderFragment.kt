@@ -67,6 +67,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
                 }
                 binding.orderRecycler.visibility = View.VISIBLE
                 binding.orderRecycler.adapter?.notifyDataSetChanged()
+                viewModel.scrollToBottom(binding.scrollView)
             })
 
             address.observe(viewLifecycleOwner) {
