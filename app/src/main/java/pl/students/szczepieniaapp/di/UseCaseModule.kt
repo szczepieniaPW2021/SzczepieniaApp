@@ -7,6 +7,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
+import pl.students.szczepieniaapp.usecase.GetCitiesForSigningForVaccination
 import pl.students.szczepieniaapp.usecase.GetGoogleMapRouteUseCase
 import pl.students.szczepieniaapp.usecase.GetQRCodeUseCase
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
@@ -19,11 +20,13 @@ object UseCaseModule {
     @Provides
     fun provideUseCaseFactory(
         getGoogleMapRouteUseCase: GetGoogleMapRouteUseCase,
-        getQRCodeUseCase: GetQRCodeUseCase
+        getQRCodeUseCase: GetQRCodeUseCase,
+        getCitiesForSigningForVaccination: GetCitiesForSigningForVaccination
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
-            getQRCodeUseCase
+            getQRCodeUseCase,
+            getCitiesForSigningForVaccination
         )
     }
 
@@ -41,6 +44,13 @@ object UseCaseModule {
     fun provideGetQRCodeUseCase(
     ): GetQRCodeUseCase {
         return GetQRCodeUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetCitiesForSigningForVaccination(
+    ): GetCitiesForSigningForVaccination {
+        return GetCitiesForSigningForVaccination()
     }
 
 }

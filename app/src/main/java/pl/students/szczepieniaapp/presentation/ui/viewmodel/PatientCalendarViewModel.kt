@@ -12,11 +12,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment
 import pl.students.szczepieniaapp.presentation.ui.fragment.VisitsDialogFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
+import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
+import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -25,7 +29,7 @@ import kotlin.collections.ArrayList
 class PatientCalendarViewModel
 @Inject
 constructor(
-
+    private val useCaseFactory: UseCaseFactory
 ) : MyViewModel(), AdapterView.OnItemSelectedListener {
 
     private var callback: PatientCalendarListener = PatientCalendarFragment()
@@ -67,20 +71,23 @@ constructor(
     val patientIdNumber: LiveData<String> get() = _patientIdNumber
 
     init {
-        _cities.postValue(fetchCities())
+        fetchCities()
         _patientName.postValue(null)
         _patientLastName.postValue(null)
         _patientIdNumber.postValue(null)
     }
 
-    private fun fetchCities(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Miasto:")
-        data.add("Warszawa")
-        data.add("Kraków")
-        data.add("Poznań")
-        data.add("Nowy Sącz")
-        return data
+    private fun fetchCities() {
+        EspressoIdlingResource.increment()
+        useCaseFactory.getCitiesForSigningForVaccination
+            .execute().onEach { dataState ->
+
+                dataState.data?.let { cities ->
+                    _cities.postValue(cities)
+                    EspressoIdlingResource.decrement()
+                }
+
+            }.launchIn(GlobalScope)
     }
 
     private fun fetchFacilities(): ArrayList<String> {

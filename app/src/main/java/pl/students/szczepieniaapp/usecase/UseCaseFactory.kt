@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.usecase
 
 class UseCaseFactory(
     val getGoogleMapRouteUseCase: GetGoogleMapRouteUseCase,
-    val getQRCodeUseCase: GetQRCodeUseCase
+    val getQRCodeUseCase: GetQRCodeUseCase,
+    val getCitiesForSigningForVaccination: GetCitiesForSigningForVaccination
 )
 
