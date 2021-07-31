@@ -37,12 +37,37 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         childFM = childFragmentManager
         binding.viewmodel = viewModel
         viewModel.apply {
+
+            citiesLoading.observe(viewLifecycleOwner){
+                if (it) {
+                    binding.selectCityProgressBar.visibility = View.VISIBLE
+                    binding.spinnersLinearLayout.visibility = View.GONE
+                } else {
+                    binding.selectCityProgressBar.visibility = View.GONE
+                    binding.spinnersLinearLayout.visibility = View.VISIBLE
+                }
+            }
+
             cities.observe(viewLifecycleOwner){
                 setSpinner(it as List<Objects>, binding.selectCitySpinner)
             }
-            facilities.observe(viewLifecycleOwner){
-                setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+
+            facilitiesLoading.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.selectFacilityProgressBar.visibility = View.VISIBLE
+                    binding.selectFacilityTextView.visibility = View.GONE
+                    binding.selectFacilityRelativeLayout.visibility = View.GONE
+                } else {
+                    binding.selectFacilityProgressBar.visibility = View.GONE
+                    binding.selectFacilityTextView.visibility = View.VISIBLE
+                    binding.selectFacilityRelativeLayout.visibility = View.VISIBLE
+                }
             }
+
+            facilities.observe(viewLifecycleOwner){
+                if (!it.isNullOrEmpty()) setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+            }
+
             selectedVisit.observe(viewLifecycleOwner){
                 if (it != null) {
                     binding.patientPersonalDataLinearLayout.visibility = View.VISIBLE

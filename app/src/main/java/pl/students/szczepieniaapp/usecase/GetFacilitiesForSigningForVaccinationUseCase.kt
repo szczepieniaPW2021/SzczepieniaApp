@@ -4,15 +4,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import pl.students.szczepieniaapp.util.DataState
 
-class GetCitiesForSigningForVaccination {
+class GetFacilitiesForSigningForVaccinationUseCase {
 
-    fun execute(): Flow<DataState<ArrayList<String>>> = flow {
+    fun execute(letter: Char): Flow<DataState<ArrayList<String>>> = flow {
 
         try {
             emit(DataState.loading())
             Thread.sleep(1000L)
 
-            val cities = fetchCities()
+            val cities = fetchFacilities(letter = letter)
             emit(DataState.success(cities))
 
         } catch (e: Exception) {
@@ -21,13 +21,13 @@ class GetCitiesForSigningForVaccination {
 
     }
 
-    private fun fetchCities(): ArrayList<String> {
+    private fun fetchFacilities(letter: Char): ArrayList<String> {
         val data: ArrayList<String> = arrayListOf()
-        data.add("Miasto:")
-        data.add("Warszawa")
-        data.add("Kraków")
-        data.add("Poznań")
-        data.add("Nowy Sącz")
+        data.add("Punkt:")
+        data.add("Punkt ${letter}1")
+        data.add("Punkt ${letter}2")
+        data.add("Punkt ${letter}3")
+        data.add("Punkt ${letter}4")
         return data
     }
 }

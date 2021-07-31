@@ -37,8 +37,14 @@ constructor(
     private val _cities = MutableLiveData<ArrayList<String>>()
     val cities: LiveData<ArrayList<String>> get() = _cities
 
+    private val _citiesLoading = MutableLiveData<Boolean>()
+    val citiesLoading: LiveData<Boolean> get() = _citiesLoading
+
     private val _facilities = MutableLiveData<ArrayList<String>>()
     val facilities: LiveData<ArrayList<String>> get() = _facilities
+
+    private val _facilitiesLoading = MutableLiveData<Boolean>()
+    val facilitiesLoading: LiveData<Boolean> get() = _facilitiesLoading
 
     private val _isFacilitySpinnerVisible = MutableLiveData<Boolean>()
     val isFacilitySpinnerVisible: LiveData<Boolean> get() = _isFacilitySpinnerVisible
@@ -72,32 +78,51 @@ constructor(
 
     init {
         fetchCities()
+        _isCalendarVisible.postValue(false)
         _patientName.postValue(null)
         _patientLastName.postValue(null)
         _patientIdNumber.postValue(null)
     }
 
     private fun fetchCities() {
+        _facilities.postValue(null)
         EspressoIdlingResource.increment()
-        useCaseFactory.getCitiesForSigningForVaccination
+        useCaseFactory.getCitiesForSigningForVaccinationUseCase
             .execute().onEach { dataState ->
+
+                _citiesLoading.postValue(dataState.loading)
 
                 dataState.data?.let { cities ->
                     _cities.postValue(cities)
                     EspressoIdlingResource.decrement()
                 }
 
+                dataState.error?.let { error ->
+                    Log.e(PatientCalendarViewModel::class.java.simpleName, "fetchCities: $error")
+                }
+
             }.launchIn(GlobalScope)
     }
 
-    private fun fetchFacilities(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Punkt:")
-        data.add("Punkt 1")
-        data.add("Punkt 2")
-        data.add("Punkt 3")
-        data.add("Punkt 4")
-        return data
+    private fun fetchFacilities() {
+
+        EspressoIdlingResource.increment()
+        useCaseFactory.getFacilitiesForSigningForVaccinationUseCase
+            .execute('K').onEach { dataState ->
+
+                _facilitiesLoading.postValue(dataState.loading)
+
+                dataState.data?.let { facilities ->
+                    _facilities.postValue(facilities)
+                    EspressoIdlingResource.decrement()
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(PatientCalendarViewModel::class.java.simpleName, "fetchFacilities: $error")
+                }
+
+            }.launchIn(GlobalScope)
+
     }
 
     fun arePatientDataProvided(): Boolean {
@@ -130,7 +155,7 @@ constructor(
             }
 
             else -> {
-                _facilities.postValue(fetchFacilities())
+                fetchFacilities()
                 selectedCity = item
                 _isFacilitySpinnerVisible.postValue(true)
             }
