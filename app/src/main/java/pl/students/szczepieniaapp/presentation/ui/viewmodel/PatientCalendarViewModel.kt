@@ -11,6 +11,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -78,6 +82,8 @@ constructor(
 
     val _patientIdNumber = MutableLiveData<String>()
     val patientIdNumber: LiveData<String> get() = _patientIdNumber
+
+    private val disposable = CompositeDisposable()
 
     init {
         fetchCities()
@@ -227,14 +233,29 @@ constructor(
             return
         }
 
+        callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
 
-        GlobalScope.launch(Dispatchers.Main) {
-            callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
-            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
-        }
+        disposable.add(
+            useCaseFactory.signForVaccinationUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver() {
+                    override fun onComplete() {
+                        callback.dismissDialog()
+                        callback.toastMessage(
+                            view,
+                            view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text)
+                        )
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        callback.dismissDialog()
+                    }
+
+                })
+        )
 
     }
 
@@ -267,5 +288,10 @@ constructor(
                 Integer.parseInt(patientIdNumber.value?.get(9).toString()) * 3
 
         return 10 - Integer.parseInt(sum.toString().last().toString()) == Integer.parseInt(patientIdNumber.value?.get(10).toString())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

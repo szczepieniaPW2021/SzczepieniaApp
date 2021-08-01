@@ -20,14 +20,16 @@ object UseCaseModule {
         getQRCodeUseCase: GetQRCodeUseCase,
         getCitiesForSigningForVaccinationUseCase: GetCitiesForSigningForVaccinationUseCase,
         getFacilitiesForSigningForVaccinationUseCase: GetFacilitiesForSigningForVaccinationUseCase,
-        getVisitsForSigningForVaccinationUseCase: GetVisitsForSigningForVaccinationUseCase
+        getVisitsForSigningForVaccinationUseCase: GetVisitsForSigningForVaccinationUseCase,
+        signForVaccinationUseCase: SignForVaccinationUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
             getQRCodeUseCase,
             getCitiesForSigningForVaccinationUseCase,
             getFacilitiesForSigningForVaccinationUseCase,
-            getVisitsForSigningForVaccinationUseCase
+            getVisitsForSigningForVaccinationUseCase,
+            signForVaccinationUseCase
         )
     }
 
@@ -66,6 +68,13 @@ object UseCaseModule {
     fun provideGetVisitsForSigningForVaccination(
     ): GetVisitsForSigningForVaccinationUseCase {
         return GetVisitsForSigningForVaccinationUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideSignForVaccinationUseCase(
+    ): SignForVaccinationUseCase {
+        return SignForVaccinationUseCase()
     }
 
 }
