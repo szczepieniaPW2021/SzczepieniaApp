@@ -52,6 +52,9 @@ constructor(
     private val _isCalendarVisible = MutableLiveData<Boolean>()
     val isCalendarVisible: LiveData<Boolean> get() = _isCalendarVisible
 
+    private val _visitsLoading = MutableLiveData<Boolean>()
+    val visitsLoading: LiveData<Boolean> get() = _visitsLoading
+
     val _selectedVisit = MutableLiveData<String>()
     val selectedVisit: LiveData<String> get() = _selectedVisit
 
@@ -188,25 +191,21 @@ constructor(
         return calendar.timeInMillis
     }
 
-    fun selectVisits(dayOfMonth: Int) : Array<String> {
-        if (dayOfMonth%2 == 0) {
-            return arrayOf(
-                createVisitTime(Calendar.HOUR - 2, "15"),
-                createVisitTime(Calendar.HOUR - 2, "30"),
-                createVisitTime(Calendar.HOUR - 2, "45"),
-                createVisitTime(Calendar.HOUR - 1, "00"),
-                createVisitTime(Calendar.HOUR - 1, "15"),
-                createVisitTime(Calendar.HOUR - 1, "30"),
-                createVisitTime(Calendar.HOUR - 1, "45"),
-            )
-        }
-        return arrayOf()
-    }
+    private fun selectVisits(dayOfMonth: Int, childFM: FragmentManager) {
+        EspressoIdlingResource.increment()
+        useCaseFactory.getVisitsForSigningForVaccinationUseCase
+            .execute(dayOfMonth = dayOfMonth)
+            .onEach { dataState ->
 
-    private fun createVisitTime(hour: Int, minutes: String):String {
-        return if (hour < 10) {
-            "0$hour:$minutes"
-        } else "$hour:$minutes"
+                _visitsLoading.postValue(dataState.loading)
+
+                dataState.data?.let { visits ->
+                    EspressoIdlingResource.decrement()
+                    var dialogFragment = VisitsDialogFragment(visits)
+                    dialogFragment.show(childFM, "VisitsDialogFragment")
+                }
+
+            }.launchIn(GlobalScope)
     }
 
     fun getTimeAsString(context: Context): String {
@@ -222,24 +221,27 @@ constructor(
     }
 
     fun registerVisit(view: View) {
-        if (checkIsIdNumberIsCorrect()) {
-            GlobalScope.launch(Dispatchers.Main) {
-                callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
-                delay(2000)
-                callback.dismissDialog()
-                callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
-                Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
-            }
-        } else {
+
+        if (!checkIsIdNumberIsCorrect()) {
             callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_incorrect_id_number_text))
+            return
         }
+
+
+        GlobalScope.launch(Dispatchers.Main) {
+            callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
+            delay(2000)
+            callback.dismissDialog()
+            callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
+            Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+        }
+
     }
 
     fun setCalendarView(calendar: CalendarView, childFM: FragmentManager) {
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             _selectedVisit.postValue(null)
-            var dialogFragment = VisitsDialogFragment(selectVisits(dayOfMonth))
-            dialogFragment.show(childFM, "VisitsDialogFragment")
+            selectVisits(dayOfMonth = dayOfMonth, childFM = childFM)
             _selectedDay.postValue(dayOfMonth)
             _selectedMonth.postValue(month + 1)
             _selectedYear.postValue(year)

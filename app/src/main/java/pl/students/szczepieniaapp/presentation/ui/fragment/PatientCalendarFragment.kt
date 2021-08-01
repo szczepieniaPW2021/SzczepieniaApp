@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -66,6 +67,10 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
 
             facilities.observe(viewLifecycleOwner){
                 if (!it.isNullOrEmpty()) setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+            }
+
+            visitsLoading.observe(viewLifecycleOwner) {
+                if (it) setDialog(requireView(), getString(R.string.patient_calendar_fragment_downloading_visits_text)) else dismissDialog()
             }
 
             selectedVisit.observe(viewLifecycleOwner){
@@ -150,6 +155,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         textView.text = string
         dialogBuilder.setView(newView)
         dialog = dialogBuilder.create()
+        dialog.setCancelable(false)
         dialog.show()
 
     }

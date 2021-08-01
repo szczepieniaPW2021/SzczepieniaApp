@@ -54,6 +54,7 @@
     <string name="patient_calendar_fragment_selected_date_text">Selected date:</string>
     <string name="patient_calendar_fragment_selected_city_text">Selected city and facility:</string>
     <string name="patient_calendar_fragment_visits_details_text">Details of the visit:</string>
+    <string name="patient_calendar_fragment_downloading_visits_text">Downloading available visits</string>
     <string name="patient_calendar_fragment_registered_for_visit_text">You have been registered for the visit</string>
     <string name="patient_calendar_fragment_incorrect_id_number_text">You have provided incorrect id number!</string>
     <!--    Patient Calendar Fragment strings end here-->

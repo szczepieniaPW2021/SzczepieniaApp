@@ -4,6 +4,7 @@ class UseCaseFactory(
     val getGoogleMapRouteUseCase: GetGoogleMapRouteUseCase,
     val getQRCodeUseCase: GetQRCodeUseCase,
     val getCitiesForSigningForVaccinationUseCase: GetCitiesForSigningForVaccinationUseCase,
-    val getFacilitiesForSigningForVaccinationUseCase: GetFacilitiesForSigningForVaccinationUseCase
+    val getFacilitiesForSigningForVaccinationUseCase: GetFacilitiesForSigningForVaccinationUseCase,
+    val getVisitsForSigningForVaccinationUseCase: GetVisitsForSigningForVaccinationUseCase
 )
 
