@@ -1,7 +1,9 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,24 @@ class VaccinationQRCodeFragment : MyFragment<VaccinationQrCodeFragmentBinding>()
     ): View? {
         _binding = VaccinationQrCodeFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+
+        viewModel.apply {
+
+            QRCodeDialogLoading.observe(viewLifecycleOwner){
+                if (it) {
+                    binding.qeCodeProgressBar.visibility = View.VISIBLE
+                    binding.qrCodeButton.visibility = View.GONE
+                } else {
+                    binding.qeCodeProgressBar.visibility = View.GONE
+                    binding.qrCodeButton.visibility = View.VISIBLE
+                }
+            }
+
+            displayDialog.observe(viewLifecycleOwner) {
+                if (it != null) setProgressDialog(requireView(), displayDialog.value!!)
+            }
+        }
+
         return binding.root
     }
 
@@ -41,6 +61,10 @@ class VaccinationQRCodeFragment : MyFragment<VaccinationQrCodeFragmentBinding>()
         val qrPlaceHolder = newView.findViewById<ImageView>(R.id.qrPlaceHolder)
         qrPlaceHolder.setImageBitmap(qrBits)
         dialogBuilder.setView(newView)
+        dialogBuilder.setCancelable(false)
+        dialogBuilder.setPositiveButton(R.string.vaccination_qr_code_fragment_cancel_text) { dialog, _ ->
+            dialog.dismiss()
+        }
         dialog = dialogBuilder.create()
         dialog.show()
     }

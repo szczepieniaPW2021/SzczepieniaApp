@@ -6,6 +6,7 @@ class UseCaseFactory(
     val getCitiesForSigningForVaccinationUseCase: GetCitiesForSigningForVaccinationUseCase,
     val getFacilitiesForSigningForVaccinationUseCase: GetFacilitiesForSigningForVaccinationUseCase,
     val getVisitsForSigningForVaccinationUseCase: GetVisitsForSigningForVaccinationUseCase,
-    val signForVaccinationUseCase: SignForVaccinationUseCase
+    val signForVaccinationUseCase: SignForVaccinationUseCase,
+    val getDataForQRCodeUseCase: GetDataForQRCodeUseCase
 )
 

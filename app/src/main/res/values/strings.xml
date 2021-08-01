@@ -70,6 +70,7 @@
 
     <!--    Vaccination QR Code Fragment strings-->
     <string name="vaccination_qr_code_fragment_title_text">QR code confirming vaccination</string>
+    <string name="vaccination_qr_code_fragment_cancel_text">Cancel</string>
     <!--    Vaccination QR Code Fragment strings end here-->
 
     <!--    Roles items -->

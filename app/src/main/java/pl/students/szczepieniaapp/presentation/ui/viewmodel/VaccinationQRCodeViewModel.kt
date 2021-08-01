@@ -1,9 +1,15 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
+import android.graphics.Bitmap
+import android.util.Log
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.VaccinationQRCodeFragment
@@ -20,19 +26,30 @@ constructor(
 
     private var callback: VaccinationQRCodeListener = VaccinationQRCodeFragment()
 
-    val code: String = "123456789/ABCDEFRHIJK"          //TODO to be removed
+    private val _QRCodeDialogLoading = MutableLiveData<Boolean>()
+    val QRCodeDialogLoading: LiveData<Boolean> get() = _QRCodeDialogLoading
+
+    private val _displayDialog = MutableLiveData<Bitmap>()
+    val displayDialog: LiveData<Bitmap> get() = _displayDialog
+
+    init {
+        _QRCodeDialogLoading.postValue(false)
+    }
 
     fun showQRCodePopup(view: View) {
 
-        useCaseFactory.getQRCodeUseCase
-            .execute(code)
+        useCaseFactory.getDataForQRCodeUseCase
+            .execute()
             .onEach { dataState ->
 
-                dataState.data?.let { qrBits ->
-                    callback.setProgressDialog(view, qrBits)
+                _QRCodeDialogLoading.postValue(dataState.loading)
+
+                dataState.data?.let { string ->
+                    var qrBits = useCaseFactory.getQRCodeUseCase.execute(string)
+                    _displayDialog.postValue(qrBits)
                 }
 
-            }.launchIn(viewModelScope)
+            }.launchIn(GlobalScope)
 
     }
 }
