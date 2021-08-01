@@ -67,7 +67,7 @@ constructor(
     private val _selectedYear = MutableLiveData<Int>()
     private val selectedYear: LiveData<Int> get() = _selectedYear
 
-    private var selectedCity: String? = null
+    private var selectedCity: String = ""
     private var selectedFacility: String? = null
 
     val _patientName = MutableLiveData<String>()
@@ -111,7 +111,7 @@ constructor(
 
         EspressoIdlingResource.increment()
         useCaseFactory.getFacilitiesForSigningForVaccinationUseCase
-            .execute('K').onEach { dataState ->
+            .execute(selectedCity.substring(0, 2)).onEach { dataState ->
 
                 _facilitiesLoading.postValue(dataState.loading)
 
@@ -152,15 +152,15 @@ constructor(
         when (item) {
 
             "Miasto:" -> {
-                selectedCity = null
+                selectedCity = ""
                 selectedFacility = null
                 _isFacilitySpinnerVisible.postValue(false)
             }
 
             else -> {
-                fetchFacilities()
                 selectedCity = item
                 _isFacilitySpinnerVisible.postValue(true)
+                fetchFacilities()
             }
         }
     }

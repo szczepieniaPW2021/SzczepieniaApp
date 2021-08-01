@@ -6,13 +6,13 @@ import pl.students.szczepieniaapp.util.DataState
 
 class GetFacilitiesForSigningForVaccinationUseCase {
 
-    fun execute(letter: Char): Flow<DataState<ArrayList<String>>> = flow {
+    fun execute(abbreviation: String): Flow<DataState<ArrayList<String>>> = flow {
 
         try {
             emit(DataState.loading())
             Thread.sleep(1000L)
 
-            val cities = fetchFacilities(letter = letter)
+            val cities = fetchFacilities(abbreviation = abbreviation)
             emit(DataState.success(cities))
 
         } catch (e: Exception) {
@@ -21,13 +21,13 @@ class GetFacilitiesForSigningForVaccinationUseCase {
 
     }
 
-    private fun fetchFacilities(letter: Char): ArrayList<String> {
+    private fun fetchFacilities(abbreviation: String): ArrayList<String> {
         val data: ArrayList<String> = arrayListOf()
         data.add("Punkt:")
-        data.add("Punkt ${letter}1")
-        data.add("Punkt ${letter}2")
-        data.add("Punkt ${letter}3")
-        data.add("Punkt ${letter}4")
+        data.add("Punkt ${abbreviation}1")
+        data.add("Punkt ${abbreviation}2")
+        data.add("Punkt ${abbreviation}3")
+        data.add("Punkt ${abbreviation}4")
         return data
     }
 }
