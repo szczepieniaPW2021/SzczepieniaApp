@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,19 @@ class SearchPatientFragment : MyFragment<SearchPatientFragmentBinding>(), Search
         binding.viewmodel = viewModel
         viewModel.apply {
             binding.searchView.setOnQueryTextListener(this)
+
+            patientSearchLoading.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.searchPatientProgressBar.visibility = View.VISIBLE
+                    binding.patientDataLinearLayout.visibility = View.GONE
+                    binding.registerVaccinationBtn.visibility = View.GONE
+                    binding.registerVaccinationLinearLayout.visibility = View.GONE
+                    binding.noPatientLinearLayout.visibility = View.GONE
+                } else {
+                    binding.searchPatientProgressBar.visibility = View.GONE
+                }
+            }
+
             persons.observe(viewLifecycleOwner) {
                 if (it.isNotEmpty()) {
                     binding.patientNameTextView.text = getPatientName()

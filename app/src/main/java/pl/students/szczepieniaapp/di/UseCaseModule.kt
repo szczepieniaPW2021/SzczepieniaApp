@@ -22,7 +22,11 @@ object UseCaseModule {
         getFacilitiesForSigningForVaccinationUseCase: GetFacilitiesForSigningForVaccinationUseCase,
         getVisitsForSigningForVaccinationUseCase: GetVisitsForSigningForVaccinationUseCase,
         signForVaccinationUseCase: SignForVaccinationUseCase,
-        getDataForQRCodeUseCase: GetDataForQRCodeUseCase
+        getDataForQRCodeUseCase: GetDataForQRCodeUseCase,
+        getPatientByNameUseCase: GetPatientByNameUseCase,
+        getPatientByIdNumberUseCase: GetPatientByIdNumberUseCase,
+        getVaccineDoseUseCase: GetVaccineDoseUseCase,
+        getVaccineTypeUseCase: GetVaccineTypeUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
@@ -31,7 +35,11 @@ object UseCaseModule {
             getFacilitiesForSigningForVaccinationUseCase,
             getVisitsForSigningForVaccinationUseCase,
             signForVaccinationUseCase,
-            getDataForQRCodeUseCase
+            getDataForQRCodeUseCase,
+            getPatientByNameUseCase,
+            getPatientByIdNumberUseCase,
+            getVaccineDoseUseCase,
+            getVaccineTypeUseCase
         )
     }
 
@@ -86,4 +94,31 @@ object UseCaseModule {
         return GetDataForQRCodeUseCase()
     }
 
+    @ViewModelScoped
+    @Provides
+    fun provideGetPatientByNameUseCase(
+    ): GetPatientByNameUseCase {
+        return GetPatientByNameUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetPatientByIdNumberUseCase(
+    ): GetPatientByIdNumberUseCase {
+        return GetPatientByIdNumberUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetVaccineDoseUseCase(
+    ): GetVaccineDoseUseCase {
+        return GetVaccineDoseUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetVaccineTypeUseCase(
+    ): GetVaccineTypeUseCase {
+        return GetVaccineTypeUseCase()
+    }
 }
