@@ -7,11 +7,14 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
@@ -57,29 +60,43 @@ constructor(
     private val _displayOrderList = MutableLiveData<Boolean>()
     val displayOrderList: LiveData<Boolean> get() = _displayOrderList
 
+    private val _initialLoading = MutableLiveData<Boolean>()
+    val initialLoading: LiveData<Boolean> get() = _initialLoading
+
     private var vaccineType = ""
     private var list = mutableListOf<Order>()
     private lateinit var childFM: FragmentManager
 
     init {
+        fetchVaccineType()
         _passengersNumberData.postValue(1)
-        _vaccineTypes.postValue(fetchVaccineType())
         _address.postValue("")
         _postalCode.postValue("")
+        _initialLoading.postValue(true)
+    }
+
+    private fun fetchVaccineType() {
+
+        useCaseFactory.getVaccineTypeUseCase
+            .execute()
+            .onEach { dataState ->
+
+                _initialLoading.postValue(dataState.loading)
+
+                dataState.data?.let {vaccineTypes ->
+                    _vaccineTypes.postValue(vaccineTypes)
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "fetchVaccineType: $error")
+                }
+
+            }.launchIn(GlobalScope)
+
     }
 
     fun getFragmentManager(fragmentManager: FragmentManager) {
         childFM = fragmentManager
-    }
-
-    private fun fetchVaccineType(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Select vaccine:")
-        data.add("Astra Zeneca")
-        data.add("Pfizer/BioNTech")
-        data.add("Moderna")
-        data.add("Johnson & Johnson")
-        return data
     }
 
     fun onItemsNumberIncClick(view: View) {
