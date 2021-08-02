@@ -10,6 +10,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -66,6 +71,8 @@ constructor(
     private var vaccineType = ""
     private var list = mutableListOf<Order>()
     private lateinit var childFM: FragmentManager
+
+    private val disposable = CompositeDisposable()
 
     init {
         fetchVaccineType()
@@ -172,20 +179,42 @@ constructor(
     }
 
     fun makeOrder(view: View){
-        GlobalScope.launch(Dispatchers.Main)  {
-            Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
-            callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view.context, view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text))
-            Navigation.findNavController(view).navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
-        }
+        Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
+        callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
 
+        disposable.add(
+            useCaseFactory.orderVaccineUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate {
+                    callback.dismissDialog()
+                }
+                .subscribeWith(object : DisposableCompletableObserver() {
+                    override fun onComplete() {
+
+                        callback.dismissDialog()
+                        callback.toastMessage(
+                            view.context,
+                            view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text)
+                        )
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {}
+                    
+                })
+        )
     }
 
     fun scrollToBottom(scrollView: NestedScrollView) {
         scrollView.post {
             scrollView.fullScroll(View.FOCUS_DOWN)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }
