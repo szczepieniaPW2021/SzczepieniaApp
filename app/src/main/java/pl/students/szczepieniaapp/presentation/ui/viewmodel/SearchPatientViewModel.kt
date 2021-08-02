@@ -9,6 +9,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -44,6 +48,8 @@ constructor(
     var lotNumber = ""
     private var vaccineDose = ""
     private var vaccineType = ""
+
+    private val disposable = CompositeDisposable()
 
     init{
         fetchVaccineDose()
@@ -128,13 +134,24 @@ constructor(
             return
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view.context, view.context.resources.getString(R.string.search_patient_fragment_vaccination_registered_text))
-            Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
-        }
+        callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
+
+        disposable.add(
+            useCaseFactory.registerVaccinationUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        callback.dismissDialog()
+                        callback.toastMessage(view.context, view.context.resources.getString(R.string.search_patient_fragment_vaccination_registered_text))
+                        Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        callback.dismissDialog()
+                    }
+                })
+        )
     }
 
     private fun fetchVaccineDose() {
@@ -198,5 +215,10 @@ constructor(
             "Select vaccine:" -> { "" }
             else -> { item }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }
