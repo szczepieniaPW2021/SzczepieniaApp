@@ -1,11 +1,9 @@
 package pl.students.szczepieniaapp.usecase
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import io.reactivex.Single
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
-import pl.students.szczepieniaapp.util.DataState
 
 class GetGoogleMapRouteUseCase(
     private val repository: GoogleMapRouteRepository,
@@ -15,10 +13,7 @@ class GetGoogleMapRouteUseCase(
         origin: String,
         destination: String,
         apiKey: String
-    ): Flow<DataState<MyRoute>> = flow {
-
-        try {
-            emit(DataState.loading<MyRoute>())
+    ): Single<MyRoute> {
 
             val routes = mapper.mapToDomainModel(
                 repository.getRoute(
@@ -28,10 +23,6 @@ class GetGoogleMapRouteUseCase(
                 )[0]
             )
 
-            emit(DataState.success(routes))
-
-        } catch (e: Exception){
-            emit(DataState.error<MyRoute>(e.message?: "Unknown error"))
-        }
+        return Single.just(routes)
     }
 }

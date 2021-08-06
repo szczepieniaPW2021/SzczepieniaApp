@@ -4,22 +4,26 @@
     <string name="go_to_driver">GO TO DRIVER FRAGMENT</string>
     <string name="login_fragment">Login:</string>
     <string name="patient_fragment">PATIENT FRAGMENT</string>
-    <string name="driver_fragment">DRIVER FRAGMENT</string>
     <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
     <string name="my_position_map_text">I am here.</string>
     <string name="destination_map_text">Destination</string>
-    <string name="location_not_fetched_map_text">Unable to find route</string>
-    <string name="finding_route_map_text">Finding route...</string>
-    <string name="distance_map_text">Distance: %s</string>
-    <string name="duration_map_text">Duration: %s</string>
-    <string name="arrival_address_map_text">Arrival address: %s</string>
-    <string name="departure_address_map_text">Departure address: %s</string>
     <string name="warning_map_permission_text">Warning! You need to accept location permissions to use maps in this app.</string>
     <string name="warning_no_internet_text">You have lost connection to the internet. This app is offline.</string>
     <string name="version_text">Version: %s</string>
     <string name="welcome_text">Welcome!</string>
     <string name="login_text">Log in</string>
     <string name="selection_not_implemented_text">Selection not implemented!</string>
+
+    <!--    Driver Fragment strings-->
+    <string name="driver_fragment">Welcome driver!</string>
+    <string name="location_not_fetched_map_text">Unable to find route</string>
+    <string name="finding_route_map_text">Finding route...</string>
+    <string name="distance_map_text">Distance: %s</string>
+    <string name="duration_map_text">Duration: %s</string>
+    <string name="arrival_address_map_text">Arrival address: %s</string>
+    <string name="departure_address_map_text">Departure address: %s</string>
+    <string name="driver_fragment_snackbar_text">We couldn\'t load route. Try again.</string>
+    <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->
     <string name="patient_fragment_title_text">Welcome patient!</string>

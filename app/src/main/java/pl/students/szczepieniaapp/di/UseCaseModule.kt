@@ -28,7 +28,8 @@ object UseCaseModule {
         getVaccineDoseUseCase: GetVaccineDoseUseCase,
         getVaccineTypeUseCase: GetVaccineTypeUseCase,
         registerVaccinationUseCase: RegisterVaccinationUseCase,
-        orderVaccineUseCase: OrderVaccineUseCase
+        orderVaccineUseCase: OrderVaccineUseCase,
+        getDestinationCoordinatesUseCase: GetDestinationCoordinatesUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
@@ -43,7 +44,8 @@ object UseCaseModule {
             getVaccineDoseUseCase,
             getVaccineTypeUseCase,
             registerVaccinationUseCase,
-            orderVaccineUseCase
+            orderVaccineUseCase,
+            getDestinationCoordinatesUseCase
         )
     }
 
@@ -138,5 +140,12 @@ object UseCaseModule {
     fun provideOrderVaccineUseCase(
     ): OrderVaccineUseCase {
         return OrderVaccineUseCase()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetDestinationCoordinatesUseCase(
+    ): GetDestinationCoordinatesUseCase {
+        return GetDestinationCoordinatesUseCase()
     }
 }

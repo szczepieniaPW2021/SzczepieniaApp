@@ -13,6 +13,7 @@ class UseCaseFactory(
     val getVaccineDoseUseCase: GetVaccineDoseUseCase,
     val getVaccineTypeUseCase: GetVaccineTypeUseCase,
     val registerVaccinationUseCase: RegisterVaccinationUseCase,
-    val orderVaccineUseCase: OrderVaccineUseCase
+    val orderVaccineUseCase: OrderVaccineUseCase,
+    val getDestinationCoordinatesUseCase: GetDestinationCoordinatesUseCase
 )
 
