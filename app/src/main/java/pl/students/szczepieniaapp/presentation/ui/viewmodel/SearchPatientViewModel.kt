@@ -6,15 +6,20 @@ import android.widget.AdapterView
 import android.widget.SearchView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
+import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
 import javax.inject.Inject
@@ -37,9 +42,19 @@ constructor(
     private val _vaccineTypes = MutableLiveData<ArrayList<String>>()
     val vaccineTypes: LiveData<ArrayList<String>> get() = _vaccineTypes
 
+    private val _patientSearchLoading = MutableLiveData<Boolean>()
+    val patientSearchLoading: LiveData<Boolean> get() = _patientSearchLoading
+
     var lotNumber = ""
     private var vaccineDose = ""
     private var vaccineType = ""
+
+    private val disposable = CompositeDisposable()
+
+    init{
+        fetchVaccineDose()
+        fetchVaccineType()
+    }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         isOnlyNumeric(query)
@@ -56,56 +71,52 @@ constructor(
             if (string.length != 11) {
                 callback.toastMessage(context.value!!, context.value!!.resources.getString(R.string.search_patient_fragment_wrong_pesel_length_text))
             } else {
-                Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by pesel: ${getPatientByPesel(string.toLong())}")
-                _persons.postValue(getPatientByPesel(string.toLong()))
-                _vaccineDoses.postValue(fetchVaccineDose())
-                _vaccineTypes.postValue(fetchVaccineType())
+                Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by id number}")
+                getPatientByIdNumber(string.toLong())
             }
         } else {
-            Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by name: ${getPatientByName(string)}")
-            _persons.postValue(getPatientByName(string))
-            _vaccineDoses.postValue(fetchVaccineDose())
-            _vaccineTypes.postValue(fetchVaccineType())
+            Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by name")
+            getPatientByName(string)
         }
     }
 
-    private fun getPatients(): HashMap<Long, String> {
-        val patients: HashMap<Long, String> = hashMapOf()
-        patients[12345678900L] = "Jan Nowak"
-        patients[12345678901L] = "Tomasz Kowalski"
-        patients[12345678902L] = "Paweł Podgórski"
-        patients[12345678903L] = "Jacek Nowak"
-        patients[12345678904L] = "Robert Nowacki"
-        patients[12345678905L] = "Mateusz Kowalski"
-        patients[12345678906L] = "Szymon Jackowiak"
-        patients[12345678907L] = "Tomasz Zięba"
-        return patients
+    private fun getPatientByIdNumber(idNumber: Long) {
+
+        useCaseFactory.getPatientByIdNumberUseCase
+            .execute(idNumber = idNumber)
+            .onEach { dataState ->
+
+                _patientSearchLoading.postValue(dataState.loading)
+
+                dataState.data?.let {patient ->
+                    _persons.postValue(patient)
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByIdNumber: $error")
+                }
+
+            }.launchIn(GlobalScope)
     }
 
-    private fun getPatientByPesel(pesel: Long): List<String> {
+    private fun getPatientByName(name: String) {
 
-        var person: MutableList<String> = mutableListOf()
+        useCaseFactory.getPatientByNameUseCase
+            .execute(name = name)
+            .onEach { dataState ->
 
-        getPatients()[pesel]?.let {
-            person.add(it)
-            person.add(pesel.toString())
-        }
+                _patientSearchLoading.postValue(dataState.loading)
 
-        return person
-    }
+                dataState.data?.let {patient ->
+                    _persons.postValue(patient)
 
-    private fun getPatientByName(name: String): List<String> {
+                }
 
-        var person: MutableList<String> = mutableListOf()
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByName: $error")
+                }
 
-        getPatients().filterValues { it == name }.keys.let {
-            if (it.isNotEmpty()) {
-                person.add(name)
-                person.add(it.first().toString())
-            }
-        }
-
-        return person
+            }.launchIn(GlobalScope)
     }
 
     fun getPatientName() : String {
@@ -123,31 +134,60 @@ constructor(
             return
         }
 
-        GlobalScope.launch(Dispatchers.Main) {
-            callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view.context, view.context.resources.getString(R.string.search_patient_fragment_vaccination_registered_text))
-            Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
-        }
+        callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
+
+        disposable.add(
+            useCaseFactory.registerVaccinationUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        callback.dismissDialog()
+                        callback.toastMessage(view.context, view.context.resources.getString(R.string.search_patient_fragment_vaccination_registered_text))
+                        Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        callback.dismissDialog()
+                    }
+                })
+        )
     }
 
-    private fun fetchVaccineDose(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Select dose:")
-        data.add("Dose 1")
-        data.add("Dose 2")
-        return data
+    private fun fetchVaccineDose() {
+
+        useCaseFactory.getVaccineDoseUseCase
+            .execute()
+            .onEach { dataState ->
+
+                dataState.data?.let {vaccineDoses ->
+                    _vaccineDoses.postValue(vaccineDoses)
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "fetchVaccineDose: $error")
+                }
+
+            }.launchIn(viewModelScope)
+
     }
 
-    private fun fetchVaccineType(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Select vaccine:")
-        data.add("Astra Zeneca")
-        data.add("Pfizer/BioNTech")
-        data.add("Moderna")
-        data.add("Johnson & Johnson")
-        return data
+    private fun fetchVaccineType() {
+
+        useCaseFactory.getVaccineTypeUseCase
+            .execute()
+            .onEach { dataState ->
+
+                dataState.data?.let {vaccineTypes ->
+                    _vaccineTypes.postValue(vaccineTypes)
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "fetchVaccineType: $error")
+                }
+
+            }.launchIn(viewModelScope)
+
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -175,5 +215,10 @@ constructor(
             "Select vaccine:" -> { "" }
             else -> { item }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

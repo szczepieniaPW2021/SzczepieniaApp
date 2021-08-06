@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,12 +38,41 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         childFM = childFragmentManager
         binding.viewmodel = viewModel
         viewModel.apply {
+
+            citiesLoading.observe(viewLifecycleOwner){
+                if (it) {
+                    binding.selectCityProgressBar.visibility = View.VISIBLE
+                    binding.spinnersLinearLayout.visibility = View.GONE
+                } else {
+                    binding.selectCityProgressBar.visibility = View.GONE
+                    binding.spinnersLinearLayout.visibility = View.VISIBLE
+                }
+            }
+
             cities.observe(viewLifecycleOwner){
                 setSpinner(it as List<Objects>, binding.selectCitySpinner)
             }
-            facilities.observe(viewLifecycleOwner){
-                setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+
+            facilitiesLoading.observe(viewLifecycleOwner) {
+                if (it) {
+                    binding.selectFacilityProgressBar.visibility = View.VISIBLE
+                    binding.selectFacilityTextView.visibility = View.GONE
+                    binding.selectFacilityRelativeLayout.visibility = View.GONE
+                } else {
+                    binding.selectFacilityProgressBar.visibility = View.GONE
+                    binding.selectFacilityTextView.visibility = View.VISIBLE
+                    binding.selectFacilityRelativeLayout.visibility = View.VISIBLE
+                }
             }
+
+            facilities.observe(viewLifecycleOwner){
+                if (!it.isNullOrEmpty()) setSpinner(it as List<Objects>, binding.selectFacilitySpinner)
+            }
+
+            visitsLoading.observe(viewLifecycleOwner) {
+                if (it) setDialog(requireView(), getString(R.string.patient_calendar_fragment_downloading_visits_text)) else dismissDialog()
+            }
+
             selectedVisit.observe(viewLifecycleOwner){
                 if (it != null) {
                     binding.patientPersonalDataLinearLayout.visibility = View.VISIBLE
@@ -125,6 +155,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         textView.text = string
         dialogBuilder.setView(newView)
         dialog = dialogBuilder.create()
+        dialog.setCancelable(false)
         dialog.show()
 
     }

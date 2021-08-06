@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,19 +14,20 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
+import pl.students.szczepieniaapp.presentation.ui.listener.DriverListener
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.DriverViewModel
 
 
 @AndroidEntryPoint
-class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
+class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, DriverListener {
 
     private val viewModel : DriverViewModel by viewModels()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private var mMap: GoogleMap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,15 +38,26 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
         binding.viewmodel = viewModel
 
         viewModel.apply {
+
+            initLoading.observe(viewLifecycleOwner) {
+                if (it) binding.driverFragmentProgressBar.visibility = View.VISIBLE else binding.driverFragmentProgressBar.visibility = View.GONE
+            }
+
             myRoute.observe(viewLifecycleOwner) {
                 if (it != null) {
                     binding.durationTextView.text = viewModel.getDistanceAsString(it.duration!!)
                     binding.distanceTextView.text = viewModel.getTimeAsString(it.distance!!)
                     binding.endAddressTextView.text = viewModel.getArrivalAddressAsString(it.endAddress!!)
                     binding.startAddressTextView.text = viewModel.getDepartureAddressAsString(it.startAddress!!)
-                    mMap?.addPolyline(viewModel.drawPolyline(it.points!!))
+                    drawRoute()
                     binding.navContainer.visibility = View.VISIBLE
                     binding.navBtn.visibility = View.VISIBLE
+                }
+            }
+
+            destination.observe(viewLifecycleOwner) {
+                if (it != null){
+                    setMarkersForMap()
                 }
             }
 
@@ -67,8 +80,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
 
         task.addOnSuccessListener {
             if (it != null) {
-                viewModel._myPosition.postValue(LatLng(it.latitude, it.longitude))
-                viewModel.getGoogleMapRoute(LatLng(it.latitude, it.longitude))
+                viewModel.getDestination(LatLng(it.latitude, it.longitude), this.requireView())
                 binding.mapView.getMapAsync(this)
             }
         }
@@ -76,18 +88,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
-            mMap = googleMap
-            mMap!!.addMarker(MarkerOptions().position(viewModel.myPosition.value!!).title(context?.resources?.getString(R.string.my_position_map_text)))
-            mMap!!.addMarker(MarkerOptions().position(viewModel.destination.value!!).title(context?.resources?.getString(R.string.destination_map_text)))
-
-            val builder = LatLngBounds.Builder()
-            builder.include(viewModel.myPosition.value!!)
-            builder.include(viewModel.destination.value!!)
-
-            val padding = 75
-            val bounds = builder.build()
-
-            mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
+            viewModel.mMap = googleMap
         }
     }
 
@@ -124,5 +125,9 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         binding.mapView?.onSaveInstanceState(outState)
+    }
+
+    override fun displaySnackbar(view: View) {
+        Snackbar.make(view, view.context.getString(R.string.driver_fragment_snackbar_text), Snackbar.LENGTH_LONG).show()
     }
 }

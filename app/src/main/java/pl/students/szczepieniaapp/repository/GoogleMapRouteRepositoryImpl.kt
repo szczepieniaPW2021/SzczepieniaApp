@@ -8,7 +8,7 @@ class GoogleMapRouteRepositoryImpl(
     private val service: GoogleMapRouteService,
 ) : GoogleMapRouteRepository {
 
-    override suspend fun getRoute(
+    override fun getRoute(
         origin: String,
         destination: String,
         apiKey: String

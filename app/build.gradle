@@ -65,6 +65,11 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$google_maps"
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 
+    //rx
+    def rxJavaVersion = '2.0.1'
+    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+
     def hilt_lifecycle_view_model = "1.0.0-alpha01"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle_view_model"
     kapt "androidx.hilt:hilt-compiler:$hilt_lifecycle_view_model"

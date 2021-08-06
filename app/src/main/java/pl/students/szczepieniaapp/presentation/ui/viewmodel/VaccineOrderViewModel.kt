@@ -7,11 +7,19 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
@@ -57,29 +65,45 @@ constructor(
     private val _displayOrderList = MutableLiveData<Boolean>()
     val displayOrderList: LiveData<Boolean> get() = _displayOrderList
 
+    private val _initialLoading = MutableLiveData<Boolean>()
+    val initialLoading: LiveData<Boolean> get() = _initialLoading
+
     private var vaccineType = ""
     private var list = mutableListOf<Order>()
     private lateinit var childFM: FragmentManager
 
+    private val disposable = CompositeDisposable()
+
     init {
+        fetchVaccineType()
         _passengersNumberData.postValue(1)
-        _vaccineTypes.postValue(fetchVaccineType())
         _address.postValue("")
         _postalCode.postValue("")
+        _initialLoading.postValue(true)
+    }
+
+    private fun fetchVaccineType() {
+
+        useCaseFactory.getVaccineTypeUseCase
+            .execute()
+            .onEach { dataState ->
+
+                _initialLoading.postValue(dataState.loading)
+
+                dataState.data?.let {vaccineTypes ->
+                    _vaccineTypes.postValue(vaccineTypes)
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(SearchPatientViewModel::class.java.simpleName, "fetchVaccineType: $error")
+                }
+
+            }.launchIn(GlobalScope)
+
     }
 
     fun getFragmentManager(fragmentManager: FragmentManager) {
         childFM = fragmentManager
-    }
-
-    private fun fetchVaccineType(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Select vaccine:")
-        data.add("Astra Zeneca")
-        data.add("Pfizer/BioNTech")
-        data.add("Moderna")
-        data.add("Johnson & Johnson")
-        return data
     }
 
     fun onItemsNumberIncClick(view: View) {
@@ -155,20 +179,42 @@ constructor(
     }
 
     fun makeOrder(view: View){
-        GlobalScope.launch(Dispatchers.Main)  {
-            Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
-            callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
-            delay(2000)
-            callback.dismissDialog()
-            callback.toastMessage(view.context, view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text))
-            Navigation.findNavController(view).navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
-        }
+        Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
+        callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
 
+        disposable.add(
+            useCaseFactory.orderVaccineUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doAfterTerminate {
+                    callback.dismissDialog()
+                }
+                .subscribeWith(object : DisposableCompletableObserver() {
+                    override fun onComplete() {
+
+                        callback.dismissDialog()
+                        callback.toastMessage(
+                            view.context,
+                            view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text)
+                        )
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {}
+                    
+                })
+        )
     }
 
     fun scrollToBottom(scrollView: NestedScrollView) {
         scrollView.post {
             scrollView.fullScroll(View.FOCUS_DOWN)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

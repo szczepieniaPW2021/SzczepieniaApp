@@ -11,12 +11,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableCompletableObserver
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.PatientCalendarFragment
 import pl.students.szczepieniaapp.presentation.ui.fragment.VisitsDialogFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.PatientCalendarListener
+import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
+import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -25,7 +33,7 @@ import kotlin.collections.ArrayList
 class PatientCalendarViewModel
 @Inject
 constructor(
-
+    private val useCaseFactory: UseCaseFactory
 ) : MyViewModel(), AdapterView.OnItemSelectedListener {
 
     private var callback: PatientCalendarListener = PatientCalendarFragment()
@@ -33,14 +41,23 @@ constructor(
     private val _cities = MutableLiveData<ArrayList<String>>()
     val cities: LiveData<ArrayList<String>> get() = _cities
 
+    private val _citiesLoading = MutableLiveData<Boolean>()
+    val citiesLoading: LiveData<Boolean> get() = _citiesLoading
+
     private val _facilities = MutableLiveData<ArrayList<String>>()
     val facilities: LiveData<ArrayList<String>> get() = _facilities
+
+    private val _facilitiesLoading = MutableLiveData<Boolean>()
+    val facilitiesLoading: LiveData<Boolean> get() = _facilitiesLoading
 
     private val _isFacilitySpinnerVisible = MutableLiveData<Boolean>()
     val isFacilitySpinnerVisible: LiveData<Boolean> get() = _isFacilitySpinnerVisible
 
     private val _isCalendarVisible = MutableLiveData<Boolean>()
     val isCalendarVisible: LiveData<Boolean> get() = _isCalendarVisible
+
+    private val _visitsLoading = MutableLiveData<Boolean>()
+    val visitsLoading: LiveData<Boolean> get() = _visitsLoading
 
     val _selectedVisit = MutableLiveData<String>()
     val selectedVisit: LiveData<String> get() = _selectedVisit
@@ -54,7 +71,7 @@ constructor(
     private val _selectedYear = MutableLiveData<Int>()
     private val selectedYear: LiveData<Int> get() = _selectedYear
 
-    private var selectedCity: String? = null
+    private var selectedCity: String = ""
     private var selectedFacility: String? = null
 
     val _patientName = MutableLiveData<String>()
@@ -66,31 +83,55 @@ constructor(
     val _patientIdNumber = MutableLiveData<String>()
     val patientIdNumber: LiveData<String> get() = _patientIdNumber
 
+    private val disposable = CompositeDisposable()
+
     init {
-        _cities.postValue(fetchCities())
+        fetchCities()
+        _isCalendarVisible.postValue(false)
         _patientName.postValue(null)
         _patientLastName.postValue(null)
         _patientIdNumber.postValue(null)
     }
 
-    private fun fetchCities(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Miasto:")
-        data.add("Warszawa")
-        data.add("Kraków")
-        data.add("Poznań")
-        data.add("Nowy Sącz")
-        return data
+    private fun fetchCities() {
+        _facilities.postValue(null)
+        EspressoIdlingResource.increment()
+        useCaseFactory.getCitiesForSigningForVaccinationUseCase
+            .execute().onEach { dataState ->
+
+                _citiesLoading.postValue(dataState.loading)
+
+                dataState.data?.let { cities ->
+                    _cities.postValue(cities)
+                    EspressoIdlingResource.decrement()
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(PatientCalendarViewModel::class.java.simpleName, "fetchCities: $error")
+                }
+
+            }.launchIn(GlobalScope)
     }
 
-    private fun fetchFacilities(): ArrayList<String> {
-        val data: ArrayList<String> = arrayListOf()
-        data.add("Punkt:")
-        data.add("Punkt 1")
-        data.add("Punkt 2")
-        data.add("Punkt 3")
-        data.add("Punkt 4")
-        return data
+    private fun fetchFacilities() {
+
+        EspressoIdlingResource.increment()
+        useCaseFactory.getFacilitiesForSigningForVaccinationUseCase
+            .execute(selectedCity.substring(0, 2)).onEach { dataState ->
+
+                _facilitiesLoading.postValue(dataState.loading)
+
+                dataState.data?.let { facilities ->
+                    _facilities.postValue(facilities)
+                    EspressoIdlingResource.decrement()
+                }
+
+                dataState.error?.let { error ->
+                    Log.e(PatientCalendarViewModel::class.java.simpleName, "fetchFacilities: $error")
+                }
+
+            }.launchIn(GlobalScope)
+
     }
 
     fun arePatientDataProvided(): Boolean {
@@ -117,15 +158,15 @@ constructor(
         when (item) {
 
             "Miasto:" -> {
-                selectedCity = null
+                selectedCity = ""
                 selectedFacility = null
                 _isFacilitySpinnerVisible.postValue(false)
             }
 
             else -> {
-                _facilities.postValue(fetchFacilities())
                 selectedCity = item
                 _isFacilitySpinnerVisible.postValue(true)
+                fetchFacilities()
             }
         }
     }
@@ -156,25 +197,21 @@ constructor(
         return calendar.timeInMillis
     }
 
-    fun selectVisits(dayOfMonth: Int) : Array<String> {
-        if (dayOfMonth%2 == 0) {
-            return arrayOf(
-                createVisitTime(Calendar.HOUR - 2, "15"),
-                createVisitTime(Calendar.HOUR - 2, "30"),
-                createVisitTime(Calendar.HOUR - 2, "45"),
-                createVisitTime(Calendar.HOUR - 1, "00"),
-                createVisitTime(Calendar.HOUR - 1, "15"),
-                createVisitTime(Calendar.HOUR - 1, "30"),
-                createVisitTime(Calendar.HOUR - 1, "45"),
-            )
-        }
-        return arrayOf()
-    }
+    private fun selectVisits(dayOfMonth: Int, childFM: FragmentManager) {
+        EspressoIdlingResource.increment()
+        useCaseFactory.getVisitsForSigningForVaccinationUseCase
+            .execute(dayOfMonth = dayOfMonth)
+            .onEach { dataState ->
 
-    private fun createVisitTime(hour: Int, minutes: String):String {
-        return if (hour < 10) {
-            "0$hour:$minutes"
-        } else "$hour:$minutes"
+                _visitsLoading.postValue(dataState.loading)
+
+                dataState.data?.let { visits ->
+                    EspressoIdlingResource.decrement()
+                    var dialogFragment = VisitsDialogFragment(visits)
+                    dialogFragment.show(childFM, "VisitsDialogFragment")
+                }
+
+            }.launchIn(GlobalScope)
     }
 
     fun getTimeAsString(context: Context): String {
@@ -190,24 +227,42 @@ constructor(
     }
 
     fun registerVisit(view: View) {
-        if (checkIsIdNumberIsCorrect()) {
-            GlobalScope.launch(Dispatchers.Main) {
-                callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
-                delay(2000)
-                callback.dismissDialog()
-                callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text))
-                Navigation.findNavController(view).navigate(R.id.action_patientCalendarFragment_to_patientFragment)
-            }
-        } else {
+
+        if (!checkIsIdNumberIsCorrect()) {
             callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_incorrect_id_number_text))
+            return
         }
+
+        callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
+
+        disposable.add(
+            useCaseFactory.signForVaccinationUseCase.execute()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver() {
+                    override fun onComplete() {
+                        callback.dismissDialog()
+                        callback.toastMessage(
+                            view,
+                            view.context.resources.getString(R.string.patient_calendar_fragment_registered_for_visit_text)
+                        )
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_patientCalendarFragment_to_patientFragment)
+                    }
+
+                    override fun onError(e: Throwable?) {
+                        callback.dismissDialog()
+                    }
+
+                })
+        )
+
     }
 
     fun setCalendarView(calendar: CalendarView, childFM: FragmentManager) {
         calendar.setOnDateChangeListener { _, year, month, dayOfMonth ->
             _selectedVisit.postValue(null)
-            var dialogFragment = VisitsDialogFragment(selectVisits(dayOfMonth))
-            dialogFragment.show(childFM, "VisitsDialogFragment")
+            selectVisits(dayOfMonth = dayOfMonth, childFM = childFM)
             _selectedDay.postValue(dayOfMonth)
             _selectedMonth.postValue(month + 1)
             _selectedYear.postValue(year)
@@ -233,5 +288,10 @@ constructor(
                 Integer.parseInt(patientIdNumber.value?.get(9).toString()) * 3
 
         return 10 - Integer.parseInt(sum.toString().last().toString()) == Integer.parseInt(patientIdNumber.value?.get(10).toString())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 }

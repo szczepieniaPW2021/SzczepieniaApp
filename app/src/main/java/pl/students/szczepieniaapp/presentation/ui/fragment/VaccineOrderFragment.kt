@@ -43,6 +43,16 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
                 binding.passengerNumberTextView.text = it.toString()
             }
 
+            initialLoading.observe(viewLifecycleOwner){
+                if (it) {
+                    binding.addItemLinearLayoutProgressBar.visibility = View.VISIBLE
+                    binding.addItemLinearLayout.visibility = View.GONE
+                } else {
+                    binding.addItemLinearLayoutProgressBar.visibility = View.GONE
+                    binding.addItemLinearLayout.visibility = View.VISIBLE
+                }
+            }
+
             displayOrderList.observe(viewLifecycleOwner) {
                 if (it) {
                     binding.orderListLinearLayout.visibility = View.VISIBLE
