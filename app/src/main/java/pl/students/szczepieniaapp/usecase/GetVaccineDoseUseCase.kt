@@ -24,9 +24,9 @@ class GetVaccineDoseUseCase {
 
     private fun fetchVaccineDose(): ArrayList<String> {
         val data: ArrayList<String> = arrayListOf()
-        data.add("Select dose:")
-        data.add("Dose 1")
-        data.add("Dose 2")
+        data.add("Wybierz dawkę:")
+        data.add("Dawka 1")
+        data.add("Dawka 2")
         return data
     }
 }

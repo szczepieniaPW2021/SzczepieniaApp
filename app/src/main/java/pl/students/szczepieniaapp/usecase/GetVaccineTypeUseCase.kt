@@ -24,7 +24,7 @@ class GetVaccineTypeUseCase {
 
     private fun fetchVaccineType(): ArrayList<String> {
         val data: ArrayList<String> = arrayListOf()
-        data.add("Select vaccine:")
+        data.add("Wybierz szczepionkę:")
         data.add("Astra Zeneca")
         data.add("Pfizer/BioNTech")
         data.add("Moderna")

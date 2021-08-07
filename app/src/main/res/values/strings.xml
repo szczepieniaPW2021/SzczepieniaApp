@@ -5,8 +5,6 @@
     <string name="login_fragment">Login:</string>
     <string name="patient_fragment">PATIENT FRAGMENT</string>
     <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
-    <string name="my_position_map_text">I am here.</string>
-    <string name="destination_map_text">Destination</string>
     <string name="warning_map_permission_text">Warning! You need to accept location permissions to use maps in this app.</string>
     <string name="warning_no_internet_text">You have lost connection to the internet. This app is offline.</string>
     <string name="version_text">Version: %s</string>
@@ -22,7 +20,8 @@
     <string name="duration_map_text">Duration: %s</string>
     <string name="arrival_address_map_text">Arrival address: %s</string>
     <string name="departure_address_map_text">Departure address: %s</string>
-    <string name="driver_fragment_snackbar_text">We couldn\'t load route. Try again.</string>
+    <string name="my_position_map_text">I am here.</string>
+    <string name="destination_map_text">Destination</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->
@@ -58,7 +57,7 @@
     <string name="patient_calendar_fragment_selected_date_text">Selected date:</string>
     <string name="patient_calendar_fragment_selected_city_text">Selected city and facility:</string>
     <string name="patient_calendar_fragment_visits_details_text">Details of the visit:</string>
-    <string name="patient_calendar_fragment_downloading_visits_text">Downloading available visits</string>
+    <string name="patient_calendar_fragment_downloading_visits_text">Downloading available visits...</string>
     <string name="patient_calendar_fragment_registered_for_visit_text">You have been registered for the visit</string>
     <string name="patient_calendar_fragment_incorrect_id_number_text">You have provided incorrect id number!</string>
     <!--    Patient Calendar Fragment strings end here-->
@@ -104,8 +103,10 @@
     <string name="search_patient_fragment_lot_number_text">Add lot number:</string>
     <string name="search_patient_fragment_lot_number_hint_text">Add vaccine lot here...</string>
     <string name="search_patient_fragment_vaccination_register_data_not_complete_text">Please, provide all data needed to register vaccination!</string>
-    <string name="search_patient_fragment_vaccination_is_being_registered_text">Vaccination is being registered</string>
+    <string name="search_patient_fragment_vaccination_is_being_registered_text">Vaccination is being registered...</string>
     <string name="search_patient_fragment_vaccination_registered_text">Vaccination successfully registered!</string>
+    <string name="search_patient_fragment_select_vaccine_registered_text">Select vaccine:</string>
+    <string name="search_patient_fragment_select_dose_registered_text">Select dose:</string>
     <!--    Search Patient Fragment strings end here-->
 
     <!--    Doctor Fragment strings-->
@@ -132,7 +133,7 @@
     <string name="vaccine_order_fragment_address_hint_text">Address...</string>
     <string name="vaccine_order_fragment_postal_code_hint_text">Postal code...</string>
     <string name="vaccine_order_fragment_city_hint_text">City...</string>
-    <string name="vaccine_order_fragment_order_is_being_registered_text">Order is being registered</string>
+    <string name="vaccine_order_fragment_order_is_being_registered_text">Order is being registered...</string>
     <string name="vaccine_order_fragment_order_registered_toast_text">Order registered!</string>
     <!--    Vaccine Order Fragment strings end here-->
 

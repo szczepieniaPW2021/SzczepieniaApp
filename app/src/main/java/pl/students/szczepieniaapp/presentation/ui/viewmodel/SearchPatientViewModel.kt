@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
+import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -16,6 +17,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import pl.students.szczepieniaapp.BaseApplication
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
@@ -51,7 +53,7 @@ constructor(
 
     private val disposable = CompositeDisposable()
 
-    init{
+    init {
         fetchVaccineDose()
         fetchVaccineType()
     }
