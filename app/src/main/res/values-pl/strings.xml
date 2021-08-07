@@ -1,0 +1,159 @@
+<resources>
+    <string name="app_name">SzczepieniaApp</string>
+    <string name="go_to_patient">IDZ DO FRAGMENTU PACJENTA</string>
+    <string name="go_to_driver">IDZ DO FRAGMENTU KIEROWCY</string>
+    <string name="login_fragment">Logowanie:</string>
+    <string name="patient_fragment">FRAGMENT PACJENTA</string>
+    <string name="this_code_confirms_vaccination">TEN KOD POTWIERDZA SZCZEPIENIE</string>
+    <string name="warning_map_permission_text">Ostrzeżenie! Aby korzystać z map w tej aplikacji, musisz zaakceptować uprawnienia lokalizacji.</string>
+    <string name="warning_no_internet_text">Brak połączenia z Internetem. Aplikacja jest offline.</string>
+    <string name="version_text">Wersja: %s</string>
+    <string name="welcome_text">Witaj!</string>
+    <string name="login_text">Zaloguj</string>
+    <string name="selection_not_implemented_text">Wybór nie jest zaimplementowany!</string>
+
+    <!--    Driver Fragment strings-->
+    <string name="driver_fragment">Witaj kierowco!</string>
+    <string name="location_not_fetched_map_text">Nie można znaleźć trasy</string>
+    <string name="finding_route_map_text">Wyszukiwanie trasy...</string>
+    <string name="distance_map_text">Dystans: %s</string>
+    <string name="duration_map_text">Czas trwania: %s</string>
+    <string name="arrival_address_map_text">Adres przyjazdu: %s</string>
+    <string name="departure_address_map_text">Adres wyjazdu: %s</string>
+    <string name="my_position_map_text">Jestem tutaj</string>
+    <string name="destination_map_text">Cel</string>
+    <!--    Driver Fragment strings end here-->
+
+    <!--    Patient Fragment strings-->
+    <string name="patient_fragment_title_text">Witaj pacjencie!</string>
+    <string name="patient_fragment_list_header_text">Można tu znaleźć:</string>
+    <string name="patient_fragment_referrals_text">Skierowania</string>
+    <string name="patient_fragment_visits_text">Wizyty (rejestracje)</string>
+    <string name="patient_fragment_qr_code_text">Kod QR</string>
+    <!--    Patient Fragment strings end here-->
+
+    <!--    Patient navigation button strings-->
+    <string name="patient_bottom_nav_documents_text">Dokumenty</string>
+    <string name="patient_bottom_nav_calendar_text">Kalendarz</string>
+    <string name="patient_bottom_nav_qr_code_text">Kod QR</string>
+    <string name="patient_bottom_nav_logout_text">Wyloguj</string>
+    <!--    Patient navigation button strings end here-->
+
+    <!--    Doctor navigation button strings-->
+    <string name="doctor_bottom_nav_documents_text">Dokumenty</string>
+    <string name="doctor_bottom_nav_search_text">Rejestracja</string>
+    <string name="doctor_bottom_nav_logout_text">Wyloguj</string>
+    <!--    Doctor navigation button strings end here-->
+
+    <!--    Patient Calendar Fragment strings-->
+    <string name="patient_calendar_fragment_sign_up_vaccination_text">Zapisy na szczepienie</string>
+    <string name="patient_calendar_fragment_select_city_text">Wybierz miasto:</string>
+    <string name="patient_calendar_fragment_patient_name_text">Name:</string>
+    <string name="patient_calendar_fragment_patient_lastname_text">Nazwisko:</string>
+    <string name="patient_calendar_fragment_patient_id_text">PESEL:</string>
+    <string name="patient_calendar_fragment_select_facility_text">Wybierz placówkę:</string>
+    <string name="patient_calendar_fragment_sign_up_button_text">Zapisz się</string>
+    <string name="patient_calendar_fragment_selected_time_text">Wybierz czas:</string>
+    <string name="patient_calendar_fragment_selected_date_text">Wybierz datę:</string>
+    <string name="patient_calendar_fragment_selected_city_text">Wybrane miasto i placówka:</string>
+    <string name="patient_calendar_fragment_visits_details_text">Szczegóły wizyty:</string>
+    <string name="patient_calendar_fragment_downloading_visits_text">Pobieranie dostępnych wizyt...</string>
+    <string name="patient_calendar_fragment_registered_for_visit_text">Zostałeś zarejestrowany na wizytę</string>
+    <string name="patient_calendar_fragment_incorrect_id_number_text">Numer PESEL jest niepoprawny!</string>
+    <!--    Patient Calendar Fragment strings end here-->
+
+    <!--    Visits Time Dialog strings-->
+    <string name="visit_time_dialog_select_text">Wybierz czas wizyty:</string>
+    <string name="visit_time_dialog_no_visits_text">Serdecznie przepraszam. Brak wolnych wizyt w podanym terminie.</string>
+    <!--    Visits Time Dialog strings end here-->
+
+    <!--    Register Visit Dialog strings-->
+    <string name="register_visit_dialog_text">Wizyta jest rejestrowana...</string>
+    <!--    Register Visit Dialog strings strings end here-->
+
+    <!--    Vaccination QR Code Fragment strings-->
+    <string name="vaccination_qr_code_fragment_title_text">Kod QR potwierdzający szczepienie</string>
+    <string name="vaccination_qr_code_fragment_cancel_text">Anuluj</string>
+    <!--    Vaccination QR Code Fragment strings end here-->
+
+    <!--    Roles items -->
+    <string-array name="roles">
+        <item>Zaloguj się jako:</item>
+        <item>Pacjent</item>
+        <item>Kierowca</item>
+        <item>Doktor</item>
+        <item>Operator logistyczny</item>
+        <item>Kierownik placówki</item>
+        <item>Operator NFZ</item>
+    </string-array>
+    <!--    Roles items end here-->
+
+    <!--    Search Patient Fragment strings-->
+    <string name="search_patient_fragment_search_title_text">Rejestracja szczepienia</string>
+    <string name="search_patient_fragment_search_hint_text">Wprowadź PESEL lub imię i naziwsko...</string>
+    <string name="search_patient_fragment_wrong_pesel_length_text">PESEL musi zawierać 11 cyfr</string>
+    <string name="search_patient_fragment_patient_data_text">Dane pacjenta:</string>
+    <string name="search_patient_fragment_patient_pesel_text">PESEL: %s</string>
+    <string name="search_patient_fragment_patient_text">Imię i nazwisko: %s</string>
+    <string name="search_patient_fragment_no_patient_warning_text">Przepraszamy. Pacjent o podanych danych nie istnieje w bazie!</string>
+    <string name="search_patient_fragment_register_vaccination_btn_text">REJESTRUJ SZCZEPIENIE</string>
+    <string name="search_patient_fragment_register_vaccination_text">Dane szczepienia</string>
+    <string name="search_patient_fragment_select_vaccine_type_text">Szczepionka:</string>
+    <string name="search_patient_fragment_select_vaccine_dose_text">Dawka:</string>
+    <string name="search_patient_fragment_lot_number_text">Numer partii:</string>
+    <string name="search_patient_fragment_lot_number_hint_text">Dodaj numer partii...</string>
+    <string name="search_patient_fragment_vaccination_register_data_not_complete_text">Please, provide all data needed to register vaccination!</string>
+    <string name="search_patient_fragment_vaccination_is_being_registered_text">Szczepeienie jest rejestrowane...</string>
+    <string name="search_patient_fragment_vaccination_registered_text">Szczepienie zostało zarejestrowane!</string>
+    <string name="search_patient_fragment_select_vaccine_registered_text">Wybierz szczepionkę:</string>
+    <string name="search_patient_fragment_select_dose_registered_text">Wybierz dawkę:</string>
+    <!--    Search Patient Fragment strings end here-->
+
+    <!--    Doctor Fragment strings-->
+    <string name="doctor_fragment_title_text">Witaj doktorze!</string>
+    <string name="doctor_fragment_list_header_text">Można tu znaleźć:</string>
+    <string name="doctor_fragment_referrals_text">Pacjenci</string>
+    <string name="doctor_fragment_visits_text">Szczepionki - dawki</string>
+    <string name="doctor_fragment_qr_code_text">Rejestracja szczepienia</string>
+    <!--    Doctor Fragment strings end here-->
+
+    <!--    Vaccine Order Fragment strings-->
+    <string name="vaccine_order_fragment_title_text">Zamów szczepionki</string>
+    <string name="vaccine_order_fragment_add_item_title_text">Dodawanie elementów do zamówienia...</string>
+    <string name="vaccine_order_fragment_text_minus"> - </string>
+    <string name="vaccine_order_fragment_text_plus"> + </string>
+    <string name="vaccine_order_fragment_select_vaccine_warning_text">Należy wybrać szczepionkę!</string>
+    <string name="vaccine_order_fragment_order_list_title_text">Zamawiane:</string>
+    <string name="vaccine_order_fragment_quantity_text">ilość:</string>
+    <string name="vaccine_order_fragment_additional_data_title_text">Dodatkowe dane:</string>
+    <string name="vaccine_order_fragment_order_text">Zamów</string>
+    <string name="vaccine_order_fragment_delivery_date_text">Data dostawy:</string>
+    <string name="vaccine_order_fragment_delivery_date_pattern_text">--/--/----</string>
+    <string name="vaccine_order_fragment_address_text">Adres:</string>
+    <string name="vaccine_order_fragment_address_hint_text">Adres...</string>
+    <string name="vaccine_order_fragment_postal_code_hint_text">Kod pocztowy...</string>
+    <string name="vaccine_order_fragment_city_hint_text">Miasto...</string>
+    <string name="vaccine_order_fragment_order_is_being_registered_text">Zamówienie jest rejestrowane...</string>
+    <string name="vaccine_order_fragment_order_registered_toast_text">Zamówienie zostało zarejestrowane!</string>
+    <!--    Vaccine Order Fragment strings end here-->
+
+    <!--    Select Date Dialog strings-->
+    <string name="select_date_dialog_title_text">Wybierz date:</string>
+    <!--    Select Date Dialog strings end here-->
+
+    <!--    Facility Manager navigation button strings-->
+    <string name="facility_manager_bottom_nav_documents_text">Dokumenty</string>
+    <string name="facility_manager_bottom_nav_order_text">Zamów szczepionki</string>
+    <string name="facility_manager_bottom_nav_logout_text">Wyloguj</string>
+    <!--    Facility Manager navigation button strings end here-->
+
+    <!--    Doctor Fragment strings-->
+    <string name="facility_manager_fragment_title_text">Witaj kierowniku placówki szczepienia!</string>
+    <string name="facility_manager_fragment_list_header_text">Można tu znaleźć:</string>
+    <string name="facility_manager_fragment_vaccines_text">Szczepionki</string>
+    <string name="facility_manager_fragment_ordering_vaccines_text">Zamawianie szczepionek</string>
+    <string name="facility_manager_fragment_amount_vaccines_text">Ilość szczepionek w punkcie szczepienia</string>
+    <!--    Doctor Fragment strings end here-->
+
+
+</resources>

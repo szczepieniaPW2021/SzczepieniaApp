@@ -109,6 +109,11 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
         return  binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.selectContext(activity)
+    }
+
     private fun setSpinner(list: List<Objects>, spinner: Spinner) {
         val spinner: Spinner = spinner
         ArrayAdapter(

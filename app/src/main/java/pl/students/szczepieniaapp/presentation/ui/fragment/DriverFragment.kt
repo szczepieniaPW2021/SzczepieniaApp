@@ -71,7 +71,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.selectContext(activity)
+        viewModel.selectContext(requireContext())
     }
 
     @SuppressLint("MissingPermission")
@@ -128,6 +128,6 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     }
 
     override fun displaySnackbar(view: View) {
-        Snackbar.make(view, view.context.getString(R.string.driver_fragment_snackbar_text), Snackbar.LENGTH_LONG).show()
+        Snackbar.make(view, view.context.getString(R.string.location_not_fetched_map_text), Snackbar.LENGTH_LONG).show()
     }
 }
