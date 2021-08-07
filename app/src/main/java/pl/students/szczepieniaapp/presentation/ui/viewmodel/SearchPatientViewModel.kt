@@ -149,7 +149,7 @@ constructor(
                         Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         callback.dismissDialog()
                     }
                 })

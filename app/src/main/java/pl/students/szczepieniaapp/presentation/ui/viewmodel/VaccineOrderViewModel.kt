@@ -202,7 +202,7 @@ constructor(
                             .navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
                     }
 
-                    override fun onError(e: Throwable?) {}
+                    override fun onError(e: Throwable) {}
                     
                 })
         )

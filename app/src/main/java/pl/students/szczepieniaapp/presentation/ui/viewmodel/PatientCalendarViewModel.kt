@@ -250,7 +250,7 @@ constructor(
                             .navigate(R.id.action_patientCalendarFragment_to_patientFragment)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         callback.dismissDialog()
                     }
 

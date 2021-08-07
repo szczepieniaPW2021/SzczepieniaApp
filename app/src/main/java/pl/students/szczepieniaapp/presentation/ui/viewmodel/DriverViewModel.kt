@@ -75,21 +75,17 @@ constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(object : SingleObserver<MyRoute>{
-                override fun onSubscribe(d: Disposable?) {
+                override fun onSubscribe(d: Disposable) {
 
                 }
 
-                override fun onError(e: Throwable?) {
-                    //todo add toast message or snackbar
-                    //Snackbar snackbar = Snackbar
-                    //        .make(coordinatorLayout, "www.journaldev.com", Snackbar.LENGTH_LONG);
-                    //snackbar.show();
+                override fun onError(e: Throwable) {
                     _initLoading.postValue(false)
                     callback.displaySnackbar(view)
                     Log.d(DriverViewModel::class.java.simpleName, "onError: $e")
                 }
 
-                override fun onSuccess(value: MyRoute?) {
+                override fun onSuccess(value: MyRoute) {
                     _myRoute.postValue(value)
                     _initLoading.postValue(false)
                     Log.d(DriverViewModel::class.java.simpleName, "Successfully got route: $value")
