@@ -250,8 +250,10 @@ constructor(
                 calendar.timeInMillis,
                 selectedCity,
                 selectedFacility,
+                null,
+                null,
                 null
-            )
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableCompletableObserver() {

@@ -34,4 +34,10 @@ data class PatientEntity(
 
     @ColumnInfo(name = "qr_code")
     var qrCode: String?,
+
+    @ColumnInfo(name = "vaccine_dose")
+    var vaccineDose: String?,
+
+    @ColumnInfo(name = "vaccine_type")
+    var vaccineType: String?,
 )

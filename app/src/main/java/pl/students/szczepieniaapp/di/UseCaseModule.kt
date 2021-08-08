@@ -105,15 +105,17 @@ object UseCaseModule {
     @ViewModelScoped
     @Provides
     fun provideGetPatientByNameUseCase(
+        database: AppDatabase
     ): GetPatientByNameUseCase {
-        return GetPatientByNameUseCase()
+        return GetPatientByNameUseCase(database)
     }
 
     @ViewModelScoped
     @Provides
     fun provideGetPatientByIdNumberUseCase(
+        database: AppDatabase
     ): GetPatientByIdNumberUseCase {
-        return GetPatientByIdNumberUseCase()
+        return GetPatientByIdNumberUseCase(database)
     }
 
     @ViewModelScoped
@@ -133,8 +135,9 @@ object UseCaseModule {
     @ViewModelScoped
     @Provides
     fun provideRegisterVaccinationUseCase(
+        database: AppDatabase
     ): RegisterVaccinationUseCase {
-        return RegisterVaccinationUseCase()
+        return RegisterVaccinationUseCase(database)
     }
 
     @ViewModelScoped

@@ -48,7 +48,7 @@ class SearchPatientFragment : MyFragment<SearchPatientFragmentBinding>(), Search
             }
 
             persons.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
+                if (it != null) {
                     binding.patientNameTextView.text = getPatientName()
                     binding.patientPeselTextView.text = getPatientPesel()
                     binding.registerVaccinationBtn.visibility = View.VISIBLE

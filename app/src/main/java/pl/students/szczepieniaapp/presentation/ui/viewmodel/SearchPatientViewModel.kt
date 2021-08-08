@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.BaseApplication
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.database.model.PatientEntity
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
 import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
@@ -35,8 +36,8 @@ constructor(
 
     private var callback: SearchPatientFragment = SearchPatientFragment()
 
-    private val _persons = MutableLiveData<List<String>>()
-    val persons: LiveData<List<String>> get() = _persons
+    private val _persons = MutableLiveData<PatientEntity>()
+    val persons: LiveData<PatientEntity> get() = _persons
 
     private val _vaccineDoses = MutableLiveData<ArrayList<String>>()
     val vaccineDoses: LiveData<ArrayList<String>> get() = _vaccineDoses
@@ -78,7 +79,9 @@ constructor(
             }
         } else {
             Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by name")
-            getPatientByName(string)
+            val name = string.substringBefore(" ")
+            var lastName = string.substringAfter(" ")
+            getPatientByName(name = name, lastName = lastName)
         }
     }
 
@@ -101,10 +104,10 @@ constructor(
             }.launchIn(GlobalScope)
     }
 
-    private fun getPatientByName(name: String) {
+    private fun getPatientByName(name: String, lastName: String) {
 
         useCaseFactory.getPatientByNameUseCase
-            .execute(name = name)
+            .execute(name = name, lastName = lastName)
             .onEach { dataState ->
 
                 _patientSearchLoading.postValue(dataState.loading)
@@ -122,11 +125,11 @@ constructor(
     }
 
     fun getPatientName() : String {
-        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_text).format(persons.value?.get(0)!!)
+        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_text).format(persons.value?.name, persons.value?.lastName)
     }
 
     fun getPatientPesel() : String {
-        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_pesel_text).format(persons.value?.get(1)!!)
+        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_pesel_text).format(persons.value?.personalNumber)
     }
 
     fun registerVaccination(view: View) {
@@ -137,9 +140,16 @@ constructor(
         }
 
         callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
+        val time = System.currentTimeMillis()
 
         disposable.add(
-            useCaseFactory.registerVaccinationUseCase.execute()
+            useCaseFactory.registerVaccinationUseCase.execute(
+                persons.value!!,
+                vaccineDose,
+                vaccineType,
+                createStringForQRCode(persons.value!!.personalNumber!!, time, vaccineDose, lotNumber),
+                time
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableCompletableObserver(){
@@ -207,16 +217,20 @@ constructor(
 
     private fun selectVaccineDose(item: String, view: View?) {
         vaccineDose = when (item) {
-            "Select dose:" -> { "" }
+            "Wybierz dawkę:" -> { "" }
             else -> { item }
         }
     }
 
     private fun selectVaccineType(item: String, view: View?) {
         vaccineType = when (item) {
-            "Select vaccine:" -> { "" }
+            "Wybierz szczepionkę:" -> { "" }
             else -> { item }
         }
+    }
+
+    private fun createStringForQRCode(idNumber: Long, time: Long, dose: String, lotNumber: String): String? {
+        return if (dose == "Dawka 2") "$idNumber/$time/$lotNumber" else null
     }
 
     override fun onCleared() {

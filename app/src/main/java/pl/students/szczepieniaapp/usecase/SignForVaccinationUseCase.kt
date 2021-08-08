@@ -18,12 +18,26 @@ class SignForVaccinationUseCase(
         plannedVaccinationDate: Long?,
         vaccinationCity: String?,
         vaccinationFacility: String?,
-        qrCode: String?
+        qrCode: String?,
+        vaccineDose: String?,
+        vaccineType: String?
     ): Completable {
 
         return Completable.create { emitter->
 
-            var patientEntity = PatientEntity(id, name, lastName, personalNumber, vaccinationDate, plannedVaccinationDate, vaccinationCity, vaccinationFacility, qrCode)
+            var patientEntity = PatientEntity(
+                id,
+                name,
+                lastName,
+                personalNumber,
+                vaccinationDate,
+                plannedVaccinationDate,
+                vaccinationCity,
+                vaccinationFacility,
+                qrCode,
+                vaccineDose,
+                vaccineType
+            )
 
             database.patientDao().insertPatient(patient = patientEntity)
 
