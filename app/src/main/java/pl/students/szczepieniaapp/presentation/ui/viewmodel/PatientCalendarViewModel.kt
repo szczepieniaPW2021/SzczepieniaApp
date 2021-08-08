@@ -232,11 +232,26 @@ constructor(
             callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_incorrect_id_number_text))
             return
         }
+        val hours = selectedVisit.value!!.substringBefore(':').toInt()
+        val minutes = selectedVisit.value!!.substringAfter(':').toInt()
+
+        var calendar = Calendar.getInstance()
+        calendar.set(selectedYear.value!!, selectedMonth.value!!, selectedDay.value!!, hours, minutes)
 
         callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
 
         disposable.add(
-            useCaseFactory.signForVaccinationUseCase.execute()
+            useCaseFactory.signForVaccinationUseCase.execute(
+                null,
+                patientName.value,
+                patientLastName.value,
+                patientIdNumber.value!!.toLong(),
+                null,
+                calendar.timeInMillis,
+                selectedCity,
+                selectedFacility,
+                null
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableCompletableObserver() {

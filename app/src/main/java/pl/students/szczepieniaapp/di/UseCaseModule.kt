@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import pl.students.szczepieniaapp.database.AppDatabase
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
 import pl.students.szczepieniaapp.usecase.*
@@ -89,8 +90,9 @@ object UseCaseModule {
     @ViewModelScoped
     @Provides
     fun provideSignForVaccinationUseCase(
+        database: AppDatabase
     ): SignForVaccinationUseCase {
-        return SignForVaccinationUseCase()
+        return SignForVaccinationUseCase(database)
     }
 
     @ViewModelScoped
