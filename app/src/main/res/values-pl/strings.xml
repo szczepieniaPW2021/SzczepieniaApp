@@ -73,7 +73,9 @@
 
     <!--    Vaccination QR Code Fragment strings-->
     <string name="vaccination_qr_code_fragment_title_text">Kod QR potwierdzający szczepienie</string>
+    <string name="vaccination_qr_code_fragment_no_vaccination_text">Nie ma kodu QR dla tej osoby. Najprawdopodobniej nie została jeszcze w pełni zaszczepiona.</string>
     <string name="vaccination_qr_code_fragment_cancel_text">Anuluj</string>
+    <string name="vaccination_qr_code_fragment_no_patients_text">Brak pacjentów zapisanych na szczepienie lub zaszczepionych</string>
     <!--    Vaccination QR Code Fragment strings end here-->
 
     <!--    Roles items -->
@@ -94,7 +96,7 @@
     <string name="search_patient_fragment_wrong_pesel_length_text">PESEL musi zawierać 11 cyfr</string>
     <string name="search_patient_fragment_patient_data_text">Dane pacjenta:</string>
     <string name="search_patient_fragment_patient_pesel_text">PESEL: %s</string>
-    <string name="search_patient_fragment_patient_text">Imię i nazwisko: %s</string>
+    <string name="search_patient_fragment_patient_text">Imię i nazwisko: %s %s</string>
     <string name="search_patient_fragment_no_patient_warning_text">Przepraszamy. Pacjent o podanych danych nie istnieje w bazie!</string>
     <string name="search_patient_fragment_register_vaccination_btn_text">REJESTRUJ SZCZEPIENIE</string>
     <string name="search_patient_fragment_register_vaccination_text">Dane szczepienia</string>

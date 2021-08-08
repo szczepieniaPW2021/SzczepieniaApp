@@ -35,6 +35,7 @@ class PatientCalendarFragment : MyFragment<PatientCalendarFragmentBinding>(), Pa
         savedInstanceState: Bundle?
     ): View? {
         _binding = PatientCalendarFragmentBinding.inflate(inflater, container, false)
+        shareDataViewModel._visitTime.postValue(null)
         childFM = childFragmentManager
         binding.viewmodel = viewModel
         viewModel.apply {

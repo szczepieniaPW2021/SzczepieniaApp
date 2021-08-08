@@ -73,7 +73,9 @@
 
     <!--    Vaccination QR Code Fragment strings-->
     <string name="vaccination_qr_code_fragment_title_text">QR code confirming vaccination</string>
+    <string name="vaccination_qr_code_fragment_no_vaccination_text">There is no available QR code for this person. Most likely you didn\'t receive full vaccination yet.</string>
     <string name="vaccination_qr_code_fragment_cancel_text">Cancel</string>
+    <string name="vaccination_qr_code_fragment_no_patients_text">There are no registered or vaccinated patients</string>
     <!--    Vaccination QR Code Fragment strings end here-->
 
     <!--    Roles items -->

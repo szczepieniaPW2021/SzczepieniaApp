@@ -91,6 +91,7 @@ constructor(
         _patientName.postValue(null)
         _patientLastName.postValue(null)
         _patientIdNumber.postValue(null)
+        _selectedVisit.postValue(null)
     }
 
     private fun fetchCities() {

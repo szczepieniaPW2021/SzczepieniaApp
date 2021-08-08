@@ -16,8 +16,11 @@ interface PatientDao {
     fun updatePatient(patient: PatientEntity)
 
     @Query("SELECT * FROM patients WHERE personal_number = :personalNumber")
-    suspend fun getPatientByPersonalNumber(personalNumber: Long): PatientEntity?
+    fun getPatientByPersonalNumber(personalNumber: Long): PatientEntity
 
     @Query("SELECT * FROM patients WHERE name = :name AND last_name = :lastName")
-    suspend fun getPatientByName(name: String, lastName: String): PatientEntity?
+    fun getPatientByName(name: String, lastName: String): PatientEntity
+
+    @Query("SELECT * FROM patients")
+    suspend fun getAllPatients(): List<PatientEntity>?
 }

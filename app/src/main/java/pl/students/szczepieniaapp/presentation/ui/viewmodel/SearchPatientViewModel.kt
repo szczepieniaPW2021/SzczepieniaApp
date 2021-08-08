@@ -1,6 +1,5 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -17,12 +16,10 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import pl.students.szczepieniaapp.BaseApplication
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.database.model.PatientEntity
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
-import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
 import javax.inject.Inject
@@ -86,45 +83,27 @@ constructor(
     }
 
     private fun getPatientByIdNumber(idNumber: Long) {
-
-        useCaseFactory.getPatientByIdNumberUseCase
-            .execute(idNumber = idNumber)
-            .onEach { dataState ->
-
-                _patientSearchLoading.postValue(dataState.loading)
-
-                dataState.data?.let {patient ->
-                    _persons.postValue(patient)
-                }
-
-                dataState.error?.let { error ->
-                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByIdNumber: $error")
-                }
-
-            }.launchIn(GlobalScope)
+        _patientSearchLoading.postValue(true)
+        GlobalScope.launch {
+            val result = useCaseFactory.getPatientByIdNumberUseCase.execute(idNumber = idNumber)
+            _persons.postValue(result)
+            _patientSearchLoading.postValue(false)
+        }
     }
 
     private fun getPatientByName(name: String, lastName: String) {
-
-        useCaseFactory.getPatientByNameUseCase
-            .execute(name = name, lastName = lastName)
-            .onEach { dataState ->
-
-                _patientSearchLoading.postValue(dataState.loading)
-
-                dataState.data?.let {patient ->
-                    _persons.postValue(patient)
-
-                }
-
-                dataState.error?.let { error ->
-                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByName: $error")
-                }
-
-            }.launchIn(GlobalScope)
+        _patientSearchLoading.postValue(true)
+        GlobalScope.launch {
+            val result = useCaseFactory.getPatientByNameUseCase.execute(name = name, lastName = lastName)
+            _persons.postValue(result)
+            _patientSearchLoading.postValue(false)
+        }
     }
 
     fun getPatientName() : String {
+
+        Log.d("testuje", "getPatientName: " + persons.value?.name + " " + persons.value?.lastName)
+
         return context.value!!.resources.getString(R.string.search_patient_fragment_patient_text).format(persons.value?.name, persons.value?.lastName)
     }
 
