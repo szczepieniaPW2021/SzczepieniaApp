@@ -152,7 +152,7 @@
                                         android:layout_height="35dp"
                                         android:layout_marginHorizontal="5dp"
                                         android:gravity="center"
-                                        android:text="@{String.valueOf(viewmodel.passengersNumberData)}"
+                                        android:text="@{String.valueOf(viewmodel.orderNumberData)}"
                                         android:textSize="18sp"
                                         android:textStyle="bold"
                                         tools:text="10" />

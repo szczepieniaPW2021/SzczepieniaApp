@@ -145,8 +145,9 @@ object UseCaseModule {
     @ViewModelScoped
     @Provides
     fun provideOrderVaccineUseCase(
+        database: AppDatabase
     ): OrderVaccineUseCase {
-        return OrderVaccineUseCase()
+        return OrderVaccineUseCase(database)
     }
 
     @ViewModelScoped

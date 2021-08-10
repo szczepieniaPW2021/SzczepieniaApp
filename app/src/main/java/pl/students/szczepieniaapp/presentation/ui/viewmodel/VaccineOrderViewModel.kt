@@ -57,8 +57,8 @@ constructor(
     private val _orderItems = MutableLiveData<ArrayList<Order>>()
     val orderItems: LiveData<ArrayList<Order>> get() = _orderItems
 
-    private val _passengersNumberData = MutableLiveData<Int>()
-    val passengersNumberData: LiveData<Int> get() = _passengersNumberData
+    private val _orderNumberData = MutableLiveData<Int>()
+    val orderNumberData: LiveData<Int> get() = _orderNumberData
 
     val _deliveryDate = MutableLiveData<String>()
     val deliveryDate: LiveData<String> get() = _deliveryDate
@@ -77,7 +77,7 @@ constructor(
 
     init {
         fetchVaccineType()
-        _passengersNumberData.postValue(1)
+        _orderNumberData.postValue(1)
         _address.postValue("")
         _postalCode.postValue("")
         _initialLoading.postValue(true)
@@ -108,14 +108,14 @@ constructor(
     }
 
     fun onItemsNumberIncClick(view: View) {
-        if (passengersNumberData.value!! < 99){
-            _passengersNumberData.postValue(passengersNumberData.value!! + 1)
+        if (_orderNumberData.value!! < 99){
+            _orderNumberData.postValue(_orderNumberData.value!! + 1)
         }
     }
 
     fun onItemsNumberDecClick(view: View) {
-        if (passengersNumberData.value!! > 1){
-            _passengersNumberData.postValue(passengersNumberData.value!! - 1)
+        if (_orderNumberData.value!! > 1){
+            _orderNumberData.postValue(_orderNumberData.value!! - 1)
         }
     }
 
@@ -142,8 +142,8 @@ constructor(
             return
         }
 
-        list.add(Order(list.size + 1, vaccineType, passengersNumberData.value!!))
-        _passengersNumberData.postValue(1)
+        list.add(Order(list.size + 1, vaccineType, _orderNumberData.value!!))
+        _orderNumberData.postValue(1)
         _orderItems.postValue(list as ArrayList<Order>?)
         displayOrderList()
     }
@@ -181,10 +181,27 @@ constructor(
 
     fun makeOrder(view: View){
         Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
+
+        val day = deliveryDate.value!!.substringBefore('-').toInt()
+        val monthAndDay = deliveryDate.value!!.substringAfter('-')
+        val month = monthAndDay.substringBefore('-').toInt()
+        val year = monthAndDay.substringAfter('-').toInt()
+
+        var calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+
         callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
 
         disposable.add(
-            useCaseFactory.orderVaccineUseCase.execute()
+            useCaseFactory.orderVaccineUseCase.execute(
+                null,
+                System.currentTimeMillis(),
+                calendar.timeInMillis,
+                city.value,
+                address.value,
+                postalCode.value,
+                orderItems.value!!
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate {

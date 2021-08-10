@@ -39,7 +39,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
         _binding = VaccineOrderFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         viewModel.apply {
-            passengersNumberData.observe(viewLifecycleOwner) {
+            orderNumberData.observe(viewLifecycleOwner) {
                 binding.passengerNumberTextView.text = it.toString()
             }
 
