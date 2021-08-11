@@ -157,5 +157,10 @@
     <string name="facility_manager_fragment_amount_vaccines_text">Ilość szczepionek w punkcie szczepienia</string>
     <!--    Doctor Fragment strings end here-->
 
+    <!--    Operator navigation button strings-->
+    <string name="operator_bottom_nav_documents_text">Dokumenty</string>
+    <string name="operator_bottom_nav_order_list_text">Lista zamówień</string>
+    <string name="operator_bottom_nav_logout_text">Wyloguj</string>
+    <!--    Operator navigation button strings end here-->
 
 </resources>

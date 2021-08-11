@@ -2,8 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/patientFragment"
-        android:title="@string/patient_bottom_nav_documents_text"
+        android:id="@+id/operatorFragment"
+        android:title="@string/operator_bottom_nav_documents_text"
         android:icon="@drawable/ic_baseline_home" />
+
+    <item
+        android:id="@+id/orderListFragment"
+        android:title="@string/operator_bottom_nav_order_list_text"
+        android:icon="@drawable/ic_baseline_list" />
+
+    <item
+        android:id="@+id/mainActivity"
+        android:title="@string/patient_bottom_nav_logout_text"
+        android:icon="@drawable/ic_baseline_logout" />
 
 </menu>
