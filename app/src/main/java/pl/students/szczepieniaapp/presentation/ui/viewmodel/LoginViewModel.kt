@@ -72,6 +72,11 @@ constructor(
                 _isButtonEnabled.postValue(true)
             }
 
+            fetchRoles(view).last() -> {
+                navAction = R.id.action_loginFragment_to_operatorActivity
+                _isButtonEnabled.postValue(true)
+            }
+
             else -> {
                 Log.d(LoginViewModel::class.java.name, "Unrecognized selection")
                 callback.toastMessage(

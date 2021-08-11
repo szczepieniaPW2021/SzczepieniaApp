@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SzczepieniaApp">
-        <activity android:name=".presentation.ui.activities.FacilityManagerActivity"></activity>
+        <activity android:name=".presentation.ui.activities.OperatorActivity"></activity>
+        <activity android:name=".presentation.ui.activities.FacilityManagerActivity" />
         <activity android:name=".presentation.ui.activities.DriverActivity" />
         <activity android:name=".presentation.ui.activities.DoctorActivity" />
         <activity android:name=".presentation.ui.activities.SplashScreenActivity">
