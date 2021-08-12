@@ -30,7 +30,5 @@ data class OrderEntity(
 
     @ColumnInfo(name = "orders")
     var orders: ArrayList<Order>
-//    @ColumnInfo(name = "order_list")
-//    //@TypeConverters(OrderListConverter::class)
-//    var orderList: List<Order>?
+
 )

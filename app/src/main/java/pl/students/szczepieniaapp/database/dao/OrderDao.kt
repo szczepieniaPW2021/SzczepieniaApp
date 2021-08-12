@@ -13,5 +13,5 @@ interface OrderDao {
     fun insertOrder(order: OrderEntity): Long
 
     @Query("SELECT * FROM orders ORDER BY order_date ASC")
-    suspend fun getAllOrders(): List<OrderEntity>?
+    suspend fun getAllOrders(): List<OrderEntity>
 }

@@ -7,10 +7,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import pl.students.szczepieniaapp.database.model.OrderEntity
+import pl.students.szczepieniaapp.domain.model.ReceivedOrder
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
-import java.util.ArrayList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,8 +19,8 @@ constructor(
     private val useCaseFactory: UseCaseFactory
 ) : MyViewModel() {
 
-    private val _orders = MutableLiveData<List<OrderEntity>?>()
-    val orders: LiveData<List<OrderEntity>?> get() = _orders
+    private val _orders = MutableLiveData<List<ReceivedOrder>?>()
+    val orders: LiveData<List<ReceivedOrder>?> get() = _orders
 
     private val _orderLoading = MutableLiveData<Boolean>()
     val orderLoading: LiveData<Boolean> get() = _orderLoading

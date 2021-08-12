@@ -7,6 +7,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import pl.students.szczepieniaapp.database.AppDatabase
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
+import pl.students.szczepieniaapp.presentation.util.ReceivedOrderMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
 import pl.students.szczepieniaapp.usecase.*
 
@@ -170,8 +171,9 @@ object UseCaseModule {
     @ViewModelScoped
     @Provides
     fun provideGetAllOrdersUseCase(
-        database: AppDatabase
+        database: AppDatabase,
+        mapper: ReceivedOrderMapper
     ): GetAllOrdersUseCase {
-        return GetAllOrdersUseCase(database)
+        return GetAllOrdersUseCase(database, mapper)
     }
 }

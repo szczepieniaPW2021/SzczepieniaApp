@@ -163,4 +163,9 @@
     <string name="operator_bottom_nav_logout_text">Wyloguj</string>
     <!--    Operator navigation button strings end here-->
 
+    <!--    Order List Fragment strings-->
+    <string name="order_list_fragment_title_text">Lista zamówień</string>
+    <string name="order_list_fragment_recycler_description_text">Nr. zam. / Data dostawy / Miasto dostawy</string>
+    <!--    Order List Fragment strings end here-->
+
 </resources>

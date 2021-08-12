@@ -23,9 +23,4 @@ object DatabaseModule {
             .build()
     }
 
-//    @Singleton
-//    @Provides
-//    fun providePatientDao(db: AppDatabase): PatientDao {
-//        return db.patientDao()
-//    }
 }
