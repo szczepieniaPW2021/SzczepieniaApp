@@ -9,7 +9,8 @@ import pl.students.szczepieniaapp.databinding.OrdersItemBinding
 import pl.students.szczepieniaapp.domain.model.ReceivedOrder
 
 class ReceivedOrderAdapter(
-    private val orders: List<ReceivedOrder>
+    private val orders: List<ReceivedOrder>,
+    private val listener: ReceivedOrderAdapterListener
 ) : RecyclerView.Adapter<ReceivedOrderAdapter.ReceivedOrderViewHolder>() {
 
     inner class ReceivedOrderViewHolder(
@@ -28,6 +29,9 @@ class ReceivedOrderAdapter(
     override fun onBindViewHolder(holder: ReceivedOrderViewHolder, position: Int) {
         holder.recyclerItem.apply {
             order = orders[position]
+        }
+        holder.recyclerItem.root.setOnClickListener {
+            listener.clickItem(holder.recyclerItem.root, orders[position])
         }
     }
 
