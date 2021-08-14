@@ -161,6 +161,7 @@
     <!--    Operator navigation button strings-->
     <string name="operator_bottom_nav_documents_text">Dokumenty</string>
     <string name="operator_bottom_nav_order_list_text">Lista zamówień</string>
+    <string name="operator_bottom_nav_drivers_manager_text">Manager kierowców</string>
     <string name="operator_bottom_nav_logout_text">Wyloguj</string>
     <!--    Operator navigation button strings end here-->
 
@@ -187,5 +188,13 @@
     <string name="order_details_fragment_sending_order_text">Zamówienie jest wysyłane...</string>
     <string name="order_details_fragment_order_send_successfully_text">Zamówienie zostało wysłane</string>
     <!--    Order Details Fragment strings end here-->
+
+    <!--    Driver Manager Fragment strings-->
+    <string name="driver_manager_fragment_title_text">Manager kierowców</string>
+    <string name="driver_manager_fragment_add_driver_title_text">Dodaj kierowce</string>
+    <string name="driver_manager_fragment_add_driver_btn_text">Dodaj</string>
+    <string name="driver_manager_fragment_empty_fields_text">Obydwa pola muszą być uzupełnione</string>
+    <string name="driver_manager_fragment_added_driver_text">Dodano kierowcę</string>
+    <!--    Driver Manager Fragment strings end here-->
 
 </resources>

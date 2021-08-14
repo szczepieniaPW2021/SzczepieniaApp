@@ -34,4 +34,8 @@
             android:id="@+id/action_orderDetailsFragment_to_orderListFragment"
             app:destination="@id/orderListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/driverManagerFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.DriverManagerFragment"
+        android:label="DriverManagerFragment" />
 </navigation>

@@ -223,7 +223,6 @@ constructor(
                 .subscribeWith(object : DisposableCompletableObserver() {
                     override fun onComplete() {
 
-                        callback.dismissDialog()
                         callback.toastMessage(
                             view.context,
                             view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text)

@@ -12,8 +12,13 @@
         android:icon="@drawable/ic_baseline_list" />
 
     <item
+        android:id="@+id/driverManagerFragment"
+        android:title="@string/operator_bottom_nav_drivers_manager_text"
+        android:icon="@drawable/ic_baseline_local_drivers" />
+
+    <item
         android:id="@+id/mainActivity"
-        android:title="@string/patient_bottom_nav_logout_text"
+        android:title="@string/operator_bottom_nav_logout_text"
         android:icon="@drawable/ic_baseline_logout" />
 
 </menu>

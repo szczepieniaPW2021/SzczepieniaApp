@@ -35,7 +35,8 @@ object UseCaseModule {
         getAllPatientsUseCase: GetAllPatientsUseCase,
         getAllOrdersUseCase: GetAllOrdersUseCase,
         getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase,
-        getSendOrderUseCase: SendOrderUseCase
+        getSendOrderUseCase: SendOrderUseCase,
+        getAddDriverUseCase: AddDriverUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
@@ -55,7 +56,8 @@ object UseCaseModule {
             getAllPatientsUseCase,
             getAllOrdersUseCase,
             getReceivedOrderByIdUseCase,
-            getSendOrderUseCase
+            getSendOrderUseCase,
+            getAddDriverUseCase
         )
     }
 
@@ -197,5 +199,13 @@ object UseCaseModule {
         mapper: ReceivedOrderMapper
     ): SendOrderUseCase {
         return SendOrderUseCase(database, mapper)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideAddDriverUseCase(
+        database: AppDatabase
+    ): AddDriverUseCase {
+        return AddDriverUseCase(database)
     }
 }
