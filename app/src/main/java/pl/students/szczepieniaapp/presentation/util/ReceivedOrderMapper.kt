@@ -14,7 +14,8 @@ class ReceivedOrderMapper: DomainMapper<OrderEntity, ReceivedOrder> {
             deliveryDate = DateUtil.longToDateAsString(entity.deliveryDate!!, DateUtil.DAY_SLASH_MONTH_SPLASH_YEAR_FORMAT),
             city = entity.city,
             street = entity.street,
-            postalCode = entity.postalCode
+            postalCode = entity.postalCode,
+            orders = entity.orders
         )
     }
 

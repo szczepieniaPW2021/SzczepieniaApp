@@ -168,4 +168,13 @@
     <string name="order_list_fragment_recycler_description_text">Nr. zam. / Data dostawy / Miasto dostawy</string>
     <!--    Order List Fragment strings end here-->
 
+    <!--    Order Details Fragment strings-->
+    <string name="order_details_fragment_title_text">Szczegóły zamówienia</string>
+    <string name="order_details_fragment_delivery_date_text">Data dostawy: %s</string>
+    <string name="order_details_fragment_order_date_text">Data zamówienia: %s</string>
+    <string name="order_details_fragment_address_text">Adres: %s, %S %s</string>
+    <string name="order_details_fragment_status_text">Status: %s</string>
+    <string name="order_details_fragment_driver_text">Kierowca: %s</string>
+    <!--    Order Details Fragment strings end here-->
+
 </resources>

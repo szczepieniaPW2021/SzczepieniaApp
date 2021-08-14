@@ -26,5 +26,9 @@
         android:id="@+id/orderDetailsFragment"
         android:name="pl.students.szczepieniaapp.presentation.ui.fragment.OrderDetailsFragment"
         android:label="fragment_order_details"
-        tools:layout="@layout/fragment_order_details" />
+        tools:layout="@layout/fragment_order_details" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

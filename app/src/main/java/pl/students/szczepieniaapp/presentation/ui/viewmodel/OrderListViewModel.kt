@@ -1,7 +1,7 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
-import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -49,7 +49,8 @@ constructor(
     }
 
     override fun clickItem(view: View, order: ReceivedOrder) {
-        Navigation.findNavController(view).navigate(R.id.action_orderListFragment_to_orderDetailsFragment)
+        val bundle = bundleOf("integer" to order.id)
+        Navigation.findNavController(view).navigate(R.id.action_orderListFragment_to_orderDetailsFragment, bundle)
     }
 
 }

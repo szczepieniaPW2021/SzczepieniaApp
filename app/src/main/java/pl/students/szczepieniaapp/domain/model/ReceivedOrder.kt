@@ -1,5 +1,6 @@
 package pl.students.szczepieniaapp.domain.model
 
+
 data class ReceivedOrder(
     val id: Int = 0,
     val orderDate: String? = null,
@@ -7,5 +8,6 @@ data class ReceivedOrder(
     val deliveryStatus: Boolean = false,
     val city: String? = null,
     val postalCode: String? = null,
-    val street: String? = null
+    val street: String? = null,
+    val orders: List<Order>? = null
 )
