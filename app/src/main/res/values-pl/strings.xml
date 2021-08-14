@@ -170,11 +170,13 @@
 
     <!--    Order Details Fragment strings-->
     <string name="order_details_fragment_title_text">Szczegóły zamówienia</string>
-    <string name="order_details_fragment_delivery_date_text">Data dostawy: %s</string>
-    <string name="order_details_fragment_order_date_text">Data zamówienia: %s</string>
+    <string name="order_details_fragment_delivery_date_text">Data dostawy:</string>
+    <string name="order_details_fragment_order_date_text">Data zamówienia:</string>
     <string name="order_details_fragment_address_text">Adres: %s, %S %s</string>
     <string name="order_details_fragment_status_text">Status: %s</string>
     <string name="order_details_fragment_driver_text">Kierowca: %s</string>
+    <string name="order_details_fragment_recycler_description_text">Numer / Szczepionka / Ilość</string>
+    <string name="order_details_fragment_orders_text">Zamówienia:</string>
     <!--    Order Details Fragment strings end here-->
 
 </resources>

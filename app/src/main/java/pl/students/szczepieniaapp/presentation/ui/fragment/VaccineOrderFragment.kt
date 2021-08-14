@@ -73,7 +73,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
                 binding.orderRecycler.also {
                     it.layoutManager = LinearLayoutManager(requireContext())
                     it.setHasFixedSize(true)
-                    it.adapter = OrderAdapter(orders, this)
+                    it.adapter = OrderAdapter(orders, this, isRemoveItemVisible = true)
                 }
                 binding.orderRecycler.visibility = View.VISIBLE
                 binding.orderRecycler.adapter?.notifyDataSetChanged()
