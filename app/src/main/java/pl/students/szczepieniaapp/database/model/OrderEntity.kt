@@ -3,6 +3,7 @@ package pl.students.szczepieniaapp.database.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import pl.students.szczepieniaapp.database.converter.ReceiveOrderStatus
 import pl.students.szczepieniaapp.domain.model.Order
 import java.util.ArrayList
 
@@ -29,6 +30,9 @@ data class OrderEntity(
     var postalCode: String?,
 
     @ColumnInfo(name = "orders")
-    var orders: ArrayList<Order>
+    var orders: ArrayList<Order>,
+
+    @ColumnInfo(name = "status")
+    var status: ReceiveOrderStatus
 
 )

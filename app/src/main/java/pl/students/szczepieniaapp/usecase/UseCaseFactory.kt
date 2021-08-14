@@ -17,6 +17,7 @@ class UseCaseFactory(
     val getDestinationCoordinatesUseCase: GetDestinationCoordinatesUseCase,
     val getAllPatientsUseCase: GetAllPatientsUseCase,
     val getAllOrdersUseCase: GetAllOrdersUseCase,
-    val getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase
+    val getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase,
+    val getSendOrderUseCase: SendOrderUseCase
 )
 

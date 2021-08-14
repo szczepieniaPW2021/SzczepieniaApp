@@ -40,7 +40,7 @@ class OrderListFragment : MyFragment<OrderListFragmentBinding>(){
                 binding.receivedOrderRecycler.also {
                     it.layoutManager = LinearLayoutManager(requireContext())
                     it.setHasFixedSize(true)
-                    it.adapter = ReceivedOrderAdapter(receivedOrder!!, this)
+                    it.adapter = ReceivedOrderAdapter(receivedOrder!!, this, requireContext())
                 }
                 binding.receivedOrderRecycler.visibility = View.VISIBLE
                 binding.receivedOrderRecycler.adapter?.notifyDataSetChanged()

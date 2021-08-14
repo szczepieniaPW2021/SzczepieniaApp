@@ -2,6 +2,7 @@ package pl.students.szczepieniaapp.usecase
 
 import io.reactivex.Completable
 import pl.students.szczepieniaapp.database.AppDatabase
+import pl.students.szczepieniaapp.database.converter.ReceiveOrderStatus
 import pl.students.szczepieniaapp.database.model.OrderEntity
 import pl.students.szczepieniaapp.domain.model.Order
 import java.util.ArrayList
@@ -29,7 +30,8 @@ class OrderVaccineUseCase(
                 city,
                 street,
                 postalCode,
-                orderList
+                orderList,
+                ReceiveOrderStatus.ORDERED
             )
 
             database.orderDao().insertOrder(order = orderEntity)

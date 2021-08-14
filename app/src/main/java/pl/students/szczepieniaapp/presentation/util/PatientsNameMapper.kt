@@ -12,4 +12,8 @@ class PatientsNameMapper: DomainMapper<PatientEntity, String> {
     override fun mapToDomainModelList(initial: List<PatientEntity>): List<String> {
         return initial.map { mapToDomainModel(it) }
     }
+
+    override fun mapFromDomainModel(domainModel: String): PatientEntity {
+        TODO("Not yet implemented")
+    }
 }

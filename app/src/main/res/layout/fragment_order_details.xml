@@ -77,13 +77,30 @@
                         android:paddingBottom="8dp"
                         tools:text="Delivery address: Zakopianska 4/56, 20-666 Warszawa" />
 
-                    <TextView
-                        android:id="@+id/statusTextView"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:text="@{@string/order_details_fragment_status_text}"
-                        tools:text="Status: " />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/statusTextViewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="8dp"
+                            android:text="@{@string/order_details_fragment_status_text}"
+                            tools:text="Status: " />
+
+                        <TextView
+                            android:id="@+id/statusTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="3dp"
+                            android:paddingBottom="8dp"
+                            android:textStyle="bold"
+                            android:textAllCaps="true"
+                            tools:text="Ordered" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/driverTextView"
@@ -120,7 +137,16 @@
                         android:layout_marginStart="20dp"
                         android:id="@+id/ordersListRecyclerView"
                         android:layout_width="300dp"
-                        android:layout_height="230dp" />
+                        android:layout_height="180dp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center"
+                        android:onClick="@{viewmodel::sendOrder}"
+                        android:id="@+id/sendOrderBtn"
+                        android:text="@string/order_details_fragment_send_order_text" />
 
                 </LinearLayout>
 

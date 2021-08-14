@@ -173,10 +173,18 @@
     <string name="order_details_fragment_delivery_date_text">Delivery date:</string>
     <string name="order_details_fragment_order_date_text">Order date:</string>
     <string name="order_details_fragment_address_text">Address:</string>
-    <string name="order_details_fragment_status_text">Status: %s</string>
-    <string name="order_details_fragment_driver_text">Driver: %s</string>
+    <string name="order_details_fragment_status_text">Status: </string>
+    <string name="order_details_fragment_driver_text">Driver: </string>
     <string name="order_details_fragment_recycler_description_text">Id / Vaccine Type / Qty</string>
     <string name="order_details_fragment_orders_text">Orders:</string>
+    <string-array name="order_details_fragment_status">
+        <item>ORDERED</item>
+        <item>ON ROUTE</item>
+        <item>DELIVERED</item>
+    </string-array>
+    <string name="order_details_fragment_send_order_text">Send order</string>
+    <string name="order_details_fragment_sending_order_text">Order is being send...</string>
+    <string name="order_details_fragment_order_send_successfully_text">Order was send successfully</string>
     <!--    Order Details Fragment strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>

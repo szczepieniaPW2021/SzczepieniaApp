@@ -22,4 +22,8 @@ object DateUtil {
     fun longToDateAsString(long: Long, format: SimpleDateFormat):String {
         return dateToString(longToDate(long), format)
     }
+
+    fun stringToDate(string: String, format: SimpleDateFormat): Date {
+        return format.parse(string) ?:throw NullPointerException("Could not convert date string to Date object.")
+    }
 }
