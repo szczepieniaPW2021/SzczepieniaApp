@@ -18,4 +18,14 @@ class Converters {
     fun fromArrayList(list: ArrayList<Order?>): String {
         return Gson().toJson(list)
     }
+
+    @TypeConverter
+    fun fromDoubleToString(double: Double):String {
+        return double.toString()
+    }
+
+    @TypeConverter
+    fun fromStringToDouble(string: String):Double {
+        return string.toDouble()
+    }
 }

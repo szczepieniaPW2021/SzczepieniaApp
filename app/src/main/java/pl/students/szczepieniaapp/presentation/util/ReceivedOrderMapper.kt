@@ -17,7 +17,10 @@ class ReceivedOrderMapper: DomainMapper<OrderEntity, ReceivedOrder> {
             street = entity.street,
             postalCode = entity.postalCode,
             orders = entity.orders,
-            deliveryStatus = entity.status
+            deliveryStatus = entity.status,
+            latitude = entity.latitude,
+            longitude = entity.longitude,
+            driverId = entity.driverId
         )
     }
 
@@ -34,7 +37,10 @@ class ReceivedOrderMapper: DomainMapper<OrderEntity, ReceivedOrder> {
             street = domainModel.street,
             postalCode = domainModel.postalCode,
             orders = domainModel.orders as ArrayList<Order>,
-            status = domainModel.deliveryStatus
+            status = domainModel.deliveryStatus,
+            latitude = domainModel.latitude,
+            longitude = domainModel.longitude,
+            driverId = domainModel.driverId
         )
     }
 }

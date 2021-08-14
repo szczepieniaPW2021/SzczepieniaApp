@@ -137,6 +137,7 @@
     <string name="vaccine_order_fragment_city_hint_text">Miasto...</string>
     <string name="vaccine_order_fragment_order_is_being_registered_text">Zamówienie jest rejestrowane...</string>
     <string name="vaccine_order_fragment_order_registered_toast_text">Zamówienie zostało zarejestrowane!</string>
+    <string name="vaccine_order_fragment_incorrect_address_toast_text">Niepoprawny adres!</string>
     <!--    Vaccine Order Fragment strings end here-->
 
     <!--    Select Date Dialog strings-->

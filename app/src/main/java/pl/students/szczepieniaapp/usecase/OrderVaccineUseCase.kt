@@ -18,7 +18,9 @@ class OrderVaccineUseCase(
         city: String?,
         street: String?,
         postalCode: String?,
-        orderList: ArrayList<Order>
+        orderList: ArrayList<Order>,
+        latitude: Double,
+        longitude: Double
     ): Completable {
 
         return Completable.create { emitter->
@@ -31,7 +33,10 @@ class OrderVaccineUseCase(
                 street,
                 postalCode,
                 orderList,
-                ReceiveOrderStatus.ORDERED
+                ReceiveOrderStatus.ORDERED,
+                latitude,
+                longitude,
+                null
             )
 
             database.orderDao().insertOrder(order = orderEntity)

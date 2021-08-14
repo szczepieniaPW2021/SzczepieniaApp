@@ -1,6 +1,7 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.content.Context
+import android.location.Geocoder
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -192,6 +193,16 @@ constructor(
 
         callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
 
+        val geocoder = Geocoder(context.value, Locale.getDefault()).getFromLocationName("${address.value}, ${postalCode.value} ${city.value} POLAND", 1)
+
+        if (!geocoder[0].hasLatitude() || !geocoder[0].hasLongitude()) {
+            callback.toastMessage(
+                view.context,
+                view.context.getString(R.string.vaccine_order_fragment_incorrect_address_toast_text)
+            )
+            return
+        }
+
         disposable.add(
             useCaseFactory.orderVaccineUseCase.execute(
                 null,
@@ -200,7 +211,9 @@ constructor(
                 city.value,
                 address.value,
                 postalCode.value,
-                orderItems.value!!
+                orderItems.value!!,
+                geocoder[0].latitude,
+                geocoder[0].longitude
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -220,7 +233,7 @@ constructor(
                     }
 
                     override fun onError(e: Throwable) {}
-                    
+
                 })
         )
     }

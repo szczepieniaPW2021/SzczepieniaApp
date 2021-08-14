@@ -11,5 +11,8 @@ data class ReceivedOrder(
     val city: String? = null,
     val postalCode: String? = null,
     val street: String? = null,
-    val orders: List<Order>? = null
+    val orders: List<Order>? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val driverId: Int? = null
 )

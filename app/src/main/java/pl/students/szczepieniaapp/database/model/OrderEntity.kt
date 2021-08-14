@@ -33,6 +33,15 @@ data class OrderEntity(
     var orders: ArrayList<Order>,
 
     @ColumnInfo(name = "status")
-    var status: ReceiveOrderStatus
+    var status: ReceiveOrderStatus,
+
+    @ColumnInfo(name = "latitude")
+    var latitude: Double?,
+
+    @ColumnInfo(name = "longitude")
+    var longitude: Double?,
+
+    @ColumnInfo(name = "driver_id")
+    var driverId: Int?
 
 )
