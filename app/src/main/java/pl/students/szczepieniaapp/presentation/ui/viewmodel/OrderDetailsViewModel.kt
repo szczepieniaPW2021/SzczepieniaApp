@@ -70,7 +70,7 @@ constructor(
 
     fun getOrder(id: Int) {
 
-        useCaseFactory.getAllAvailableDriversUseCase
+        useCaseFactory.getAllDriversUseCase
             .execute()
             .onEach { dataState ->
 

@@ -5,11 +5,13 @@ import pl.students.szczepieniaapp.domain.util.DomainMapper
 
 class DriversNameMapper: DomainMapper<DriverEntity, String> {
     override fun mapToDomainModel(entity: DriverEntity): String {
-        return "${entity.id}. ${entity.name} ${entity.lastName}"
+        return if (entity.isAvailable) "${entity.id}. ${entity.name} ${entity.lastName}" else ""
     }
 
     override fun mapToDomainModelList(initial: List<DriverEntity>): List<String> {
-        return initial.map { mapToDomainModel(it) }
+        var list = initial.map { mapToDomainModel(it) } as MutableList<String>
+        list = list.filter { x: String -> x != "" } as MutableList<String>
+        return list
     }
 
     override fun mapFromDomainModel(domainModel: String): DriverEntity {

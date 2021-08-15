@@ -16,6 +16,9 @@ interface DriverDao {
     @Query("SELECT * FROM drivers WHERE is_available = 1")
     suspend fun getAllAvailableDrivers(): List<DriverEntity>
 
+    @Query("SELECT * FROM drivers")
+    suspend fun getAllDrivers(): List<DriverEntity>
+
     @Update
     fun updateDriver(driver: DriverEntity)
 }
