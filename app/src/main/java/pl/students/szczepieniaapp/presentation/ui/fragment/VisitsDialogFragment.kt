@@ -10,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.databinding.VisitsDialogFragmentBinding
-import pl.students.szczepieniaapp.presentation.ui.viewmodel.LoginViewModel
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.ShareDataViewModel
 
 @AndroidEntryPoint

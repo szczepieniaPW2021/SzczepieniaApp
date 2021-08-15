@@ -1,10 +1,11 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -14,11 +15,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.database.converter.ReceiveOrderStatus
 import pl.students.szczepieniaapp.databinding.FragmentOrderDetailsBinding
-import pl.students.szczepieniaapp.domain.model.ReceivedOrder
 import pl.students.szczepieniaapp.presentation.MyFragment
 import pl.students.szczepieniaapp.presentation.adapter.OrderAdapter
 import pl.students.szczepieniaapp.presentation.ui.listener.OrderDetailsListener
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.OrderDetailsViewModel
+import java.util.*
 
 @AndroidEntryPoint
 class OrderDetailsFragment : MyFragment<FragmentOrderDetailsBinding>(), OrderDetailsListener {
@@ -54,6 +55,7 @@ class OrderDetailsFragment : MyFragment<FragmentOrderDetailsBinding>(), OrderDet
                 } else {
                     binding.orderProgressBar.visibility = View.GONE
                     binding.orderDataLinearLayout.visibility = View.VISIBLE
+                    setSpinner(driversNames.value as List<Objects>, binding.selectDriverSpinner)
                 }
             }
 
@@ -72,12 +74,21 @@ class OrderDetailsFragment : MyFragment<FragmentOrderDetailsBinding>(), OrderDet
                     binding.ordersListRecyclerView.visibility = View.VISIBLE
                     binding.ordersListRecyclerView.adapter?.notifyDataSetChanged()
                     binding.orderDataLinearLayout.visibility = View.VISIBLE
-                }
 
-                if (receivedOrder.deliveryStatus != ReceiveOrderStatus.ORDERED) {
-                    binding.sendOrderBtn.isEnabled = false
+                    if (receivedOrder.deliveryStatus == ReceiveOrderStatus.ORDERED) {
+                        binding.selectedDriver.visibility = View.GONE
+                        binding.selectDriverSpinner.visibility = View.VISIBLE
+                    } else {
+                        binding.selectedDriver.text = getDriver()
+                        binding.selectedDriver.visibility = View.VISIBLE
+                        binding.selectDriverRelativeLayout.visibility = View.GONE
+                    }
                 }
             }
+
+            isButtonEnabled.observe(viewLifecycleOwner) { binding.sendOrderBtn.isEnabled = it }
+
+            binding.selectDriverSpinner.onItemSelectedListener = this
         }
         return binding.root
     }
@@ -99,6 +110,18 @@ class OrderDetailsFragment : MyFragment<FragmentOrderDetailsBinding>(), OrderDet
 
     override fun toastMessage(view: View, string: String) {
         Toast.makeText(view.context, string, Toast.LENGTH_LONG).show()
+    }
+
+    private fun setSpinner(list: List<Objects>, spinner: Spinner) {
+        val spinner: Spinner = spinner
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            list
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
     }
 
 }

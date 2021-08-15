@@ -19,6 +19,8 @@ class UseCaseFactory(
     val getAllOrdersUseCase: GetAllOrdersUseCase,
     val getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase,
     val getSendOrderUseCase: SendOrderUseCase,
-    val getAddDriverUseCase: AddDriverUseCase
+    val getAddDriverUseCase: AddDriverUseCase,
+    val getAllAvailableDriversUseCase: GetAvailableDriversUseCase,
+    val getMakeDriverUnavailableUseCase: MakeDriverUnavailableUseCase
 )
 

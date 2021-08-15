@@ -1,6 +1,5 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +30,16 @@ class DriverManagerFragment: MyFragment<DriverManagerFragmentBinding>(), DriverM
     ): View? {
         _binding = DriverManagerFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
+        viewModel.apply {
+
+            loading.observe(viewLifecycleOwner){
+                if (it) {
+                    binding.provideLastNameEditView.text.clear()
+                    binding.provideNameEditView.text.clear()
+                }
+            }
+
+        }
 
         return binding.root
     }

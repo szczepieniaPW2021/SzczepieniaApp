@@ -195,6 +195,8 @@
     <string name="driver_manager_fragment_add_driver_btn_text">Add</string>
     <string name="driver_manager_fragment_empty_fields_text">Provide both, name and last name</string>
     <string name="driver_manager_fragment_added_driver_text">Added driver</string>
+    <string name="driver_manager_fragment_adding_driver_text">Driver is being added...</string>
+    <string name="driver_manager_fragment_select_driver_text">Select driver:</string>
     <!--    Driver Manager Fragment strings end here-->
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>

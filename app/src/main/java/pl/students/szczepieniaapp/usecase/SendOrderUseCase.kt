@@ -26,7 +26,10 @@ class SendOrderUseCase(
                 order.city,
                 order.postalCode,
                 order.street,
-                order.orders
+                order.orders,
+                order.latitude,
+                order.longitude,
+                order.driverId
             )
 
             database.orderDao().updateOrder(mapper.mapFromDomainModel(entity))

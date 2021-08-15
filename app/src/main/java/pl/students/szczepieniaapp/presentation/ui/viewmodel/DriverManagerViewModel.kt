@@ -1,6 +1,8 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
 import android.view.View
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -24,6 +26,9 @@ constructor(
 
     private val disposable = CompositeDisposable()
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
+
     var name: String = ""
     var lastName: String = ""
 
@@ -34,7 +39,8 @@ constructor(
             return
         }
 
-        callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
+        _loading.postValue(true)
+        callback.setDialog(view, view.context.getString(R.string.driver_manager_fragment_adding_driver_text))
 
         disposable.add(
             useCaseFactory.getAddDriverUseCase
@@ -43,17 +49,14 @@ constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate {
                     callback.dismissDialog()
+                    _loading.postValue(false)
                 }
                 .subscribeWith(object : DisposableCompletableObserver(){
                     override fun onComplete() {
-                        name = ""
-                        lastName = ""
-                        //TODO remove names from the view
                         callback.toastMessage(
                             view,
                             view.context.getString(R.string.driver_manager_fragment_added_driver_text)
                         )
-
                     }
 
                     override fun onError(e: Throwable) {}

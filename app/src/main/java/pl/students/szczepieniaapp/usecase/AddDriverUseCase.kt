@@ -16,7 +16,7 @@ class AddDriverUseCase(
         return Completable.create { emitter->
 
             var driver = DriverEntity(
-                null, name, lastName
+                null, name, lastName, true
             )
 
             database.driverDao().insertDriver(driver = driver)

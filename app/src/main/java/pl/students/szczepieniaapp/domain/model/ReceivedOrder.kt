@@ -14,5 +14,5 @@ data class ReceivedOrder(
     val orders: List<Order>? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val driverId: Int? = null
+    var driverId: Int? = null
 )

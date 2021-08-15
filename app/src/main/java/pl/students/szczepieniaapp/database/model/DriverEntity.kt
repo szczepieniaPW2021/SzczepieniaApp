@@ -15,5 +15,8 @@ class DriverEntity(
     var name: String?,
 
     @ColumnInfo(name = "last_name")
-    var lastName: String?
+    var lastName: String?,
+
+    @ColumnInfo(name = "is_available")
+    var isAvailable: Boolean
 )

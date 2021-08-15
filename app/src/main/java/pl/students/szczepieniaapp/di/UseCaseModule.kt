@@ -7,6 +7,7 @@ import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
 import pl.students.szczepieniaapp.database.AppDatabase
 import pl.students.szczepieniaapp.network.mapper.MyRouteMapper
+import pl.students.szczepieniaapp.presentation.util.DriversNameMapper
 import pl.students.szczepieniaapp.presentation.util.ReceivedOrderMapper
 import pl.students.szczepieniaapp.repository.GoogleMapRouteRepository
 import pl.students.szczepieniaapp.usecase.*
@@ -36,7 +37,9 @@ object UseCaseModule {
         getAllOrdersUseCase: GetAllOrdersUseCase,
         getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase,
         getSendOrderUseCase: SendOrderUseCase,
-        getAddDriverUseCase: AddDriverUseCase
+        getAddDriverUseCase: AddDriverUseCase,
+        getAllAvailableDriversUseCase: GetAvailableDriversUseCase,
+        getMakeDriverUnavailableUseCase: MakeDriverUnavailableUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
@@ -57,7 +60,9 @@ object UseCaseModule {
             getAllOrdersUseCase,
             getReceivedOrderByIdUseCase,
             getSendOrderUseCase,
-            getAddDriverUseCase
+            getAddDriverUseCase,
+            getAllAvailableDriversUseCase,
+            getMakeDriverUnavailableUseCase
         )
     }
 
@@ -207,5 +212,22 @@ object UseCaseModule {
         database: AppDatabase
     ): AddDriverUseCase {
         return AddDriverUseCase(database)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideGetAvailableDriversUseCase(
+        database: AppDatabase
+    ): GetAvailableDriversUseCase {
+        return GetAvailableDriversUseCase(database)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideMakeDriverUnavailableUseCase(
+        database: AppDatabase,
+        mapper: DriversNameMapper
+    ): MakeDriverUnavailableUseCase {
+        return MakeDriverUnavailableUseCase(database, mapper)
     }
 }

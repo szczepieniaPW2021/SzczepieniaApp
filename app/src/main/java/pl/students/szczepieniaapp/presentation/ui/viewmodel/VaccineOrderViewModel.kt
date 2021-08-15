@@ -1,6 +1,5 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
-import android.content.Context
 import android.location.Geocoder
 import android.util.Log
 import android.view.View
@@ -9,20 +8,15 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Action
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.presentation.MyViewModel
