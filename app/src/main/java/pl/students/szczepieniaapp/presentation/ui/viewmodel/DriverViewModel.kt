@@ -19,22 +19,29 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.database.model.DriverEntity
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.DriverFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.DriverListener
+import pl.students.szczepieniaapp.presentation.util.DriversNameMapper
 import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
+import java.util.ArrayList
 import javax.inject.Inject
 
 @HiltViewModel
 class DriverViewModel
 @Inject
 constructor(
-    private val useCaseFactory: UseCaseFactory
+    private val useCaseFactory: UseCaseFactory,
+    private val driversNameMapper: DriversNameMapper
 ): MyViewModel() {
 
     private var callback: DriverListener = DriverFragment()
@@ -51,7 +58,48 @@ constructor(
     private val _initLoading = MutableLiveData<Boolean>()
     val initLoading: LiveData<Boolean> get() = _initLoading
 
+    private var drivers: List<DriverEntity>? = null
+
+    private val _driversNames = MutableLiveData<ArrayList<String>>()
+    val driversNames: LiveData<ArrayList<String>> get() = _driversNames
+
     var mMap: GoogleMap? = null
+
+    init {
+        _initLoading.postValue(true)
+        getAllDrivers()
+    }
+
+    private fun getAllDrivers(){
+
+        useCaseFactory.getAllDriversUseCase
+            .execute()
+            .onEach { dataState ->
+
+                _initLoading.postValue(dataState.loading)
+
+                dataState.data?.let {data ->
+                    drivers = data
+                    val names = driversNameMapper.mapToDomainModelList(data) as ArrayList<String>
+                    names.add(0, context.value!!.getString(R.string.driver_manager_fragment_select_driver_text))
+                    _driversNames.postValue(names)
+                }
+
+            }.launchIn(GlobalScope)
+    }
+
+    fun setCurrentPosition(){
+        mMap!!.addMarker(
+            MarkerOptions().position(myPosition.value!!)
+                .title(context?.value?.resources?.getString(R.string.my_position_map_text))
+        )
+
+        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(myPosition.value!!))
+    }
+
+    fun setMyPosition(start: LatLng){
+        _myPosition.postValue(start)
+    }
 
     fun getDestination(start: LatLng, view: View){
 

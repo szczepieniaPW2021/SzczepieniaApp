@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -21,6 +23,7 @@ import pl.students.szczepieniaapp.databinding.DriverFragmentBinding
 import pl.students.szczepieniaapp.presentation.MyFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.DriverListener
 import pl.students.szczepieniaapp.presentation.ui.viewmodel.DriverViewModel
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -40,7 +43,21 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
         viewModel.apply {
 
             initLoading.observe(viewLifecycleOwner) {
-                if (it) binding.driverFragmentProgressBar.visibility = View.VISIBLE else binding.driverFragmentProgressBar.visibility = View.GONE
+                if (it) {
+                    binding.driverFragmentProgressBar.visibility = View.VISIBLE
+                    binding.selectDriverRelativeLayout.visibility = View.GONE
+                    binding.selectDriverBtn.visibility = View.GONE
+                    binding.mapView.visibility = View.INVISIBLE
+                } else {
+                    binding.driverFragmentProgressBar.visibility = View.GONE
+                    binding.selectDriverRelativeLayout.visibility = View.VISIBLE
+                    binding.selectDriverBtn.visibility = View.VISIBLE
+                    binding.mapView.visibility = View.VISIBLE
+                }
+            }
+
+            driversNames.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) setSpinner(it as List<Objects>, binding.spinner)
             }
 
             myRoute.observe(viewLifecycleOwner) {
@@ -80,7 +97,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
         task.addOnSuccessListener {
             if (it != null) {
-                viewModel.getDestination(LatLng(it.latitude, it.longitude), this.requireView())
+                viewModel.setMyPosition(LatLng(it.latitude, it.longitude))
                 binding.mapView.getMapAsync(this)
             }
         }
@@ -89,6 +106,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
             viewModel.mMap = googleMap
+            viewModel.setCurrentPosition()
         }
     }
 
@@ -129,5 +147,17 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
     override fun displaySnackbar(view: View) {
         Snackbar.make(view, view.context.getString(R.string.location_not_fetched_map_text), Snackbar.LENGTH_LONG).show()
+    }
+
+    private fun setSpinner(list: List<Objects>, spinner: Spinner) {
+        val spinner: Spinner = spinner
+        ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item,
+            list
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
     }
 }
