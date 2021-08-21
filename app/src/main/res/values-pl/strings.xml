@@ -26,6 +26,9 @@
     <string name="error_dialog_title">Uwaga!</string>
     <string name="error_dialog_message">Nie można pobrać współrzędnych GPS.</string>
     <string name="error_dialog_exit">Wyjdź</string>
+    <string name="driver_fragment_order_is_delivered">Zamówienie jest dostarczane...</string>
+    <string name="driver_fragment_order_delivered">Zamówienie zostało dostarczone</string>
+    <string name="driver_fragment_delivered_btn_text">Dostarcz</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->

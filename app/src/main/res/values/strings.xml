@@ -26,6 +26,9 @@
     <string name="error_dialog_title">Warning!</string>
     <string name="error_dialog_message">GPS position can not fetched.</string>
     <string name="error_dialog_exit">Exit</string>
+    <string name="driver_fragment_order_is_delivered">Order is being delivered...</string>
+    <string name="driver_fragment_order_delivered">Order have been delivered</string>
+    <string name="driver_fragment_delivered_btn_text">Deliver</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->

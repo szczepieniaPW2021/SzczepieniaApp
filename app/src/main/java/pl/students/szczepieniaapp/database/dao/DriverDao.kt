@@ -13,6 +13,9 @@ interface DriverDao {
     @Insert
     fun insertDriver(driver: DriverEntity): Long
 
+    @Query("SELECT * FROM drivers WHERE id = :id")
+    fun getDriverById(id: Int): DriverEntity
+
     @Query("SELECT * FROM drivers WHERE is_available = 1")
     suspend fun getAllAvailableDrivers(): List<DriverEntity>
 

@@ -42,7 +42,9 @@ object UseCaseModule {
         getMakeDriverUnavailableUseCase: MakeDriverUnavailableUseCase,
         getAllDriversUseCase: GetAllDriversUseCase,
         getAllUnavailableDriversUseCase: GetAllUnavailableDriversUseCase,
-        getOrderByDriverIdUseCase: GetOrderByDriverIdUseCase
+        getOrderByDriverIdUseCase: GetOrderByDriverIdUseCase,
+        getDeliverOderUseCase: DeliverOderUseCase,
+        getMakeDriverAvailableUseCase: MakeDriverAvailableUseCase
     ): UseCaseFactory {
         return UseCaseFactory(
             getGoogleMapRouteUseCase,
@@ -68,7 +70,9 @@ object UseCaseModule {
             getMakeDriverUnavailableUseCase,
             getAllDriversUseCase,
             getAllUnavailableDriversUseCase,
-            getOrderByDriverIdUseCase
+            getOrderByDriverIdUseCase,
+            getDeliverOderUseCase,
+            getMakeDriverAvailableUseCase
         )
     }
 
@@ -260,5 +264,23 @@ object UseCaseModule {
         mapper: ReceivedOrderMapper
     ): GetOrderByDriverIdUseCase {
         return GetOrderByDriverIdUseCase(database, mapper)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideDeliverOderUseCase(
+        database: AppDatabase,
+        mapper: ReceivedOrderMapper
+    ): DeliverOderUseCase {
+        return DeliverOderUseCase(database, mapper)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideMMakeDriverAvailableUseCase(
+        database: AppDatabase,
+        mapper: DriversNameMapper
+    ): MakeDriverAvailableUseCase {
+        return MakeDriverAvailableUseCase(database, mapper)
     }
 }

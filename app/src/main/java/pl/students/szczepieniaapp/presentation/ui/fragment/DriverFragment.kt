@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -172,6 +174,25 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
     override fun displaySnackbar(view: View) {
         Snackbar.make(view, view.context.getString(R.string.location_not_fetched_map_text), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun setDialog(view: View, string: String) {
+        dialogBuilder = AlertDialog.Builder(view.context)
+        val newView = LayoutInflater.from(view.context).inflate(R.layout.register_dialog, null)
+        val textView = newView.findViewById<TextView>(R.id.description)
+        textView.text = string
+        dialogBuilder.setView(newView)
+        dialog = dialogBuilder.create()
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    override fun dismissDialog() {
+        dialog.dismiss()
+    }
+
+    override fun toastMessage(view: View, string: String) {
+        Toast.makeText(view.context, string, Toast.LENGTH_LONG).show()
     }
 
     private fun setSpinner(list: List<Objects>, spinner: Spinner) {
