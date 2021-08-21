@@ -15,6 +15,9 @@ interface OrderDao {
     @Update
     fun updateOrder(order: OrderEntity)
 
+    @Query("SELECT * FROM orders WHERE driver_id = :id LIMIT 1")
+    suspend fun getOrderByDriverId(id: Int): OrderEntity
+
     @Query("SELECT * FROM orders ORDER BY order_date ASC")
     suspend fun getAllOrders(): List<OrderEntity>
 

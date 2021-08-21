@@ -60,6 +60,10 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
                 if (it.isNotEmpty()) setSpinner(it as List<Objects>, binding.spinner)
             }
 
+            isBtnEnabled.observe(viewLifecycleOwner){
+                binding.selectDriverBtn.isEnabled = it
+            }
+
             myRoute.observe(viewLifecycleOwner) {
                 if (it != null) {
                     binding.durationTextView.text = viewModel.getDistanceAsString(it.duration!!)
@@ -77,6 +81,13 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
                     setMarkersForMap()
                 }
             }
+
+            loadingRoute.observe(viewLifecycleOwner){
+                if (it) binding.loadingRouteProgressBar.visibility = View.VISIBLE
+                else binding.loadingRouteProgressBar.visibility = View.INVISIBLE
+            }
+
+            binding.spinner.onItemSelectedListener = this
 
         }
 

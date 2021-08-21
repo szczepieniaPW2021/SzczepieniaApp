@@ -14,14 +14,11 @@ import io.reactivex.functions.Action
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.database.converter.ReceiveOrderStatus
 import pl.students.szczepieniaapp.database.model.DriverEntity
-import pl.students.szczepieniaapp.database.model.PatientEntity
 import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.domain.model.ReceivedOrder
 import pl.students.szczepieniaapp.presentation.MyViewModel
@@ -70,7 +67,7 @@ constructor(
 
     fun getOrder(id: Int) {
 
-        useCaseFactory.getAllDriversUseCase
+        useCaseFactory.getAllAvailableDriversUseCase
             .execute()
             .onEach { dataState ->
 

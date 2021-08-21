@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,6 +23,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.database.model.DriverEntity
 import pl.students.szczepieniaapp.domain.model.MyRoute
@@ -42,7 +44,7 @@ class DriverViewModel
 constructor(
     private val useCaseFactory: UseCaseFactory,
     private val driversNameMapper: DriversNameMapper
-): MyViewModel() {
+): MyViewModel(), AdapterView.OnItemSelectedListener {
 
     private var callback: DriverListener = DriverFragment()
 
@@ -58,7 +60,13 @@ constructor(
     private val _initLoading = MutableLiveData<Boolean>()
     val initLoading: LiveData<Boolean> get() = _initLoading
 
-    private var drivers: List<DriverEntity>? = null
+    private val _isBtnEnabled = MutableLiveData<Boolean>()
+    val isBtnEnabled: LiveData<Boolean> get() = _isBtnEnabled
+
+    private val _loadingRoute = MutableLiveData<Boolean>()
+    val loadingRoute: LiveData<Boolean> get() = _loadingRoute
+
+    private var driverId: Int = 0
 
     private val _driversNames = MutableLiveData<ArrayList<String>>()
     val driversNames: LiveData<ArrayList<String>> get() = _driversNames
@@ -67,20 +75,21 @@ constructor(
 
     init {
         _initLoading.postValue(true)
-        getAllDrivers()
+        _isBtnEnabled.postValue(false)
+        _loadingRoute.postValue(false)
+        getAllUnavailableDrivers()
     }
 
-    private fun getAllDrivers(){
+    private fun getAllUnavailableDrivers(){
 
-        useCaseFactory.getAllDriversUseCase
+        useCaseFactory.getAllUnavailableDriversUseCase
             .execute()
             .onEach { dataState ->
 
                 _initLoading.postValue(dataState.loading)
 
                 dataState.data?.let {data ->
-                    drivers = data
-                    val names = driversNameMapper.mapToDomainModelList(data) as ArrayList<String>
+                    var names = driversNameMapper.mapToDomainModelList(data) as ArrayList<String>
                     names.add(0, context.value!!.getString(R.string.driver_manager_fragment_select_driver_text))
                     _driversNames.postValue(names)
                 }
@@ -101,45 +110,24 @@ constructor(
         _myPosition.postValue(start)
     }
 
-    fun getDestination(start: LatLng, view: View){
+    private fun getRoute(id: Int, view: View){
+        GlobalScope.launch {
+            _loadingRoute.postValue(true)
+            var order = useCaseFactory.getOrderByDriverIdUseCase.execute(id)
+            if (order.latitude != null && order.longitude != null) {
+                _destination.postValue(LatLng(order.latitude!!, order.longitude!!))
+                var route: MyRoute? =  useCaseFactory.getGoogleMapRouteUseCase.execute(
 
-        _myPosition.postValue(start)
-
-        _initLoading.postValue(true)
-        EspressoIdlingResource.increment()
-        useCaseFactory.getDestinationCoordinatesUseCase
-            .execute()
-            .subscribeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess {
-                _destination.postValue(it)
-            }
-            .flatMap {
-                useCaseFactory.getGoogleMapRouteUseCase.execute(
-                    "${start.latitude}, ${start.longitude}",
-                    "${destination.value!!.latitude}, ${destination.value!!.longitude}",
+                    "${myPosition.value!!.latitude}, ${myPosition.value!!.longitude}",
+                    "${order.latitude}, ${order.longitude}",
                     context.value?.resources?.getString(R.string.google_maps_key)!!
+
                 )
+                
             }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : SingleObserver<MyRoute>{
-                override fun onSubscribe(d: Disposable) {
 
-                }
-
-                override fun onError(e: Throwable) {
-                    _initLoading.postValue(false)
-                    callback.displaySnackbar(view)
-                    Log.d(DriverViewModel::class.java.simpleName, "onError: $e")
-                }
-
-                override fun onSuccess(value: MyRoute) {
-                    _myRoute.postValue(value)
-                    _initLoading.postValue(false)
-                    Log.d(DriverViewModel::class.java.simpleName, "Successfully got route: $value")
-                    EspressoIdlingResource.decrement()
-                }
-            })
+            _loadingRoute.postValue(false)
+        }
     }
 
     private fun drawPolyline(points: String?): PolylineOptions {
@@ -195,6 +183,33 @@ constructor(
         val bounds = builder.build()
 
         mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
+    }
+
+    fun selectDriver(view: View){
+        if (driverId > 0) {
+            getRoute(driverId, view)
+        }
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.d("testuje", "onItemSelected: " + parent!!.adapter.getItem(position))
+        when (parent!!.adapter.getItem(position) as String) {
+
+            context.value!!.getString(R.string.driver_manager_fragment_select_driver_text) -> {
+                _isBtnEnabled.postValue(false)
+                driverId = 0
+            }
+
+            else -> {
+                driverId = parent!!.adapter.getItem(position).toString().substringBefore(".").toInt()
+                _isBtnEnabled.postValue(true)
+            }
+
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Log.d(DriverViewModel::class.java.simpleName, "onNothingSelected: ")
     }
 
 }

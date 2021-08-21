@@ -22,6 +22,8 @@ class UseCaseFactory(
     val getAddDriverUseCase: AddDriverUseCase,
     val getAllAvailableDriversUseCase: GetAvailableDriversUseCase,
     val getMakeDriverUnavailableUseCase: MakeDriverUnavailableUseCase,
-    val getAllDriversUseCase: GetAllDriversUseCase
+    val getAllDriversUseCase: GetAllDriversUseCase,
+    val getAllUnavailableDriversUseCase: GetAllUnavailableDriversUseCase,
+    val getOrderByDriverIdUseCase: GetOrderByDriverIdUseCase
 )
 

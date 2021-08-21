@@ -6,7 +6,7 @@ import pl.students.szczepieniaapp.database.AppDatabase
 import pl.students.szczepieniaapp.database.model.DriverEntity
 import pl.students.szczepieniaapp.util.DataState
 
-class GetAvailableDriversUseCase(
+class GetAllUnavailableDriversUseCase(
     private val database: AppDatabase
 ) {
 
@@ -16,12 +16,11 @@ class GetAvailableDriversUseCase(
             emit(DataState.loading())
             Thread.sleep(1000L)
 
-            val data = database.driverDao().getAllAvailableDrivers()
+            val data = database.driverDao().getAllUnavailableDrivers()
             emit(DataState.success(data))
 
         } catch (e: Exception) {
             emit(DataState.error<List<DriverEntity>>(e.message?: "Unknown error"))
         }
     }
-
 }

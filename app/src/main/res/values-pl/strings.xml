@@ -22,6 +22,7 @@
     <string name="departure_address_map_text">Adres wyjazdu: %s</string>
     <string name="my_position_map_text">Jestem tutaj</string>
     <string name="destination_map_text">Cel</string>
+    <string name="select_driver_text">Wybierz</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->

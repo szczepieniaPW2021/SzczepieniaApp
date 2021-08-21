@@ -9,20 +9,24 @@ class GetGoogleMapRouteUseCase(
     private val repository: GoogleMapRouteRepository,
     private val mapper: MyRouteMapper
 ) {
-    fun execute(
+   suspend fun execute(
         origin: String,
         destination: String,
         apiKey: String
-    ): Single<MyRoute> {
+    ): MyRoute? {
 
-            val routes = mapper.mapToDomainModel(
-                repository.getRoute(
-                    origin = origin,
-                    destination = destination,
-                    apiKey = apiKey
-                )[0]
-            )
+       var myRoutes = repository.getRoute(
+           origin = origin,
+           destination = destination,
+           apiKey = apiKey
+       )
+       var routes: MyRoute? = null
+       if (myRoutes != null && myRoutes.isNotEmpty()) {
 
-        return Single.just(routes)
+           routes = mapper.mapToDomainModel(
+               myRoutes[0]
+           )
+       }
+        return routes
     }
 }

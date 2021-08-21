@@ -4,5 +4,5 @@ import pl.students.szczepieniaapp.network.model.route.Route
 
 interface GoogleMapRouteRepository {
 
-    fun getRoute(origin: String, destination: String, apiKey: String) : List<Route>
+   suspend fun getRoute(origin: String, destination: String, apiKey: String) : List<Route>
 }
