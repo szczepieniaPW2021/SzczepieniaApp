@@ -23,6 +23,9 @@
     <string name="my_position_map_text">I am here.</string>
     <string name="destination_map_text">Destination</string>
     <string name="select_driver_text">Select</string>
+    <string name="error_dialog_title">Warning!</string>
+    <string name="error_dialog_message">GPS position can not fetched.</string>
+    <string name="error_dialog_exit">Exit</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->

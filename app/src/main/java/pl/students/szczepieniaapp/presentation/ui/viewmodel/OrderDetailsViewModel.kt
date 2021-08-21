@@ -67,12 +67,21 @@ constructor(
 
     fun getOrder(id: Int) {
 
-        useCaseFactory.getAllAvailableDriversUseCase
+        useCaseFactory.getAllDriversUseCase
             .execute()
             .onEach { dataState ->
 
                 dataState.data?.let { data->
                     drivers = data
+                }
+
+            }.launchIn(viewModelScope)
+
+        useCaseFactory.getAllAvailableDriversUseCase
+            .execute()
+            .onEach { dataState ->
+
+                dataState.data?.let { data->
                     val names = driversNameMapper.mapToDomainModelList(data) as ArrayList<String>
                     names.add(0, context.value!!.getString(R.string.driver_manager_fragment_select_driver_text))
                     _driversNames.postValue(names)
@@ -149,7 +158,7 @@ constructor(
 
     fun getStatus(): String {
         val arrayStatus = context.value!!.resources.getStringArray(R.array.order_details_fragment_status)
-        return "${arrayStatus[order.value!!.deliveryStatus.ordinal]}"
+        return arrayStatus[order.value!!.deliveryStatus.ordinal]
     }
 
     fun getDriver(): String {
@@ -182,7 +191,8 @@ constructor(
     }
 
     private fun isBtnEnabled() {
-        if (driverName.isNullOrEmpty() || getStatus() != ReceiveOrderStatus.ORDERED.name) {
+        val arrayStatus = context.value!!.resources.getStringArray(R.array.order_details_fragment_status)
+        if (driverName.isNullOrEmpty() || getStatus() != arrayStatus[order.value!!.deliveryStatus.ordinal]) {
             _isButtonEnabled.postValue(false)
         } else {
             _isButtonEnabled.postValue(true)

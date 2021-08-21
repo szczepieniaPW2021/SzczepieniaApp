@@ -6,6 +6,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -16,22 +17,16 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.SingleObserver
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
-import pl.students.szczepieniaapp.database.model.DriverEntity
 import pl.students.szczepieniaapp.domain.model.MyRoute
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.DriverFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.DriverListener
 import pl.students.szczepieniaapp.presentation.util.DriversNameMapper
-import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
@@ -123,7 +118,11 @@ constructor(
                     context.value?.resources?.getString(R.string.google_maps_key)!!
 
                 )
-                
+                if (route != null) {
+                    _myRoute.postValue(route)
+                } else {
+                    callback.displaySnackbar(view)
+                }
             }
 
             _loadingRoute.postValue(false)
@@ -192,7 +191,7 @@ constructor(
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        Log.d("testuje", "onItemSelected: " + parent!!.adapter.getItem(position))
+        Log.d(DriverViewModel::class.java.simpleName, "onItemSelected: " + parent!!.adapter.getItem(position))
         when (parent!!.adapter.getItem(position) as String) {
 
             context.value!!.getString(R.string.driver_manager_fragment_select_driver_text) -> {
@@ -210,6 +209,12 @@ constructor(
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         Log.d(DriverViewModel::class.java.simpleName, "onNothingSelected: ")
+    }
+
+    fun scrollToBottom(scrollView: NestedScrollView) {
+        scrollView.post {
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
     }
 
 }

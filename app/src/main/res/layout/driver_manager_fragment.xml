@@ -125,7 +125,7 @@
 
                             <Button
                                 android:id="@+id/addDriverBtn"
-                                android:layout_width="70dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:onClick="@{viewmodel::addDriver}"
                                 android:text="@string/driver_manager_fragment_add_driver_btn_text" />

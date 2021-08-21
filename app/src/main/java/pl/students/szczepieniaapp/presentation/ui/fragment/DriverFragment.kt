@@ -1,6 +1,7 @@
 package pl.students.szczepieniaapp.presentation.ui.fragment
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,6 +35,10 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
     private val viewModel : DriverViewModel by viewModels()
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private var mMap: GoogleMap? = null
+
+    lateinit var dialogBuilder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +81,7 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
                     drawRoute()
                     binding.navContainer.visibility = View.VISIBLE
                     binding.navBtn.visibility = View.VISIBLE
+                    viewModel.scrollToBottom(binding.scrollView)
                 }
             }
 
@@ -108,16 +117,21 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
 
         task.addOnSuccessListener {
             if (it != null) {
+                Log.d(DriverFragment::class.java.simpleName, "fetchLocation: $it")
                 viewModel.setMyPosition(LatLng(it.latitude, it.longitude))
                 binding.mapView.getMapAsync(this)
+            } else {
+                myPositionErrorWarning()
             }
         }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
         googleMap?.apply {
-            viewModel.mMap = googleMap
-            viewModel.setCurrentPosition()
+            mMap = googleMap
+            mMap!!.addMarker(MarkerOptions().position(viewModel.myPosition.value!!).title(context?.resources?.getString(R.string.my_position_map_text)))
+            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(viewModel.myPosition.value!!))
+            viewModel.mMap = mMap
         }
     }
 
@@ -170,5 +184,17 @@ class DriverFragment : MyFragment<DriverFragmentBinding>(), OnMapReadyCallback, 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
+    }
+
+    private fun myPositionErrorWarning(){
+        dialogBuilder = AlertDialog.Builder(requireContext())
+            .setTitle(R.string.error_dialog_title)
+            .setMessage(R.string.error_dialog_message)
+            .setPositiveButton(R.string.error_dialog_exit) { _, _ ->
+                Navigation.findNavController(requireView()).navigate(R.id.action_driverFragment_to_mainActivity)
+            }
+        dialog = dialogBuilder.create()
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }
