@@ -1,6 +1,5 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
-import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -17,11 +16,10 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import pl.students.szczepieniaapp.BaseApplication
 import pl.students.szczepieniaapp.R
+import pl.students.szczepieniaapp.database.model.PatientEntity
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment
-import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import java.util.*
 import javax.inject.Inject
@@ -35,8 +33,8 @@ constructor(
 
     private var callback: SearchPatientFragment = SearchPatientFragment()
 
-    private val _persons = MutableLiveData<List<String>>()
-    val persons: LiveData<List<String>> get() = _persons
+    private val _persons = MutableLiveData<PatientEntity>()
+    val persons: LiveData<PatientEntity> get() = _persons
 
     private val _vaccineDoses = MutableLiveData<ArrayList<String>>()
     val vaccineDoses: LiveData<ArrayList<String>> get() = _vaccineDoses
@@ -78,55 +76,39 @@ constructor(
             }
         } else {
             Log.d(SearchPatientViewModel::class.java.name, "isOnlyNumeric is searching by name")
-            getPatientByName(string)
+            val name = string.substringBefore(" ")
+            var lastName = string.substringAfter(" ")
+            getPatientByName(name = name, lastName = lastName)
         }
     }
 
     private fun getPatientByIdNumber(idNumber: Long) {
-
-        useCaseFactory.getPatientByIdNumberUseCase
-            .execute(idNumber = idNumber)
-            .onEach { dataState ->
-
-                _patientSearchLoading.postValue(dataState.loading)
-
-                dataState.data?.let {patient ->
-                    _persons.postValue(patient)
-                }
-
-                dataState.error?.let { error ->
-                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByIdNumber: $error")
-                }
-
-            }.launchIn(GlobalScope)
+        _patientSearchLoading.postValue(true)
+        GlobalScope.launch {
+            val result = useCaseFactory.getPatientByIdNumberUseCase.execute(idNumber = idNumber)
+            _persons.postValue(result)
+            _patientSearchLoading.postValue(false)
+        }
     }
 
-    private fun getPatientByName(name: String) {
-
-        useCaseFactory.getPatientByNameUseCase
-            .execute(name = name)
-            .onEach { dataState ->
-
-                _patientSearchLoading.postValue(dataState.loading)
-
-                dataState.data?.let {patient ->
-                    _persons.postValue(patient)
-
-                }
-
-                dataState.error?.let { error ->
-                    Log.e(SearchPatientViewModel::class.java.simpleName, "getPatientByName: $error")
-                }
-
-            }.launchIn(GlobalScope)
+    private fun getPatientByName(name: String, lastName: String) {
+        _patientSearchLoading.postValue(true)
+        GlobalScope.launch {
+            val result = useCaseFactory.getPatientByNameUseCase.execute(name = name, lastName = lastName)
+            _persons.postValue(result)
+            _patientSearchLoading.postValue(false)
+        }
     }
 
     fun getPatientName() : String {
-        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_text).format(persons.value?.get(0)!!)
+
+        Log.d("testuje", "getPatientName: " + persons.value?.name + " " + persons.value?.lastName)
+
+        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_text).format(persons.value?.name, persons.value?.lastName)
     }
 
     fun getPatientPesel() : String {
-        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_pesel_text).format(persons.value?.get(1)!!)
+        return context.value!!.resources.getString(R.string.search_patient_fragment_patient_pesel_text).format(persons.value?.personalNumber)
     }
 
     fun registerVaccination(view: View) {
@@ -137,9 +119,16 @@ constructor(
         }
 
         callback.setDialog(view, view.context.resources.getString(R.string.search_patient_fragment_vaccination_is_being_registered_text))
+        val time = System.currentTimeMillis()
 
         disposable.add(
-            useCaseFactory.registerVaccinationUseCase.execute()
+            useCaseFactory.registerVaccinationUseCase.execute(
+                persons.value!!,
+                vaccineDose,
+                vaccineType,
+                createStringForQRCode(persons.value!!.personalNumber!!, time, vaccineDose, lotNumber, vaccineType),
+                time
+            )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableCompletableObserver(){
@@ -149,7 +138,7 @@ constructor(
                         Navigation.findNavController(view).navigate(R.id.action_searchPatientFragment_to_doctorFragment)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         callback.dismissDialog()
                     }
                 })
@@ -207,16 +196,20 @@ constructor(
 
     private fun selectVaccineDose(item: String, view: View?) {
         vaccineDose = when (item) {
-            "Select dose:" -> { "" }
+            "Wybierz dawkę:" -> { "" }
             else -> { item }
         }
     }
 
     private fun selectVaccineType(item: String, view: View?) {
         vaccineType = when (item) {
-            "Select vaccine:" -> { "" }
+            "Wybierz szczepionkę:" -> { "" }
             else -> { item }
         }
+    }
+
+    private fun createStringForQRCode(idNumber: Long, time: Long, dose: String, lotNumber: String, vaccineType: String): String? {
+        return if (dose == "Dawka 2") "$idNumber/$time/$lotNumber/$vaccineType" else null
     }
 
     override fun onCleared() {

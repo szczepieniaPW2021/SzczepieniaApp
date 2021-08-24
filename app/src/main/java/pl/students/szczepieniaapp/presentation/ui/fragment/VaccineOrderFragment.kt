@@ -39,7 +39,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
         _binding = VaccineOrderFragmentBinding.inflate(inflater, container, false)
         binding.viewmodel = viewModel
         viewModel.apply {
-            passengersNumberData.observe(viewLifecycleOwner) {
+            orderNumberData.observe(viewLifecycleOwner) {
                 binding.passengerNumberTextView.text = it.toString()
             }
 
@@ -73,7 +73,7 @@ class VaccineOrderFragment : MyFragment<VaccineOrderFragmentBinding>(), VaccineO
                 binding.orderRecycler.also {
                     it.layoutManager = LinearLayoutManager(requireContext())
                     it.setHasFixedSize(true)
-                    it.adapter = OrderAdapter(orders, this)
+                    it.adapter = OrderAdapter(orders, this, isRemoveItemVisible = true)
                 }
                 binding.orderRecycler.visibility = View.VISIBLE
                 binding.orderRecycler.adapter?.notifyDataSetChanged()

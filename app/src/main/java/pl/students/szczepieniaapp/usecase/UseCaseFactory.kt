@@ -14,6 +14,18 @@ class UseCaseFactory(
     val getVaccineTypeUseCase: GetVaccineTypeUseCase,
     val registerVaccinationUseCase: RegisterVaccinationUseCase,
     val orderVaccineUseCase: OrderVaccineUseCase,
-    val getDestinationCoordinatesUseCase: GetDestinationCoordinatesUseCase
+    val getDestinationCoordinatesUseCase: GetDestinationCoordinatesUseCase,
+    val getAllPatientsUseCase: GetAllPatientsUseCase,
+    val getAllOrdersUseCase: GetAllOrdersUseCase,
+    val getReceivedOrderByIdUseCase: GetReceivedOrderByIdUseCase,
+    val getSendOrderUseCase: SendOrderUseCase,
+    val getAddDriverUseCase: AddDriverUseCase,
+    val getAllAvailableDriversUseCase: GetAvailableDriversUseCase,
+    val getMakeDriverUnavailableUseCase: MakeDriverUnavailableUseCase,
+    val getAllDriversUseCase: GetAllDriversUseCase,
+    val getAllUnavailableDriversUseCase: GetAllUnavailableDriversUseCase,
+    val getOrderByDriverIdUseCase: GetOrderByDriverIdUseCase,
+    val deliverOderUseCase: DeliverOderUseCase,
+    val getMakeDriverAvailableUseCase: MakeDriverAvailableUseCase
 )
 

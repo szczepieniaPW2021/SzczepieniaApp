@@ -22,6 +22,13 @@
     <string name="departure_address_map_text">Adres wyjazdu: %s</string>
     <string name="my_position_map_text">Jestem tutaj</string>
     <string name="destination_map_text">Cel</string>
+    <string name="select_driver_text">Wybierz</string>
+    <string name="error_dialog_title">Uwaga!</string>
+    <string name="error_dialog_message">Nie można pobrać współrzędnych GPS.</string>
+    <string name="error_dialog_exit">Wyjdź</string>
+    <string name="driver_fragment_order_is_delivered">Zamówienie jest dostarczane...</string>
+    <string name="driver_fragment_order_delivered">Zamówienie zostało dostarczone</string>
+    <string name="driver_fragment_delivered_btn_text">Dostarcz</string>
     <!--    Driver Fragment strings end here-->
 
     <!--    Patient Fragment strings-->
@@ -73,7 +80,9 @@
 
     <!--    Vaccination QR Code Fragment strings-->
     <string name="vaccination_qr_code_fragment_title_text">Kod QR potwierdzający szczepienie</string>
+    <string name="vaccination_qr_code_fragment_no_vaccination_text">Nie ma kodu QR dla tej osoby. Najprawdopodobniej nie została jeszcze w pełni zaszczepiona.</string>
     <string name="vaccination_qr_code_fragment_cancel_text">Anuluj</string>
+    <string name="vaccination_qr_code_fragment_no_patients_text">Brak pacjentów zapisanych na szczepienie lub zaszczepionych</string>
     <!--    Vaccination QR Code Fragment strings end here-->
 
     <!--    Roles items -->
@@ -82,7 +91,6 @@
         <item>Pacjent</item>
         <item>Kierowca</item>
         <item>Doktor</item>
-        <item>Operator logistyczny</item>
         <item>Kierownik placówki</item>
         <item>Operator NFZ</item>
     </string-array>
@@ -94,7 +102,7 @@
     <string name="search_patient_fragment_wrong_pesel_length_text">PESEL musi zawierać 11 cyfr</string>
     <string name="search_patient_fragment_patient_data_text">Dane pacjenta:</string>
     <string name="search_patient_fragment_patient_pesel_text">PESEL: %s</string>
-    <string name="search_patient_fragment_patient_text">Imię i nazwisko: %s</string>
+    <string name="search_patient_fragment_patient_text">Imię i nazwisko: %s %s</string>
     <string name="search_patient_fragment_no_patient_warning_text">Przepraszamy. Pacjent o podanych danych nie istnieje w bazie!</string>
     <string name="search_patient_fragment_register_vaccination_btn_text">REJESTRUJ SZCZEPIENIE</string>
     <string name="search_patient_fragment_register_vaccination_text">Dane szczepienia</string>
@@ -135,6 +143,7 @@
     <string name="vaccine_order_fragment_city_hint_text">Miasto...</string>
     <string name="vaccine_order_fragment_order_is_being_registered_text">Zamówienie jest rejestrowane...</string>
     <string name="vaccine_order_fragment_order_registered_toast_text">Zamówienie zostało zarejestrowane!</string>
+    <string name="vaccine_order_fragment_incorrect_address_toast_text">Niepoprawny adres!</string>
     <!--    Vaccine Order Fragment strings end here-->
 
     <!--    Select Date Dialog strings-->
@@ -155,5 +164,45 @@
     <string name="facility_manager_fragment_amount_vaccines_text">Ilość szczepionek w punkcie szczepienia</string>
     <!--    Doctor Fragment strings end here-->
 
+    <!--    Operator navigation button strings-->
+    <string name="operator_bottom_nav_documents_text">Dokumenty</string>
+    <string name="operator_bottom_nav_order_list_text">Lista zamówień</string>
+    <string name="operator_bottom_nav_drivers_manager_text">Manager kierowców</string>
+    <string name="operator_bottom_nav_logout_text">Wyloguj</string>
+    <!--    Operator navigation button strings end here-->
+
+    <!--    Order List Fragment strings-->
+    <string name="order_list_fragment_title_text">Lista zamówień</string>
+    <string name="order_list_fragment_recycler_description_text">Nr. zam. / Data dostawy / Miasto dostawy</string>
+    <!--    Order List Fragment strings end here-->
+
+    <!--    Order Details Fragment strings-->
+    <string name="order_details_fragment_title_text">Szczegóły zamówienia</string>
+    <string name="order_details_fragment_delivery_date_text">Data dostawy:</string>
+    <string name="order_details_fragment_order_date_text">Data zamówienia:</string>
+    <string name="order_details_fragment_address_text">Adres:</string>
+    <string name="order_details_fragment_status_text">Status: </string>
+    <string name="order_details_fragment_driver_text">Kierowca: </string>
+    <string name="order_details_fragment_recycler_description_text">Numer / Szczepionka / Ilość</string>
+    <string name="order_details_fragment_orders_text">Zamówienia:</string>
+    <string-array name="order_details_fragment_status">
+        <item>ZAMÓWIONE</item>
+        <item>W PODRÓŻY</item>
+        <item>DOSTARCZONE</item>
+    </string-array>
+    <string name="order_details_fragment_send_order_text">Wyślij zamówienie</string>
+    <string name="order_details_fragment_sending_order_text">Zamówienie jest wysyłane...</string>
+    <string name="order_details_fragment_order_send_successfully_text">Zamówienie zostało wysłane</string>
+    <!--    Order Details Fragment strings end here-->
+
+    <!--    Driver Manager Fragment strings-->
+    <string name="driver_manager_fragment_title_text">Manager kierowców</string>
+    <string name="driver_manager_fragment_add_driver_title_text">Dodaj kierowce</string>
+    <string name="driver_manager_fragment_add_driver_btn_text">Dodaj</string>
+    <string name="driver_manager_fragment_empty_fields_text">Obydwa pola muszą być uzupełnione</string>
+    <string name="driver_manager_fragment_added_driver_text">Dodano kierowcę</string>
+    <string name="driver_manager_fragment_adding_driver_text">Kierowca jest dodawany...</string>
+    <string name="driver_manager_fragment_select_driver_text">Wybierz kierowcę:</string>
+    <!--    Driver Manager Fragment strings end here-->
 
 </resources>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/operator_graph"
+    app:startDestination="@id/operatorFragment">
+
+    <fragment
+        android:id="@+id/operatorFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.OperatorFragment"
+        android:label="OperatorFragment" />
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.OrderListFragment"
+        android:label="OrderListFragment" >
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailsFragment"
+            app:destination="@id/orderDetailsFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/orderDetailsFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.OrderDetailsFragment"
+        android:label="fragment_order_details"
+        tools:layout="@layout/fragment_order_details" >
+        <argument
+            android:name="id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_orderDetailsFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/driverManagerFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.DriverManagerFragment"
+        android:label="DriverManagerFragment" />
+</navigation>

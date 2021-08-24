@@ -6,4 +6,6 @@ interface DomainMapper <T, DomainModel> {
 
     fun mapToDomainModelList(initial: List<T>): List<DomainModel>
 
+    fun mapFromDomainModel(domainModel: DomainModel) : T
+
 }

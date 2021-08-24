@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -15,27 +18,35 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Action
+import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.MyRoute
+import pl.students.szczepieniaapp.domain.model.ReceivedOrder
 import pl.students.szczepieniaapp.presentation.MyViewModel
 import pl.students.szczepieniaapp.presentation.ui.fragment.DriverFragment
 import pl.students.szczepieniaapp.presentation.ui.listener.DriverListener
-import pl.students.szczepieniaapp.presentation.util.EspressoIdlingResource
+import pl.students.szczepieniaapp.presentation.util.DriversNameMapper
 import pl.students.szczepieniaapp.usecase.UseCaseFactory
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_NAVIGATION
 import pl.students.szczepieniaapp.util.Constants.GOOGLE_MAPS_PACKAGE
+import java.util.ArrayList
 import javax.inject.Inject
 
 @HiltViewModel
 class DriverViewModel
 @Inject
 constructor(
-    private val useCaseFactory: UseCaseFactory
-): MyViewModel() {
+    private val useCaseFactory: UseCaseFactory,
+    private val driversNameMapper: DriversNameMapper
+): MyViewModel(), AdapterView.OnItemSelectedListener {
 
     private var callback: DriverListener = DriverFragment()
 
@@ -51,51 +62,83 @@ constructor(
     private val _initLoading = MutableLiveData<Boolean>()
     val initLoading: LiveData<Boolean> get() = _initLoading
 
+    private val _isBtnEnabled = MutableLiveData<Boolean>()
+    val isBtnEnabled: LiveData<Boolean> get() = _isBtnEnabled
+
+    private val _loadingRoute = MutableLiveData<Boolean>()
+    val loadingRoute: LiveData<Boolean> get() = _loadingRoute
+
+    private var driverId: Int = 0
+    private var driverName: String = ""
+    private var receivedOrder: ReceivedOrder? = null
+
+    private val _driversNames = MutableLiveData<ArrayList<String>>()
+    val driversNames: LiveData<ArrayList<String>> get() = _driversNames
+
     var mMap: GoogleMap? = null
 
-    fun getDestination(start: LatLng, view: View){
+    private val disposable = CompositeDisposable()
 
-        _myPosition.postValue(start)
-
+    init {
         _initLoading.postValue(true)
-        EspressoIdlingResource.increment()
-        useCaseFactory.getDestinationCoordinatesUseCase
+        _isBtnEnabled.postValue(false)
+        _loadingRoute.postValue(false)
+        getAllUnavailableDrivers()
+    }
+
+    private fun getAllUnavailableDrivers(){
+
+        useCaseFactory.getAllUnavailableDriversUseCase
             .execute()
-            .subscribeOn(Schedulers.io())
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess {
-                _destination.postValue(it)
-            }
-            .flatMap {
-                useCaseFactory.getGoogleMapRouteUseCase.execute(
-                    "${start.latitude}, ${start.longitude}",
-                    "${destination.value!!.latitude}, ${destination.value!!.longitude}",
+            .onEach { dataState ->
+
+                _initLoading.postValue(dataState.loading)
+
+                dataState.data?.let {data ->
+                    var names = driversNameMapper.mapToDomainModelList(data) as ArrayList<String>
+                    names.add(0, context.value!!.getString(R.string.driver_manager_fragment_select_driver_text))
+                    _driversNames.postValue(names)
+                }
+
+            }.launchIn(GlobalScope)
+    }
+
+    fun setCurrentPosition(){
+        mMap!!.addMarker(
+            MarkerOptions().position(myPosition.value!!)
+                .title(context?.value?.resources?.getString(R.string.my_position_map_text))
+        )
+
+        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(myPosition.value!!))
+    }
+
+    fun setMyPosition(start: LatLng){
+        _myPosition.postValue(start)
+    }
+
+    private fun getRoute(id: Int, view: View){
+        GlobalScope.launch {
+            _loadingRoute.postValue(true)
+            var order = useCaseFactory.getOrderByDriverIdUseCase.execute(id)
+            if (order.latitude != null && order.longitude != null) {
+                receivedOrder = order
+                _destination.postValue(LatLng(order.latitude!!, order.longitude!!))
+                var route: MyRoute? =  useCaseFactory.getGoogleMapRouteUseCase.execute(
+
+                    "${myPosition.value!!.latitude}, ${myPosition.value!!.longitude}",
+                    "${order.latitude}, ${order.longitude}",
                     context.value?.resources?.getString(R.string.google_maps_key)!!
+
                 )
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(object : SingleObserver<MyRoute>{
-                override fun onSubscribe(d: Disposable?) {
-
-                }
-
-                override fun onError(e: Throwable?) {
-                    //todo add toast message or snackbar
-                    //Snackbar snackbar = Snackbar
-                    //        .make(coordinatorLayout, "www.journaldev.com", Snackbar.LENGTH_LONG);
-                    //snackbar.show();
-                    _initLoading.postValue(false)
+                if (route != null) {
+                    _myRoute.postValue(route)
+                } else {
                     callback.displaySnackbar(view)
-                    Log.d(DriverViewModel::class.java.simpleName, "onError: $e")
                 }
+            }
 
-                override fun onSuccess(value: MyRoute?) {
-                    _myRoute.postValue(value)
-                    _initLoading.postValue(false)
-                    Log.d(DriverViewModel::class.java.simpleName, "Successfully got route: $value")
-                    EspressoIdlingResource.decrement()
-                }
-            })
+            _loadingRoute.postValue(false)
+        }
     }
 
     private fun drawPolyline(points: String?): PolylineOptions {
@@ -151,6 +194,78 @@ constructor(
         val bounds = builder.build()
 
         mMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding))
+    }
+
+    fun selectDriver(view: View){
+        if (driverId > 0) {
+            getRoute(driverId, view)
+        }
+    }
+
+    fun deliverOrder(view: View){
+
+        callback.setDialog(view, view.context.getString(R.string.driver_fragment_order_is_delivered))
+
+        disposable.add(
+            useCaseFactory.getMakeDriverAvailableUseCase.execute(driverName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .andThen(
+                    useCaseFactory.deliverOderUseCase.execute(receivedOrder!!)
+                )
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableCompletableObserver(){
+                    override fun onComplete() {
+                        callback.dismissDialog()
+                        Navigation.findNavController(view).navigate(R.id.action_driverFragment_to_mainActivity)
+                        callback.toastMessage(
+                            view,
+                            view.context.getString(R.string.driver_fragment_order_delivered)
+                        )
+                    }
+
+                    override fun onError(e: Throwable) {
+                        callback.dismissDialog()
+                    }
+                })
+
+        )
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        Log.d(DriverViewModel::class.java.simpleName, "onItemSelected: " + parent!!.adapter.getItem(position))
+        when (parent!!.adapter.getItem(position) as String) {
+
+            context.value!!.getString(R.string.driver_manager_fragment_select_driver_text) -> {
+                _isBtnEnabled.postValue(false)
+                driverId = 0
+                driverName = ""
+            }
+
+            else -> {
+                driverName = parent!!.adapter.getItem(position) as String
+                driverId = parent!!.adapter.getItem(position).toString().substringBefore(".").toInt()
+                _isBtnEnabled.postValue(true)
+            }
+
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Log.d(DriverViewModel::class.java.simpleName, "onNothingSelected: ")
+    }
+
+    fun scrollToBottom(scrollView: NestedScrollView) {
+        scrollView.post {
+            scrollView.fullScroll(View.FOCUS_DOWN)
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
     }
 
 }

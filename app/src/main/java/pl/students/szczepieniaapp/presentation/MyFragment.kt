@@ -15,4 +15,5 @@ abstract class MyFragment<Binding> : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
 }

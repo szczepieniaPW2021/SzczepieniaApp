@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_loginFragment_to_facilityManagerActivity"
             app:destination="@id/facilityManagerActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_operatorActivity"
+            app:destination="@id/operatorActivity" />
     </fragment>
 
     <activity
@@ -43,5 +46,10 @@
         android:name="pl.students.szczepieniaapp.presentation.ui.activities.FacilityManagerActivity"
         android:label="activity_facility_manager"
         tools:layout="@layout/activity_facility_manager" />
+    <activity
+        android:id="@+id/operatorActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.OperatorActivity"
+        android:label="activity_operator"
+        tools:layout="@layout/activity_operator" />
 
 </navigation>

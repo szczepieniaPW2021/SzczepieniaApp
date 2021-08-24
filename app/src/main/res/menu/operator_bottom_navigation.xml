@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/operatorFragment"
+        android:title="@string/operator_bottom_nav_documents_text"
+        android:icon="@drawable/ic_baseline_home" />
+
+    <item
+        android:id="@+id/orderListFragment"
+        android:title="@string/operator_bottom_nav_order_list_text"
+        android:icon="@drawable/ic_baseline_list" />
+
+    <item
+        android:id="@+id/driverManagerFragment"
+        android:title="@string/operator_bottom_nav_drivers_manager_text"
+        android:icon="@drawable/ic_baseline_local_drivers" />
+
+    <item
+        android:id="@+id/mainActivity"
+        android:title="@string/operator_bottom_nav_logout_text"
+        android:icon="@drawable/ic_baseline_logout" />
+
+</menu>

@@ -1,6 +1,6 @@
 package pl.students.szczepieniaapp.presentation.ui.viewmodel
 
-import android.content.Context
+import android.location.Geocoder
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -8,20 +8,15 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Action
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import pl.students.szczepieniaapp.R
 import pl.students.szczepieniaapp.domain.model.Order
 import pl.students.szczepieniaapp.presentation.MyViewModel
@@ -57,8 +52,8 @@ constructor(
     private val _orderItems = MutableLiveData<ArrayList<Order>>()
     val orderItems: LiveData<ArrayList<Order>> get() = _orderItems
 
-    private val _passengersNumberData = MutableLiveData<Int>()
-    val passengersNumberData: LiveData<Int> get() = _passengersNumberData
+    private val _orderNumberData = MutableLiveData<Int>()
+    val orderNumberData: LiveData<Int> get() = _orderNumberData
 
     val _deliveryDate = MutableLiveData<String>()
     val deliveryDate: LiveData<String> get() = _deliveryDate
@@ -77,7 +72,7 @@ constructor(
 
     init {
         fetchVaccineType()
-        _passengersNumberData.postValue(1)
+        _orderNumberData.postValue(1)
         _address.postValue("")
         _postalCode.postValue("")
         _initialLoading.postValue(true)
@@ -108,14 +103,14 @@ constructor(
     }
 
     fun onItemsNumberIncClick(view: View) {
-        if (passengersNumberData.value!! < 99){
-            _passengersNumberData.postValue(passengersNumberData.value!! + 1)
+        if (_orderNumberData.value!! < 99){
+            _orderNumberData.postValue(_orderNumberData.value!! + 1)
         }
     }
 
     fun onItemsNumberDecClick(view: View) {
-        if (passengersNumberData.value!! > 1){
-            _passengersNumberData.postValue(passengersNumberData.value!! - 1)
+        if (_orderNumberData.value!! > 1){
+            _orderNumberData.postValue(_orderNumberData.value!! - 1)
         }
     }
 
@@ -142,8 +137,8 @@ constructor(
             return
         }
 
-        list.add(Order(list.size + 1, vaccineType, passengersNumberData.value!!))
-        _passengersNumberData.postValue(1)
+        list.add(Order(list.size + 1, vaccineType, _orderNumberData.value!!))
+        _orderNumberData.postValue(1)
         _orderItems.postValue(list as ArrayList<Order>?)
         displayOrderList()
     }
@@ -181,10 +176,39 @@ constructor(
 
     fun makeOrder(view: View){
         Log.d(VaccineOrderViewModel::class.java.simpleName, "makeOrder: ${deliveryDate.value}")
+
+        val day = deliveryDate.value!!.substringBefore('-').toInt()
+        val monthAndDay = deliveryDate.value!!.substringAfter('-')
+        val month = monthAndDay.substringBefore('-').toInt()
+        val year = monthAndDay.substringAfter('-').toInt()
+
+        var calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+
         callback.setDialog(view, view.context.getString(R.string.vaccine_order_fragment_order_is_being_registered_text))
 
+        val geocoder = Geocoder(context.value, Locale.getDefault()).getFromLocationName("${address.value}, ${postalCode.value} ${city.value} POLAND", 1)
+
+        if (!geocoder[0].hasLatitude() || !geocoder[0].hasLongitude()) {
+            callback.toastMessage(
+                view.context,
+                view.context.getString(R.string.vaccine_order_fragment_incorrect_address_toast_text)
+            )
+            return
+        }
+
         disposable.add(
-            useCaseFactory.orderVaccineUseCase.execute()
+            useCaseFactory.orderVaccineUseCase.execute(
+                null,
+                System.currentTimeMillis(),
+                calendar.timeInMillis,
+                city.value,
+                address.value,
+                postalCode.value,
+                orderItems.value!!,
+                geocoder[0].latitude,
+                geocoder[0].longitude
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doAfterTerminate {
@@ -193,7 +217,6 @@ constructor(
                 .subscribeWith(object : DisposableCompletableObserver() {
                     override fun onComplete() {
 
-                        callback.dismissDialog()
                         callback.toastMessage(
                             view.context,
                             view.context.getString(R.string.vaccine_order_fragment_order_registered_toast_text)
@@ -202,8 +225,8 @@ constructor(
                             .navigate(R.id.action_vaccineOrderFragment_to_facilityManagerFragment)
                     }
 
-                    override fun onError(e: Throwable?) {}
-                    
+                    override fun onError(e: Throwable) {}
+
                 })
         )
     }

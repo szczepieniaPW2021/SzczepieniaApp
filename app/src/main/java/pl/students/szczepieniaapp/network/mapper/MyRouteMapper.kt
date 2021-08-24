@@ -19,4 +19,8 @@ class MyRouteMapper : DomainMapper<Route, MyRoute> {
     override fun mapToDomainModelList(initial: List<Route>): List<MyRoute> {
         return initial.map { mapToDomainModel(it) }
     }
+
+    override fun mapFromDomainModel(domainModel: MyRoute): Route {
+        TODO("Not yet implemented")
+    }
 }

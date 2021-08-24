@@ -91,6 +91,7 @@ constructor(
         _patientName.postValue(null)
         _patientLastName.postValue(null)
         _patientIdNumber.postValue(null)
+        _selectedVisit.postValue(null)
     }
 
     private fun fetchCities() {
@@ -232,11 +233,28 @@ constructor(
             callback.toastMessage(view, view.context.resources.getString(R.string.patient_calendar_fragment_incorrect_id_number_text))
             return
         }
+        val hours = selectedVisit.value!!.substringBefore(':').toInt()
+        val minutes = selectedVisit.value!!.substringAfter(':').toInt()
+
+        var calendar = Calendar.getInstance()
+        calendar.set(selectedYear.value!!, selectedMonth.value!!, selectedDay.value!!, hours, minutes)
 
         callback.setDialog(view, view.context.getString(R.string.register_visit_dialog_text))
 
         disposable.add(
-            useCaseFactory.signForVaccinationUseCase.execute()
+            useCaseFactory.signForVaccinationUseCase.execute(
+                null,
+                patientName.value,
+                patientLastName.value,
+                patientIdNumber.value!!.toLong(),
+                null,
+                calendar.timeInMillis,
+                selectedCity,
+                selectedFacility,
+                null,
+                null,
+                null
+                )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableCompletableObserver() {
@@ -250,7 +268,7 @@ constructor(
                             .navigate(R.id.action_patientCalendarFragment_to_patientFragment)
                     }
 
-                    override fun onError(e: Throwable?) {
+                    override fun onError(e: Throwable) {
                         callback.dismissDialog()
                     }
 

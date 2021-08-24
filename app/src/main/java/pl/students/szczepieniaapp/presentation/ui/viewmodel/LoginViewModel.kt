@@ -67,8 +67,13 @@ constructor(
                 _isButtonEnabled.postValue(true)
             }
 
-            fetchRoles(view)[5] -> {      //"Facility manager"
+            fetchRoles(view)[4] -> {      //"Facility manager"
                 navAction = R.id.action_loginFragment_to_facilityManagerActivity
+                _isButtonEnabled.postValue(true)
+            }
+
+            fetchRoles(view).last() -> {
+                navAction = R.id.action_loginFragment_to_operatorActivity
                 _isButtonEnabled.postValue(true)
             }
 

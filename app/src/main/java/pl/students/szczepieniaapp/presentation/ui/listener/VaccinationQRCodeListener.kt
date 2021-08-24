@@ -5,7 +5,8 @@ import android.view.View
 
 interface VaccinationQRCodeListener {
 
-    fun setProgressDialog(view: View, qrBits: Bitmap)
+    fun setQRCodeDialog(view: View, qrBits: Bitmap)
 
-    fun dismissProgressDialog()
+    fun setNoQRCodeDialog(view: View)
+
 }
