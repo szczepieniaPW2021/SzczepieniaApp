@@ -126,7 +126,7 @@ constructor(
                 persons.value!!,
                 vaccineDose,
                 vaccineType,
-                createStringForQRCode(persons.value!!.personalNumber!!, time, vaccineDose, lotNumber),
+                createStringForQRCode(persons.value!!.personalNumber!!, time, vaccineDose, lotNumber, vaccineType),
                 time
             )
                 .subscribeOn(Schedulers.io())
@@ -208,8 +208,8 @@ constructor(
         }
     }
 
-    private fun createStringForQRCode(idNumber: Long, time: Long, dose: String, lotNumber: String): String? {
-        return if (dose == "Dawka 2") "$idNumber/$time/$lotNumber" else null
+    private fun createStringForQRCode(idNumber: Long, time: Long, dose: String, lotNumber: String, vaccineType: String): String? {
+        return if (dose == "Dawka 2") "$idNumber/$time/$lotNumber/$vaccineType" else null
     }
 
     override fun onCleared() {

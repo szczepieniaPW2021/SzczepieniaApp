@@ -91,7 +91,6 @@
         <item>Patient</item>
         <item>Driver</item>
         <item>Doctor</item>
-        <item>Logistics operator</item>
         <item>Facility manager</item>
         <item>NFZ operator</item>
     </string-array>
