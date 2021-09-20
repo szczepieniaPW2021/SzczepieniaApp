@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/doctor_graph"
+    app:startDestination="@id/doctorFragment">
+
+    <fragment
+        android:id="@+id/doctorFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.DoctorFragment"
+        android:label="DoctorFragment" />
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/searchPatientFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.SearchPatientFragment"
+        android:label="SearchPatientFragment" >
+        <action
+            android:id="@+id/action_searchPatientFragment_to_doctorFragment"
+            app:destination="@id/doctorFragment" />
+    </fragment>
+
+</navigation>

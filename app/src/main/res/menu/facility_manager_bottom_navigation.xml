@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/facilityManagerFragment"
+        android:title="@string/facility_manager_bottom_nav_documents_text"
+        android:icon="@drawable/ic_baseline_home" />
+
+    <item
+        android:id="@+id/vaccineOrderFragment"
+        android:title="@string/facility_manager_bottom_nav_order_text"
+        android:icon="@drawable/ic_baseline_playlist_add" />
+
+    <item
+        android:id="@+id/mainActivity"
+        android:title="@string/facility_manager_bottom_nav_logout_text"
+        android:icon="@drawable/ic_baseline_logout" />
+
+</menu>

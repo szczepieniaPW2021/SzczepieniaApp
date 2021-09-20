@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/facility_manager_graph.xml"
+    app:startDestination="@id/facilityManagerFragment">
+
+    <fragment
+        android:id="@+id/vaccineOrderFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.VaccineOrderFragment"
+        android:label="VaccineOrderFragment" >
+        <action
+            android:id="@+id/action_vaccineOrderFragment_to_selectDateFragment"
+            app:destination="@id/selectDateFragment" />
+        <action
+            android:id="@+id/action_vaccineOrderFragment_to_facilityManagerFragment"
+            app:destination="@id/facilityManagerFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/selectDateFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.SelectDateFragment"
+        android:label="SelectDateFragment" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/facilityManagerFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.FacilityManagerFragment"
+        android:label="FacilityManagerFragment" />
+</navigation>

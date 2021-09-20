@@ -1,3 +1,209 @@
 <resources>
     <string name="app_name">SzczepieniaApp</string>
+    <string name="go_to_patient">GO TO PATIENT FRAGMENT</string>
+    <string name="go_to_driver">GO TO DRIVER FRAGMENT</string>
+    <string name="login_fragment">Login:</string>
+    <string name="patient_fragment">PATIENT FRAGMENT</string>
+    <string name="this_code_confirms_vaccination">THIS CODE CONFIRMS VACCINATION</string>
+    <string name="warning_map_permission_text">Warning! You need to accept location permissions to use maps in this app.</string>
+    <string name="warning_no_internet_text">You have lost connection to the internet. This app is offline.</string>
+    <string name="version_text">Version: %s</string>
+    <string name="welcome_text">Welcome!</string>
+    <string name="login_text">Log in</string>
+    <string name="selection_not_implemented_text">Selection not implemented!</string>
+
+    <!--    Driver Fragment strings-->
+    <string name="driver_fragment">Welcome driver!</string>
+    <string name="location_not_fetched_map_text">Unable to find route</string>
+    <string name="finding_route_map_text">Finding route...</string>
+    <string name="distance_map_text">Distance: %s</string>
+    <string name="duration_map_text">Duration: %s</string>
+    <string name="arrival_address_map_text">Arrival address: %s</string>
+    <string name="departure_address_map_text">Departure address: %s</string>
+    <string name="my_position_map_text">I am here.</string>
+    <string name="destination_map_text">Destination</string>
+    <string name="select_driver_text">Select</string>
+    <string name="error_dialog_title">Warning!</string>
+    <string name="error_dialog_message">GPS position can not fetched.</string>
+    <string name="error_dialog_exit">Exit</string>
+    <string name="driver_fragment_order_is_delivered">Order is being delivered...</string>
+    <string name="driver_fragment_order_delivered">Order have been delivered</string>
+    <string name="driver_fragment_delivered_btn_text">Deliver</string>
+    <!--    Driver Fragment strings end here-->
+
+    <!--    Patient Fragment strings-->
+    <string name="patient_fragment_title_text">Welcome patient!</string>
+    <string name="patient_fragment_list_header_text">Here you can find:</string>
+    <string name="patient_fragment_referrals_text">Referrals</string>
+    <string name="patient_fragment_visits_text">Visits (registration)</string>
+    <string name="patient_fragment_qr_code_text">QR code</string>
+    <!--    Patient Fragment strings end here-->
+
+    <!--    Patient navigation button strings-->
+    <string name="patient_bottom_nav_documents_text">Documents</string>
+    <string name="patient_bottom_nav_calendar_text">Calendar</string>
+    <string name="patient_bottom_nav_qr_code_text">QR code</string>
+    <string name="patient_bottom_nav_logout_text">Log out</string>
+    <!--    Patient navigation button strings end here-->
+
+    <!--    Doctor navigation button strings-->
+    <string name="doctor_bottom_nav_documents_text">Documents</string>
+    <string name="doctor_bottom_nav_search_text">Register</string>
+    <string name="doctor_bottom_nav_logout_text">Log out</string>
+    <!--    Doctor navigation button strings end here-->
+
+    <!--    Patient Calendar Fragment strings-->
+    <string name="patient_calendar_fragment_sign_up_vaccination_text">Sign up for a vaccination</string>
+    <string name="patient_calendar_fragment_select_city_text">Select city:</string>
+    <string name="patient_calendar_fragment_patient_name_text">Name:</string>
+    <string name="patient_calendar_fragment_patient_lastname_text">Last name:</string>
+    <string name="patient_calendar_fragment_patient_id_text">Id number:</string>
+    <string name="patient_calendar_fragment_select_facility_text">Select a facility:</string>
+    <string name="patient_calendar_fragment_sign_up_button_text">Sign up</string>
+    <string name="patient_calendar_fragment_selected_time_text">Selected time:</string>
+    <string name="patient_calendar_fragment_selected_date_text">Selected date:</string>
+    <string name="patient_calendar_fragment_selected_city_text">Selected city and facility:</string>
+    <string name="patient_calendar_fragment_visits_details_text">Details of the visit:</string>
+    <string name="patient_calendar_fragment_downloading_visits_text">Downloading available visits...</string>
+    <string name="patient_calendar_fragment_registered_for_visit_text">You have been registered for the visit</string>
+    <string name="patient_calendar_fragment_incorrect_id_number_text">You have provided incorrect id number!</string>
+    <!--    Patient Calendar Fragment strings end here-->
+
+    <!--    Visits Time Dialog strings-->
+    <string name="visit_time_dialog_select_text">Select time of visit:</string>
+    <string name="visit_time_dialog_no_visits_text">We sincerely apologize. No visits available for the selected date.</string>
+    <!--    Visits Time Dialog strings end here-->
+
+    <!--    Register Visit Dialog strings-->
+    <string name="register_visit_dialog_text">The visit is being registered...</string>
+    <!--    Register Visit Dialog strings strings end here-->
+
+    <!--    Vaccination QR Code Fragment strings-->
+    <string name="vaccination_qr_code_fragment_title_text">QR code confirming vaccination</string>
+    <string name="vaccination_qr_code_fragment_no_vaccination_text">There is no available QR code for this person. Most likely you didn\'t receive full vaccination yet.</string>
+    <string name="vaccination_qr_code_fragment_cancel_text">Cancel</string>
+    <string name="vaccination_qr_code_fragment_no_patients_text">There are no registered or vaccinated patients</string>
+    <!--    Vaccination QR Code Fragment strings end here-->
+
+    <!--    Roles items -->
+    <string-array name="roles">
+        <item>Log in as:</item>
+        <item>Patient</item>
+        <item>Driver</item>
+        <item>Doctor</item>
+        <item>Facility manager</item>
+        <item>NFZ operator</item>
+    </string-array>
+    <!--    Roles items end here-->
+
+    <!--    Search Patient Fragment strings-->
+    <string name="search_patient_fragment_search_title_text">Register vaccination</string>
+    <string name="search_patient_fragment_search_hint_text">Enter PESEL number or name and surname here...</string>
+    <string name="search_patient_fragment_wrong_pesel_length_text">PESEL must contains 11 digits</string>
+    <string name="search_patient_fragment_patient_data_text">Patient data:</string>
+    <string name="search_patient_fragment_patient_pesel_text">PESEL: %s</string>
+    <string name="search_patient_fragment_patient_text">Name: %s %s</string>
+    <string name="search_patient_fragment_no_patient_warning_text">Sorry. There is no patient with provided data! Try again.</string>
+    <string name="search_patient_fragment_register_vaccination_btn_text">REGISTER VACCINATION</string>
+    <string name="search_patient_fragment_register_vaccination_text">Register vaccination</string>
+    <string name="search_patient_fragment_select_vaccine_type_text">Select vaccine type:</string>
+    <string name="search_patient_fragment_select_vaccine_dose_text">Select vaccine dose:</string>
+    <string name="search_patient_fragment_lot_number_text">Add lot number:</string>
+    <string name="search_patient_fragment_lot_number_hint_text">Add vaccine lot here...</string>
+    <string name="search_patient_fragment_vaccination_register_data_not_complete_text">Please, provide all data needed to register vaccination!</string>
+    <string name="search_patient_fragment_vaccination_is_being_registered_text">Vaccination is being registered...</string>
+    <string name="search_patient_fragment_vaccination_registered_text">Vaccination successfully registered!</string>
+    <string name="search_patient_fragment_select_vaccine_registered_text">Select vaccine:</string>
+    <string name="search_patient_fragment_select_dose_registered_text">Select dose:</string>
+    <!--    Search Patient Fragment strings end here-->
+
+    <!--    Doctor Fragment strings-->
+    <string name="doctor_fragment_title_text">Welcome doctor!</string>
+    <string name="doctor_fragment_list_header_text">Here you can find:</string>
+    <string name="doctor_fragment_referrals_text">Patients</string>
+    <string name="doctor_fragment_visits_text">Vaccines - doses</string>
+    <string name="doctor_fragment_qr_code_text">Vaccination registration</string>
+    <!--    Doctor Fragment strings end here-->
+
+    <!--    Vaccine Order Fragment strings-->
+    <string name="vaccine_order_fragment_title_text">Order vaccines</string>
+    <string name="vaccine_order_fragment_add_item_title_text">Items can be added to order here...</string>
+    <string name="vaccine_order_fragment_text_minus"> - </string>
+    <string name="vaccine_order_fragment_text_plus"> + </string>
+    <string name="vaccine_order_fragment_select_vaccine_warning_text">Need to select vaccine!</string>
+    <string name="vaccine_order_fragment_order_list_title_text">Order list:</string>
+    <string name="vaccine_order_fragment_quantity_text">qty:</string>
+    <string name="vaccine_order_fragment_additional_data_title_text">Additional data:</string>
+    <string name="vaccine_order_fragment_order_text">Make order</string>
+    <string name="vaccine_order_fragment_delivery_date_text">Delivery date:</string>
+    <string name="vaccine_order_fragment_delivery_date_pattern_text">--/--/----</string>
+    <string name="vaccine_order_fragment_address_text">Address:</string>
+    <string name="vaccine_order_fragment_address_hint_text">Address...</string>
+    <string name="vaccine_order_fragment_postal_code_hint_text">Postal code...</string>
+    <string name="vaccine_order_fragment_city_hint_text">City...</string>
+    <string name="vaccine_order_fragment_order_is_being_registered_text">Order is being registered...</string>
+    <string name="vaccine_order_fragment_order_registered_toast_text">Order registered!</string>
+    <string name="vaccine_order_fragment_incorrect_address_toast_text">Incorrect address!</string>
+    <!--    Vaccine Order Fragment strings end here-->
+
+    <!--    Select Date Dialog strings-->
+    <string name="select_date_dialog_title_text">Select date:</string>
+    <!--    Select Date Dialog strings end here-->
+
+    <!--    Facility Manager navigation button strings-->
+    <string name="facility_manager_bottom_nav_documents_text">Documents</string>
+    <string name="facility_manager_bottom_nav_order_text">Order vaccines</string>
+    <string name="facility_manager_bottom_nav_logout_text">Log out</string>
+    <!--    Facility Manager navigation button strings end here-->
+
+    <!--    Doctor Fragment strings-->
+    <string name="facility_manager_fragment_title_text">Welcome facility manager!</string>
+    <string name="facility_manager_fragment_list_header_text">Here you can find:</string>
+    <string name="facility_manager_fragment_vaccines_text">Vaccines</string>
+    <string name="facility_manager_fragment_ordering_vaccines_text">Ordering vaccines</string>
+    <string name="facility_manager_fragment_amount_vaccines_text">The amount of vaccines in the facility</string>
+    <!--    Doctor Fragment strings end here-->
+
+    <!--    Operator navigation button strings-->
+    <string name="operator_bottom_nav_documents_text">Documents</string>
+    <string name="operator_bottom_nav_order_list_text">Order list</string>
+    <string name="operator_bottom_nav_drivers_manager_text">Drivers manager</string>
+    <string name="operator_bottom_nav_logout_text">Log out</string>
+    <!--    Operator navigation button strings end here-->
+
+    <!--    Order List Fragment strings-->
+    <string name="order_list_fragment_title_text">Order list</string>
+    <string name="order_list_fragment_recycler_description_text">Id / Delivery date / Delivery City</string>
+    <!--    Order List Fragment strings end here-->
+
+    <!--    Order Details Fragment strings-->
+    <string name="order_details_fragment_title_text">Order details</string>
+    <string name="order_details_fragment_delivery_date_text">Delivery date:</string>
+    <string name="order_details_fragment_order_date_text">Order date:</string>
+    <string name="order_details_fragment_address_text">Address:</string>
+    <string name="order_details_fragment_status_text">Status: </string>
+    <string name="order_details_fragment_driver_text">Driver: </string>
+    <string name="order_details_fragment_recycler_description_text">Id / Vaccine Type / Qty</string>
+    <string name="order_details_fragment_orders_text">Orders:</string>
+    <string-array name="order_details_fragment_status">
+        <item>ORDERED</item>
+        <item>ON ROUTE</item>
+        <item>DELIVERED</item>
+    </string-array>
+    <string name="order_details_fragment_send_order_text">Send order</string>
+    <string name="order_details_fragment_sending_order_text">Order is being send...</string>
+    <string name="order_details_fragment_order_send_successfully_text">Order was send successfully</string>
+    <!--    Order Details Fragment strings end here-->
+
+    <!--    Driver Manager Fragment strings-->
+    <string name="driver_manager_fragment_title_text">Driver Manager</string>
+    <string name="driver_manager_fragment_add_driver_title_text">Add driver</string>
+    <string name="driver_manager_fragment_add_driver_btn_text">Add</string>
+    <string name="driver_manager_fragment_empty_fields_text">Provide both, name and last name</string>
+    <string name="driver_manager_fragment_added_driver_text">Added driver</string>
+    <string name="driver_manager_fragment_adding_driver_text">Driver is being added...</string>
+    <string name="driver_manager_fragment_select_driver_text">Select driver:</string>
+    <!--    Driver Manager Fragment strings end here-->
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBzETN6JAuaerXn4xlBY48Rpl9Ds-19udI</string>
 </resources>

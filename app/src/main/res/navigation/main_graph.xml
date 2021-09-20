@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph.xml"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="pl.students.szczepieniaapp.presentation.ui.fragment.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_patientActivity"
+            app:destination="@id/patientActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_doctorActivity"
+            app:destination="@id/doctorActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_driverActivity"
+            app:destination="@id/driverActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_facilityManagerActivity"
+            app:destination="@id/facilityManagerActivity" />
+        <action
+            android:id="@+id/action_loginFragment_to_operatorActivity"
+            app:destination="@id/operatorActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/patientActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.PatientActivity"
+        android:label="activity_patient"
+        tools:layout="@layout/activity_patient" />
+    <activity
+        android:id="@+id/doctorActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.DoctorActivity"
+        android:label="activity_doctor"
+        tools:layout="@layout/activity_doctor" />
+    <activity
+        android:id="@+id/driverActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.DriverActivity"
+        android:label="activity_driver"
+        tools:layout="@layout/activity_driver" />
+    <activity
+        android:id="@+id/facilityManagerActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.FacilityManagerActivity"
+        android:label="activity_facility_manager"
+        tools:layout="@layout/activity_facility_manager" />
+    <activity
+        android:id="@+id/operatorActivity"
+        android:name="pl.students.szczepieniaapp.presentation.ui.activities.OperatorActivity"
+        android:label="activity_operator"
+        tools:layout="@layout/activity_operator" />
+
+</navigation>
